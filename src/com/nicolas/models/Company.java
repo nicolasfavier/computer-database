@@ -1,22 +1,22 @@
 package com.nicolas.models;
 
 public class Company {
-	private int i;
+	private int id;
 	private String name;
 
 	public Company(){}
 	
-	public Company(int i, String name) {
+	public Company(int id, String name) {
 		super();
-		this.i = i;
+		this.id = id;
 		this.name = name;
 	}
 	
-	public int getI() {
-		return i;
+	public int getId() {
+		return id;
 	}
-	public void setI(int i) {
-		this.i = i;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -27,6 +27,6 @@ public class Company {
 	
 	@Override
 	public String toString() {
-		return "Company [i=" + i + ", name=" + name + "]";
+		return "Company [id=" + id + ", name=" + name + "]";
 	}	
 }

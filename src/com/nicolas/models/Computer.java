@@ -21,11 +21,11 @@ public class Computer {
 		this.company_id = company_id;
 	}
 
-	public int getI() {
+	public int getId() {
 		return id;
 	}
-	public void setI(int i) {
-		this.id = i;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
