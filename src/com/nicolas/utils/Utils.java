@@ -5,7 +5,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-public class Utils {
+public final class Utils {
+	private Utils(){}
+	
 	public static Timestamp getTimestamp(LocalDate ld){
 		if (ld == null)
 			return null;

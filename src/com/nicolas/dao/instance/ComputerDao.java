@@ -72,7 +72,7 @@ public class ComputerDao {
 			else
 				preparedStatement.setNull(4, 0);
 
-			int rs = preparedStatement.executeUpdate();
+			preparedStatement.executeUpdate();
 
 			query.close();
 			connection.close();
@@ -221,7 +221,7 @@ public class ComputerDao {
 
 				preparedStatement = connection.prepareStatement(deleteById);
 				preparedStatement.setInt(1, index);
-				int res = preparedStatement.executeUpdate();
+				preparedStatement.executeUpdate();
 				
 				connection.close();
 			} catch (SQLException e) {

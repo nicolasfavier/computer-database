@@ -1,7 +1,5 @@
 package com.nicolas.cli;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Menu {
 	private final String MENU_HEADER = ""
