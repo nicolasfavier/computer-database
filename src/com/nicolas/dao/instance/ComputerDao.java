@@ -3,11 +3,10 @@ package com.nicolas.dao.instance;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import com.nicolas.models.Computer;
+import com.nicolas.models.Page;
 import com.nicolas.utils.Utils;
 
 public class ComputerDao {
@@ -151,6 +150,38 @@ public class ComputerDao {
 		return computerList;
 	}
 
+	public Page getPage(int index) {
+		Page page = new Page();
+		java.sql.PreparedStatement preparedStatement = null;
+
+		try {
+			openConnection();
+			
+			String sqlPage = "SELECT * FROM "+DB_COMPUTER_TABLE+" ORDER BY "+DB_COMPUTER_COLUMN_ID+" LIMIT "+index * Page.NB_COMPUTERS +","+Page.NB_COMPUTERS;
+			preparedStatement = connection.prepareStatement(sqlPage);
+
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+
+				Computer computer = new Computer(
+						rs.getInt(DB_COMPUTER_COLUMN_ID),
+						rs.getString(DB_COMPUTER_COLUMN_NAME),
+						Utils.getLocalDate(rs.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED)),
+						Utils.getLocalDate(rs.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED)),
+						rs.getInt(DB_COMPUTER_COLUMN_COMPANY_ID));
+
+				page.getComputerList().add(computer);
+			}
+
+			rs.close();
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return page;
+	}
+	
 	public void updateComputer(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 

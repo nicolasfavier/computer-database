@@ -7,6 +7,7 @@ import java.util.List;
 import com.nicolas.dao.fabric.DaoFabric;
 import com.nicolas.dao.instance.ComputerDao;
 import com.nicolas.models.Computer;
+import com.nicolas.models.Page;
 
 public class ComputerCli {
 	private ComputerDao computerDao;
@@ -27,11 +28,32 @@ public class ComputerCli {
 	public void showComputers() {
 		List<Computer> computers = new ArrayList<Computer>();
 		computers = computerDao.getAllComputers();
+		showComputers(computers);
+	}
+	
+	private void showComputers(List<Computer> computers){
 		for (Computer c : computers) {
 			System.out.println(c.toString());
 		}
 	}
 
+	public void showComputersByPage() {
+		int index = 0;
+		boolean exit = false;
+		Page p;
+		
+		do{
+			p = computerDao.getPage(index);
+			showComputers(p.getComputerList());
+			String input = InputCliUtils.getStringFromUser("enter for next page q for quit",false);
+			if(input.equals("q"))
+				exit = true;
+			if(p.getComputerList().size() < Page.NB_COMPUTERS)
+				exit = true;
+			index++;
+		}while(!exit);
+	}
+	
 	public void createComputer() {
 		System.out.println(MENU_COMPUTER_CREATION_HEADER);
 		String name = InputCliUtils.getStringFromUser(

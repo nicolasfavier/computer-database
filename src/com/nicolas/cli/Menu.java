@@ -10,7 +10,7 @@ public class Menu {
 			+ "********************************************************\n";
 
 	public enum MenuEntries {
-		SHOW_COMPUTER("List computers"), SHOW_COMPANIES("List companies"), SHOW_COMPUTER_DETAILS(
+		SHOW_COMPUTER("List computers"),SHOW_PBYP_COMPUTER("List computers page by page"), SHOW_COMPANIES("List companies"), SHOW_COMPUTER_DETAILS(
 				"Show computer details"), CREATE_COMPUTER("Create a computer"), UPDATE_COMPUTER(
 				"Update a computer"), DELETE_COMPUTER("Delete a computer"), QUIT(
 				"Quit");
@@ -60,6 +60,12 @@ public class Menu {
 			computerCli.showComputers();
 			System.out.println("");
 			break;
+			
+		case SHOW_PBYP_COMPUTER:
+			System.out.println("Computers :");
+			computerCli.showComputersByPage();
+			System.out.println("");
+			break;	
 
 		case SHOW_COMPANIES:
 			System.out.println("All companies :");
