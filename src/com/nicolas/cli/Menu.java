@@ -25,43 +25,23 @@ public class Menu {
 			return description;
 		}
 	}
+	
+	private CompanyCli companyCli;
+	private ComputerCli computerCli;
 
+	public Menu(){
+		companyCli = new CompanyCli();
+		computerCli = new ComputerCli();
+	}
+	
 	public void run() {
 		while (true) {
 			display();
-			getUserInput();
+			int choix = InputCliUtils.getUserInput(MenuEntries.values().length);
+			select(choix);
 		}
 	}
-
-	private void getUserInput() {
-		boolean error;
-		int choice;
-
-		do {
-			Scanner sc = new Scanner(System.in);
-			error = false;
-			try {
-				choice = sc.nextInt();
-				if (choice < MenuEntries.values().length) {
-					select(choice);
-				} else {
-					error = true;
-					wrongEntrie();
-				}
-			} catch (InputMismatchException e) {
-				error = true;
-				wrongEntrie();
-			}
-		} while (error);
-
-	}
-
-	private void wrongEntrie(){
-		int maxValue = MenuEntries.values().length -1;
-		System.out
-				.println("wrong input please choose a number beetween 0 and "
-						+ maxValue );
-	}
+	
 	private void display() {
 		int i = 0;
 		System.out.println(MENU_HEADER);
@@ -72,16 +52,19 @@ public class Menu {
 	}
 
 	private void select(int choice) {
-
 		MenuEntries mEntrie = MenuEntries.values()[choice];
 
 		switch (mEntrie) {
 		case SHOW_COMPUTER:
-			System.out.println("action show computers");
+			System.out.println("All computers :");
+			computerCli.showComputers();
+			System.out.println("");
 			break;
 
 		case SHOW_COMPANIES:
-			System.out.println("action show companies");
+			System.out.println("All companies :");
+			companyCli.showCompanies();
+			System.out.println("");
 			break;
 
 		case SHOW_COMPUTER_DETAILS:
@@ -89,11 +72,11 @@ public class Menu {
 			break;
 
 		case CREATE_COMPUTER:
-			System.out.println("action CREATE_COMPUTER");
+			computerCli.createComputer();
 			break;
 
 		case UPDATE_COMPUTER:
-			System.out.println("action UPDATE_COMPUTER");
+			computerCli.updateComputer();
 			break;
 
 		case DELETE_COMPUTER:
@@ -101,17 +84,17 @@ public class Menu {
 			break;
 
 		case QUIT:
-			System.exit(0);
+			quit();
 			break;
 
 		default:
 			break;
-
 		}
 
 	}
 
 	private void quit() {
 		System.out.println("See you next time!");
+		System.exit(0);
 	}
 }

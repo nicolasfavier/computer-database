@@ -1,17 +1,18 @@
 package com.nicolas.models;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Date;
 
 public class Computer {
 	private int id;
 	private String name;
-	private Date introduced;
-	private Date disconected;
+	private LocalDate introduced;
+	private LocalDate disconected;
 	private int company_id;
 	
 	public Computer(){}
 
-	public Computer(int id, String name, Date introduced, Date disconected,
+	public Computer(int id, String name, LocalDate introduced, LocalDate disconected,
 			int company_id) {
 		super();
 		this.id = id;
@@ -33,16 +34,16 @@ public class Computer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
-	public Date getDisconected() {
+	public LocalDate getDisconected() {
 		return disconected;
 	}
-	public void setDisconected(Date disconected) {
+	public void setDisconected(LocalDate disconected) {
 		this.disconected = disconected;
 	}
 	public int getCompany_id() {
