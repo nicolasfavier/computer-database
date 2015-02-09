@@ -25,23 +25,23 @@ public class Menu {
 			return description;
 		}
 	}
-	
+
 	private CompanyCli companyCli;
 	private ComputerCli computerCli;
 
-	public Menu(){
+	public Menu() {
 		companyCli = new CompanyCli();
 		computerCli = new ComputerCli();
 	}
-	
+
 	public void run() {
 		while (true) {
 			display();
-			int choix = InputCliUtils.getUserInput(MenuEntries.values().length);
+			int choix = InputCliUtils.getUserInput(MenuEntries.values().length, true);
 			select(choix);
 		}
 	}
-	
+
 	private void display() {
 		int i = 0;
 		System.out.println(MENU_HEADER);
@@ -68,7 +68,7 @@ public class Menu {
 			break;
 
 		case SHOW_COMPUTER_DETAILS:
-			System.out.println("action  SHOW_COMPUTER_DETAILS");
+			computerCli.getComputerDetails();
 			break;
 
 		case CREATE_COMPUTER:
@@ -80,7 +80,7 @@ public class Menu {
 			break;
 
 		case DELETE_COMPUTER:
-			System.out.println("action DELETE_COMPUTER");
+			computerCli.deleteComputer();
 			break;
 
 		case QUIT:

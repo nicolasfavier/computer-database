@@ -1,14 +1,14 @@
 package com.nicolas.dao.instance;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 import com.nicolas.models.Computer;
+import com.nicolas.utils.Utils;
 
 public class ComputerDao {
 	private Connection connection;
@@ -33,22 +33,22 @@ public class ComputerDao {
 		dB_NAME = DB_NAME;
 		dB_USER = DB_USER;
 		dB_PWD = DB_PWD;
-		dB_TIME_BEHAVIOR = DB_TIME_BEHAVIOR;		
+		dB_TIME_BEHAVIOR = DB_TIME_BEHAVIOR;
 	}
 
-	private void openConnection(){
+	private void openConnection() {
 		// create connection
-				try {
-					connection = java.sql.DriverManager.getConnection("jdbc:mysql://"
-							+ dB_HOST + ":" + dB_PORT + "/" + dB_NAME
-							+ dB_TIME_BEHAVIOR, dB_USER, dB_PWD);
-				} catch (SQLException e) {
-					System.out.print("with error");
+		try {
+			connection = java.sql.DriverManager.getConnection("jdbc:mysql://"
+					+ dB_HOST + ":" + dB_PORT + "/" + dB_NAME
+					+ dB_TIME_BEHAVIOR, dB_USER, dB_PWD);
+		} catch (SQLException e) {
+			System.out.print("with error");
 
-					e.printStackTrace();
-				}
+			e.printStackTrace();
+		}
 	}
-	
+
 	public void addComputer(Computer computer) {
 		java.sql.Statement query;
 		java.sql.PreparedStatement preparedStatement = null;
@@ -58,11 +58,6 @@ public class ComputerDao {
 			openConnection();
 			query = connection.createStatement();
 
-			LocalDate ld = computer.getIntroduced();
-			Instant instant = ld.atStartOfDay().atZone(ZoneId.systemDefault())
-					.toInstant();
-			Timestamp ts = Timestamp.from(instant);
-
 			String addComputerSQL = "INSERT INTO `" + dB_NAME + "`.`"
 					+ DB_COMPUTER_TABLE + "` " + "(" + DB_COMPUTER_COLUMN_NAME
 					+ "," + DB_COMPUTER_COLUMN_INTRODUCED + ","
@@ -71,9 +66,12 @@ public class ComputerDao {
 
 			preparedStatement = connection.prepareStatement(addComputerSQL);
 			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setTimestamp(2, ts);
-			preparedStatement.setTimestamp(3, ts);
-			preparedStatement.setInt(4, computer.getCompany_id());
+			preparedStatement.setTimestamp(2,Utils.getTimestamp(computer.getIntroduced()));
+			preparedStatement.setTimestamp(3,Utils.getTimestamp(computer.getDisconected()));
+			if (computer.getCompany_id() != 0)
+				preparedStatement.setInt(4, computer.getCompany_id());
+			else
+				preparedStatement.setNull(4, 0);
 
 			int rs = preparedStatement.executeUpdate();
 
@@ -85,36 +83,60 @@ public class ComputerDao {
 		}
 	}
 
+	public Computer getComputerByID(int index) {
+		Computer computer = null;
+		java.sql.PreparedStatement preparedStatement = null;
+
+		try {
+			openConnection();
+
+			String findById = "SELECT * FROM " + DB_COMPUTER_TABLE + " WHERE "
+					+ DB_COMPUTER_COLUMN_ID + " =?";
+
+			preparedStatement = connection.prepareStatement(findById);
+			preparedStatement.setInt(1, index);
+
+			ResultSet rs = preparedStatement.executeQuery();
+
+			if (rs.first()) {
+				computer = new Computer(
+						rs.getInt(DB_COMPUTER_COLUMN_ID),
+						rs.getString(DB_COMPUTER_COLUMN_NAME),
+						Utils.getLocalDate(rs
+								.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED)),
+						Utils.getLocalDate(rs
+								.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED)),
+						rs.getInt(DB_COMPUTER_COLUMN_COMPANY_ID));
+
+			}
+
+			rs.close();
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return computer;
+	}
+
 	public ArrayList<Computer> getAllComputers() {
 		ArrayList<Computer> computerList = new ArrayList<Computer>();
 		java.sql.Statement query;
-		
+
 		try {
 			openConnection();
 			query = connection.createStatement();
-			java.sql.ResultSet rs = query.executeQuery("SELECT * FROM "	+ DB_COMPUTER_TABLE + ";");
-
-			LocalDate introducedTime = null;
-			LocalDate discontinuedTime = null;
+			java.sql.ResultSet rs = query.executeQuery("SELECT * FROM "
+					+ DB_COMPUTER_TABLE + ";");
 
 			while (rs.next()) {
 
-				Timestamp tsIntroduced = rs
-						.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED);
-				if (tsIntroduced != null)
-					introducedTime = tsIntroduced.toLocalDateTime()
-							.toLocalDate();
-
-				Timestamp tsDiscontinued = rs
-						.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED);
-				if (tsDiscontinued != null)
-					discontinuedTime = tsDiscontinued.toLocalDateTime()
-							.toLocalDate();
-
 				Computer computer = new Computer(
 						rs.getInt(DB_COMPUTER_COLUMN_ID),
-						rs.getString(DB_COMPUTER_COLUMN_NAME), introducedTime,
-						discontinuedTime,
+						rs.getString(DB_COMPUTER_COLUMN_NAME),
+						Utils.getLocalDate(rs
+								.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED)),
+						Utils.getLocalDate(rs
+								.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED)),
 						rs.getInt(DB_COMPUTER_COLUMN_COMPANY_ID));
 
 				computerList.add(computer);
@@ -134,53 +156,48 @@ public class ComputerDao {
 
 		try {
 			openConnection();
-			String updateComputerSQL = "UPDATE `" + dB_NAME + "`.`" + DB_COMPUTER_TABLE
-					+ "` SET `" 
-					+ DB_COMPUTER_COLUMN_NAME+ "`=?,`"
-					+ DB_COMPUTER_COLUMN_INTRODUCED + "`=?,`"
+			String updateComputerSQL = "UPDATE `" + dB_NAME + "`.`"
+					+ DB_COMPUTER_TABLE + "` SET `" + DB_COMPUTER_COLUMN_NAME
+					+ "`=?,`" + DB_COMPUTER_COLUMN_INTRODUCED + "`=?,`"
 					+ DB_COMPUTER_COLUMN_DISCONTINUED + "`=?,`"
-					+ DB_COMPUTER_COLUMN_COMPANY_ID +"`=? WHERE "+ DB_COMPUTER_COLUMN_ID+" = ?";
-			
-			LocalDate ldIntroduced = computer.getIntroduced();
-			Instant instantIntroduced = ldIntroduced.atStartOfDay().atZone(ZoneId.systemDefault())
-					.toInstant();
-			Timestamp tsIntroduced = Timestamp.from(instantIntroduced);
-			
-			LocalDate ldDiscontinued = computer.getIntroduced();
-			Instant instantDiscontinued = ldDiscontinued.atStartOfDay().atZone(ZoneId.systemDefault())
-					.toInstant();
-			Timestamp tsDiscontinued= Timestamp.from(instantDiscontinued);
-			
+					+ DB_COMPUTER_COLUMN_COMPANY_ID + "`=? WHERE "
+					+ DB_COMPUTER_COLUMN_ID + " = ?";
+
 			preparedStatement = connection.prepareStatement(updateComputerSQL);
 			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setTimestamp(2, tsIntroduced);
-			preparedStatement.setTimestamp(3, tsDiscontinued);
-			preparedStatement.setInt(4, computer.getCompany_id());
+			preparedStatement.setTimestamp(2,Utils.getTimestamp(computer.getIntroduced()));
+			preparedStatement.setTimestamp(3,Utils.getTimestamp(computer.getDisconected()));
+			if (computer.getCompany_id() != 0)
+				preparedStatement.setInt(4, computer.getCompany_id());
+			else
+				preparedStatement.setNull(4, 0);
 			preparedStatement.setInt(5, computer.getId());
-
-			int rs = preparedStatement.executeUpdate();
 			
+			preparedStatement.executeUpdate();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void deleteUser(Computer computer) {
-		// Cr�ation de la requ�te
-		java.sql.Statement query;
-		try {
-			openConnection();
-			query = connection.createStatement();
+	public boolean deleteComputer(int index) {
+			java.sql.PreparedStatement preparedStatement = null;
 
-			// Executer puis parcourir les r�sultats
-			String sql = "DELETE FROM`" + dB_NAME + "`.`" + DB_COMPUTER_TABLE
-					+ "` WHERE `computers`.`id` = '" + computer.getId() + "'";
+			try {
+				openConnection();
+				String deleteById = "DELETE FROM " + DB_COMPUTER_TABLE + " WHERE "
+						+ DB_COMPUTER_COLUMN_ID + " =?";
 
-			query.executeUpdate(sql);
-			query.close();
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+				preparedStatement = connection.prepareStatement(deleteById);
+				preparedStatement.setInt(1, index);
+				int res = preparedStatement.executeUpdate();
+				
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+			
+		return true;
 		}
-	}
 }

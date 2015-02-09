@@ -24,37 +24,63 @@ public class InputCliUtils {
 		return scannerInstance;
 	}
 
-	public static String getStringFromUser(String description) {
-		String res = "";
-		System.out.println(description);
-		String tmp = getScannerInstance().next();
-		res = tmp;
+	public static String getStringFromUser(String description, boolean isNeeded) {
+		String res = null;
+		String tmp = null;
+		boolean valid = true;
+
+		do {
+			System.out.println(description);
+			if (valid == false) {
+				System.out.println("The value can't be null");
+			}
+			valid = true;
+
+			tmp = getScannerInstance().nextLine();
+
+			if (tmp.trim().isEmpty() && isNeeded)
+				valid = false;
+			else
+				res = tmp;
+		} while (!valid);
+
 		return res;
 	}
 
-	public static LocalDate getDateFromUser(String description) {
+	public static LocalDate getDateFromUser(String description, boolean isNeeded) {
 		System.out.println(description);
-		String strDate = getScannerInstance().next();
 		LocalDate date = null;
+		String strDate = "";
+		boolean error = false;
+		
 
-		try {
-			DateTimeFormatter formatter = DateTimeFormatter
-					.ofPattern("dd/MM/yyyy");
-			date = LocalDate.parse(strDate, formatter);
-			System.out.printf("%s%n", date);
-		} catch (DateTimeParseException exc) {
-			System.out.printf("%s is not parsable!%n", strDate);
-		}
+		do {
+			try {
+				error = false;
+				strDate = getScannerInstance().nextLine();
+				if (strDate.isEmpty() && !isNeeded) {
+					return null;
+				}
+				DateTimeFormatter formatter = DateTimeFormatter
+						.ofPattern("dd/MM/yyyy");
+				date = LocalDate.parse(strDate, formatter);
+				System.out.printf("%s%n", date);
+			} catch (DateTimeParseException exc) {
+				System.out.printf("%s does not respect the format dd/MM/yyyy !%n",strDate);
+				error = true;
+			}
+		} while (error);
 
 		return date;
 	}
 
-	public static int getUserInput(int maxVal, String description) {
+	public static int getUserInput(int maxVal, String description,
+			boolean isNeeded) {
 		System.out.println(description);
-		return getUserInput(maxVal);
+		return getUserInput(maxVal, isNeeded);
 	}
 
-	public static int getUserInput(int maxVal) {
+	public static int getUserInput(int maxVal, boolean isNeeded) {
 		boolean error = false;
 		int userVal = 0;
 
@@ -62,15 +88,19 @@ public class InputCliUtils {
 			error = false;
 
 			try {
-				userVal = getScannerInstance().nextInt();
+				String tmp = getScannerInstance().nextLine();
+
+				if (tmp.trim().isEmpty() && !isNeeded) {
+					return -1;
+				}
+
+				userVal = Integer.parseInt(tmp);
 				if (maxVal != -1 && userVal > maxVal) {
 					error = true;
-					getScannerInstance().nextLine();
 					wrongEntrie(maxVal);
 				}
-			} catch (InputMismatchException e) {
+			} catch (Exception e) {
 				error = true;
-				getScannerInstance().nextLine();
 				wrongEntrie(maxVal);
 			}
 		} while (error);
@@ -84,7 +114,8 @@ public class InputCliUtils {
 		if (maxVal == -1) {
 			System.out.println("wrong input please choose a number");
 		} else {
-			System.out.println("wrong input please choose a number beetween 0 and "
+			System.out
+					.println("wrong input please choose a number beetween 0 and "
 							+ (maxVal - 1));
 		}
 	}

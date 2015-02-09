@@ -55,8 +55,14 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", name=" + name + ", introduced="
-				+ introduced + ", disconected=" + disconected + ", company_id="
-				+ company_id + "]";
+		String str = "Computer [id=" + id + ", name=" + name ;
+		if(introduced != null)
+			str += ", introduced= "+ introduced;
+		if(disconected != null)
+			str += ", disconected= "+ disconected;	
+		if(company_id != 0)
+			str += ", company_id= "+ company_id;
+		str += "]";
+		return str;
 	}
 }
