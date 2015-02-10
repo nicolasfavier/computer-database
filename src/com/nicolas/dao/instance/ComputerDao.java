@@ -1,5 +1,6 @@
 package com.nicolas.dao.instance;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,12 +62,10 @@ public enum ComputerDao {
 	}
 
 	public void add(Computer computer) {
-		java.sql.Statement query;
 		java.sql.PreparedStatement preparedStatement = null;
-
-		// create connection
+		Connection connection = DbConnection.INSTANCE.getConnection();
+		
 		try {
-			query = DbConnection.INSTANCE.getConnection().createStatement();
 
 			preparedStatement = DbConnection.INSTANCE.getConnection()
 					.prepareStatement(ADD_COMPUTER_SQL);
@@ -86,21 +85,22 @@ public enum ComputerDao {
 
 			preparedStatement.executeUpdate();
 
-			query.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			DbConnection.INSTANCE.closeConnection(connection);
 		}
 	}
 
 	public Computer getByID(int index) {
 		Computer computer = null;
 		java.sql.PreparedStatement preparedStatement = null;
+		Connection connection = DbConnection.INSTANCE.getConnection();
 
 		try {
 
-			preparedStatement = DbConnection.INSTANCE.getConnection()
-					.prepareStatement(FIND_COMPUTER_BY_ID_SQL);
+			preparedStatement = connection.prepareStatement(FIND_COMPUTER_BY_ID_SQL);
 			preparedStatement.setInt(1, index);
 
 			ResultSet rs = preparedStatement.executeQuery();
@@ -112,38 +112,43 @@ public enum ComputerDao {
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			DbConnection.INSTANCE.closeConnection(connection);
 		}
+		
 		return computer;
 	}
 
 	public List<Computer> getAll() {
 		List<Computer> computerList = new ArrayList<Computer>();
-		java.sql.Statement query;
+		Connection connection = DbConnection.INSTANCE.getConnection();
+		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
-			query = DbConnection.INSTANCE.getConnection().createStatement();
-			java.sql.ResultSet rs = query.executeQuery(SELECT_ALL_COMPUTERS_SQL);
+			preparedStatement = connection.prepareStatement(SELECT_ALL_COMPUTERS_SQL);
+			ResultSet rs = preparedStatement.executeQuery();
 			computerList = ComputerRowMapper.INSTANCE.getList(rs); 
 			rs.close();
-			query.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			DbConnection.INSTANCE.closeConnection(connection);
 		}
+		
 		return computerList;
 	}
 
 	public Page get(int index) {
 		Page page = new Page();
+		Connection connection = DbConnection.INSTANCE.getConnection();
 		java.sql.PreparedStatement preparedStatement = null;
-		ResultSet rs;
 		
 		try {
-			preparedStatement = DbConnection.INSTANCE.getConnection()
-					.prepareStatement(GET_PAGES_SQL);
+			preparedStatement = connection.prepareStatement(GET_PAGES_SQL);
 			preparedStatement.setInt(1, index * Page.NB_COMPUTERS);
 			preparedStatement.setInt(2,  Page.NB_COMPUTERS);
 
-			rs = preparedStatement.executeQuery();
+			ResultSet rs = preparedStatement.executeQuery();
 
 			page.getComputerList().addAll(ComputerRowMapper.INSTANCE.getList(rs));
 			
@@ -152,18 +157,18 @@ public enum ComputerDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			//			rs.close();
-			//TODO how to catch sql exeption from rs.close in the finally ?
+			DbConnection.INSTANCE.closeConnection(connection);
 		}
+		
 		return page;
 	}
 
 	public void update(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
+		Connection connection = DbConnection.INSTANCE.getConnection();
 
 		try {
-			preparedStatement = DbConnection.INSTANCE.getConnection()
-					.prepareStatement(UPDATE_COMPUTER_SQL);
+			preparedStatement = connection.prepareStatement(UPDATE_COMPUTER_SQL);
 			
 			preparedStatement.setString(1, computer.getName());
 			
@@ -184,21 +189,25 @@ public enum ComputerDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			DbConnection.INSTANCE.closeConnection(connection);
 		}
 	}
 
 	public boolean delete(int index) {
 		java.sql.PreparedStatement preparedStatement = null;
+		Connection connection = DbConnection.INSTANCE.getConnection();
 
 		try {
-			preparedStatement = DbConnection.INSTANCE.getConnection()
-					.prepareStatement(DELETE_COMPUTER_SQL);
+			preparedStatement = connection.prepareStatement(DELETE_COMPUTER_SQL);
 			preparedStatement.setInt(1, index);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		}finally{
+			DbConnection.INSTANCE.closeConnection(connection);
 		}
 
 		return true;
