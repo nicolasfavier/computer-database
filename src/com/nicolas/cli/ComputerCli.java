@@ -27,7 +27,7 @@ public class ComputerCli {
 
 	public void showComputers() {
 		List<Computer> computers = new ArrayList<Computer>();
-		computers = computerDao.getAllComputers();
+		computers = computerDao.getAll();
 		showComputers(computers);
 	}
 	
@@ -43,7 +43,7 @@ public class ComputerCli {
 		Page p;
 		
 		do{
-			p = computerDao.getPage(index);
+			p = computerDao.get(index);
 			showComputers(p.getComputerList());
 			String input = InputCliUtils.getStringFromUser("enter for next page q for quit",false);
 			if(input.equals("q"))
@@ -69,7 +69,7 @@ public class ComputerCli {
 			compuerCompany = companyId;
 		
 		Computer tmpComputer = new Computer(0, name, introducedDate, discontinuedDate, compuerCompany);
-		computerDao.addComputer(tmpComputer);
+		computerDao.add(tmpComputer);
 
 	}
 
@@ -94,13 +94,13 @@ public class ComputerCli {
 		if(companyId != -1)
 			tmpComputer.setCompany_id(companyId);
 		
-		computerDao.updateComputer(tmpComputer);
+		computerDao.update(tmpComputer);
 	}
 
 	public void getComputerDetails() {
 		int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX,
 				false);
-		Computer detail = computerDao.getComputerByID(index);
+		Computer detail = computerDao.getByID(index);
 		if (detail == null) {
 			System.out.println(INVALID_INDEX);
 		} else {
@@ -111,7 +111,7 @@ public class ComputerCli {
 	public void deleteComputer(){
 		System.out.println(MENU_COMPUTER_DELETE_HEADER);
 		int index = selectValidComputerIndex().getId();
-		if (computerDao.deleteComputer(index))
+		if (computerDao.delete(index))
 			System.out.println("deleted with success");
 		else
 			System.out.println("error");
@@ -126,7 +126,7 @@ public class ComputerCli {
 				System.out.println("The index does not exist");
 			error = false;
 			int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_UPDATE_INDEX, false);
-			tmpComputer = computerDao.getComputerByID(index);
+			tmpComputer = computerDao.getByID(index);
 			if (tmpComputer == null)
 					error = true;
 		} while(error);

@@ -9,9 +9,9 @@ import com.nicolas.connection.DbConnection;
 import com.nicolas.models.Company;
 
 public class CompanyDao {
-	private final static String DB_COMPANY_TABLE = "company";
-	private final static String dB_COLUMN_ID = "id";
-	private final static String dB_COLUMN_NAME = "name";
+	public final static String DB_COMPANY_TABLE = "company";
+	public final static String DB_COLUMN_ID = "id";
+	public final static String DB_COLUMN_NAME = "name";
 
 	private final static String GET_COMPANY_BY_ID = "SELECT * FROM "
 			+ DB_COMPANY_TABLE + " WHERE id=?";
@@ -21,7 +21,7 @@ public class CompanyDao {
 	public CompanyDao() {
 	}
 
-	public Company getCompanyByID(int companyId) {
+	public Company getByID(int companyId) {
 		java.sql.Statement query;
 		PreparedStatement preparedStatement = null;
 		Company company = null;
@@ -33,11 +33,11 @@ public class CompanyDao {
 			preparedStatement.setInt(1, companyId);
 
 			java.sql.ResultSet rs = preparedStatement.executeQuery();
-
+			
 			if (rs.first()) {
-				company = new Company(rs.getInt(dB_COLUMN_ID),
-						rs.getString(dB_COLUMN_NAME));
+				company = CompanyRowMapper.INSTANCE.getObject(rs);
 			}
+			
 			query.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -45,7 +45,7 @@ public class CompanyDao {
 		return company;
 	}
 
-	public List<Company> getAllCompanies() {
+	public List<Company> getAll() {
 		List<Company> CompanyList = new ArrayList<Company>();
 		java.sql.Statement query;
 
@@ -53,11 +53,8 @@ public class CompanyDao {
 			query = DbConnection.INSTANCE.getConnection().createStatement();
 			java.sql.ResultSet rs = query.executeQuery(GET_ALL_COMPANY);
 
-			while (rs.next()) {
-				Company company = new Company(rs.getInt(dB_COLUMN_ID),
-						rs.getString(dB_COLUMN_NAME));
-				CompanyList.add(company);
-			}
+			CompanyList = CompanyRowMapper.INSTANCE.getList(rs);
+			
 			rs.close();
 			query.close();
 		} catch (SQLException e) {

@@ -17,7 +17,7 @@ public class CompanyCli {
 	
 	public void showCompanies(){
 		List<Company> companies = new ArrayList<Company>();
-		companies = companyDao.getAllCompanies();
+		companies = companyDao.getAll();
 		for(Company c : companies){
 			System.out.println(c.toString());
 		}
@@ -36,7 +36,7 @@ public class CompanyCli {
 			choice = InputCliUtils.getUserInput(-1, MENU_COMPANY_INDEX, false);
 			if(choice == -1)
 				return -1;
-			tmpCompany = companyDao.getCompanyByID(choice);
+			tmpCompany = companyDao.getByID(choice);
 			if (tmpCompany == null)
 				error = true;
 		} while (error);

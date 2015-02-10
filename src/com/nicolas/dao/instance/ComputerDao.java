@@ -11,12 +11,12 @@ import com.nicolas.models.Page;
 import com.nicolas.utils.Utils;
 
 public class ComputerDao {
-	private final static String DB_COMPUTER_TABLE = "computer";
-	private final static String DB_COMPUTER_COLUMN_ID = "id";
-	private final static String DB_COMPUTER_COLUMN_NAME = "name";
-	private final static String DB_COMPUTER_COLUMN_INTRODUCED = "introduced";
-	private final static String DB_COMPUTER_COLUMN_DISCONTINUED = "discontinued";
-	private final static String DB_COMPUTER_COLUMN_COMPANY_ID = "company_id";
+	public final static String DB_COMPUTER_TABLE = "computer";
+	public final static String DB_COMPUTER_COLUMN_ID = "id";
+	public final static String DB_COMPUTER_COLUMN_NAME = "name";
+	public final static String DB_COMPUTER_COLUMN_INTRODUCED = "introduced";
+	public final static String DB_COMPUTER_COLUMN_DISCONTINUED = "discontinued";
+	public final static String DB_COMPUTER_COLUMN_COMPANY_ID = "company_id";
 
 	private final static String ADD_COMPUTER_SQL = "INSERT INTO `"
 			+ DB_COMPUTER_TABLE + "` " + "(" + DB_COMPUTER_COLUMN_NAME + ","
@@ -47,7 +47,7 @@ public class ComputerDao {
 	public ComputerDao() {
 	}
 
-	public void addComputer(Computer computer) {
+	public void add(Computer computer) {
 		java.sql.Statement query;
 		java.sql.PreparedStatement preparedStatement = null;
 
@@ -76,7 +76,7 @@ public class ComputerDao {
 		}
 	}
 
-	public Computer getComputerByID(int index) {
+	public Computer getByID(int index) {
 		Computer computer = null;
 		java.sql.PreparedStatement preparedStatement = null;
 
@@ -87,18 +87,11 @@ public class ComputerDao {
 			preparedStatement.setInt(1, index);
 
 			ResultSet rs = preparedStatement.executeQuery();
-
+			
 			if (rs.first()) {
-				computer = new Computer(
-						rs.getInt(DB_COMPUTER_COLUMN_ID),
-						rs.getString(DB_COMPUTER_COLUMN_NAME),
-						Utils.getLocalDate(rs
-								.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED)),
-						Utils.getLocalDate(rs
-								.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED)),
-						rs.getInt(DB_COMPUTER_COLUMN_COMPANY_ID));
+			computer = ComputerRowMapper.INSTANCE.getObject(rs); 
 			}
-
+			
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -106,28 +99,14 @@ public class ComputerDao {
 		return computer;
 	}
 
-	public List<Computer> getAllComputers() {
+	public List<Computer> getAll() {
 		List<Computer> computerList = new ArrayList<Computer>();
 		java.sql.Statement query;
 
 		try {
 			query = DbConnection.INSTANCE.getConnection().createStatement();
-			java.sql.ResultSet rs = query
-					.executeQuery(SELECT_ALL_COMPUTERS_SQL);
-
-			while (rs.next()) {
-				Computer computer = new Computer(
-						rs.getInt(DB_COMPUTER_COLUMN_ID),
-						rs.getString(DB_COMPUTER_COLUMN_NAME),
-						Utils.getLocalDate(rs
-								.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED)),
-						Utils.getLocalDate(rs
-								.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED)),
-						rs.getInt(DB_COMPUTER_COLUMN_COMPANY_ID));
-
-				computerList.add(computer);
-			}
-
+			java.sql.ResultSet rs = query.executeQuery(SELECT_ALL_COMPUTERS_SQL);
+			computerList = ComputerRowMapper.INSTANCE.getList(rs); 
 			rs.close();
 			query.close();
 		} catch (SQLException e) {
@@ -136,40 +115,33 @@ public class ComputerDao {
 		return computerList;
 	}
 
-	public Page getPage(int index) {
+	public Page get(int index) {
 		Page page = new Page();
 		java.sql.PreparedStatement preparedStatement = null;
-
+		ResultSet rs;
+		
 		try {
 			preparedStatement = DbConnection.INSTANCE.getConnection()
 					.prepareStatement(GET_PAGES_SQL);
 			preparedStatement.setInt(1, index * Page.NB_COMPUTERS);
 			preparedStatement.setInt(2,  Page.NB_COMPUTERS);
 
-			ResultSet rs = preparedStatement.executeQuery();
+			rs = preparedStatement.executeQuery();
 
-			while (rs.next()) {
-
-				Computer computer = new Computer(
-						rs.getInt(DB_COMPUTER_COLUMN_ID),
-						rs.getString(DB_COMPUTER_COLUMN_NAME),
-						Utils.getLocalDate(rs
-								.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED)),
-						Utils.getLocalDate(rs
-								.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED)),
-						rs.getInt(DB_COMPUTER_COLUMN_COMPANY_ID));
-
-				page.getComputerList().add(computer);
-			}
-
+			page.getComputerList().addAll(ComputerRowMapper.INSTANCE.getList(rs));
+			
 			rs.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			//			rs.close();
+			//TODO how to catch sql exeption from rs.close in the finally ?
 		}
 		return page;
 	}
 
-	public void updateComputer(Computer computer) {
+	public void update(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
@@ -193,7 +165,7 @@ public class ComputerDao {
 		}
 	}
 
-	public boolean deleteComputer(int index) {
+	public boolean delete(int index) {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
