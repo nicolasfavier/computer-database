@@ -81,7 +81,7 @@ public enum ComputerDao {
 			if (computer.getCompany() != null)
 				preparedStatement.setInt(4, computer.getCompany().getId());
 			else
-				preparedStatement.setNull(4, 0);
+				preparedStatement.setNull(4, java.sql.Types.BIGINT);
 
 			preparedStatement.executeUpdate();
 
@@ -97,22 +97,24 @@ public enum ComputerDao {
 		Computer computer = null;
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
-
+		ResultSet rs = null;
+				
 		try {
 
 			preparedStatement = connection.prepareStatement(FIND_COMPUTER_BY_ID_SQL);
 			preparedStatement.setInt(1, index);
 
-			ResultSet rs = preparedStatement.executeQuery();
+			rs = preparedStatement.executeQuery();
 			
 			if (rs.first()) {
 			computer = ComputerRowMapper.INSTANCE.getObject(rs); 
 			}
 			
-			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		//TODO find a better way, try catch in try catch sucks
 		}finally{
+			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		
@@ -123,15 +125,18 @@ public enum ComputerDao {
 		List<Computer> computerList = new ArrayList<Computer>();
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		java.sql.PreparedStatement preparedStatement = null;
-
+		ResultSet rs = null;
+		
 		try {
 			preparedStatement = connection.prepareStatement(SELECT_ALL_COMPUTERS_SQL);
-			ResultSet rs = preparedStatement.executeQuery();
+			rs = preparedStatement.executeQuery();
 			computerList = ComputerRowMapper.INSTANCE.getList(rs); 
-			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
+		//TODO find a better way, try catch in try catch suck
 		}finally{
+			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		
@@ -140,23 +145,25 @@ public enum ComputerDao {
 
 	public Page get(int index) {
 		Page page = new Page();
-		Connection connection = DbConnection.INSTANCE.getConnection();
 		java.sql.PreparedStatement preparedStatement = null;
-		
+		Connection connection = DbConnection.INSTANCE.getConnection();
+		ResultSet rs = null;
+	
 		try {
 			preparedStatement = connection.prepareStatement(GET_PAGES_SQL);
 			preparedStatement.setInt(1, index * Page.NB_COMPUTERS);
 			preparedStatement.setInt(2,  Page.NB_COMPUTERS);
 
-			ResultSet rs = preparedStatement.executeQuery();
+			rs = preparedStatement.executeQuery();
 
 			page.getComputerList().addAll(ComputerRowMapper.INSTANCE.getList(rs));
-			
 			rs.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		//TODO find a better way, try catch in try catch suck
 		}finally{
+			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		
@@ -181,7 +188,7 @@ public enum ComputerDao {
 			if (computer.getCompany() != null)
 				preparedStatement.setInt(4, computer.getCompany().getId());
 			else
-				preparedStatement.setNull(4, 0);
+				preparedStatement.setNull(4, java.sql.Types.BIGINT);
 			
 			preparedStatement.setInt(5, computer.getId());
 

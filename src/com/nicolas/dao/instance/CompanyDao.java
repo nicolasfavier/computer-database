@@ -1,5 +1,6 @@
 package com.nicolas.dao.instance;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,43 +25,51 @@ public enum CompanyDao {
 	}
 
 	public Company getByID(int companyId) {
-		java.sql.Statement query;
 		PreparedStatement preparedStatement = null;
+		java.sql.ResultSet rs = null;
+		Connection connection = DbConnection.INSTANCE.getConnection();
 		Company company = null;
 
 		try {
-			query = DbConnection.INSTANCE.getConnection().createStatement();
-			preparedStatement = DbConnection.INSTANCE.getConnection()
-					.prepareStatement(GET_COMPANY_BY_ID);
+			preparedStatement = connection.prepareStatement(GET_COMPANY_BY_ID);
 			preparedStatement.setInt(1, companyId);
 
-			java.sql.ResultSet rs = preparedStatement.executeQuery();
+			rs = preparedStatement.executeQuery();
 			
 			if (rs.first()) {
 				company = CompanyRowMapper.INSTANCE.getObject(rs);
 			}
 			
-			query.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
+		//TODO find a better way, try catch in try catch sucks
+		}finally{
+			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		return company;
 	}
 
 	public List<Company> getAll() {
+		PreparedStatement preparedStatement = null;
 		List<Company> CompanyList = new ArrayList<Company>();
-		java.sql.Statement query;
+		Connection connection = DbConnection.INSTANCE.getConnection();
+		java.sql.ResultSet rs = null;
 
 		try {
-			query = DbConnection.INSTANCE.getConnection().createStatement();
-			java.sql.ResultSet rs = query.executeQuery(GET_ALL_COMPANY);
+			preparedStatement = connection.prepareStatement(GET_ALL_COMPANY);
+			rs = preparedStatement.executeQuery();
 
 			CompanyList = CompanyRowMapper.INSTANCE.getList(rs);
 			
-			rs.close();
-			query.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+
+		//TODO find a better way, try catch in try catch sucks
+		}finally{
+			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		return CompanyList;
 	}
