@@ -8,7 +8,9 @@ import java.util.List;
 import com.nicolas.connection.DbConnection;
 import com.nicolas.models.Company;
 
-public class CompanyDao {
+public enum CompanyDao {
+	INSTANCE;
+	
 	public final static String DB_COMPANY_TABLE = "company";
 	public final static String DB_COLUMN_ID = "id";
 	public final static String DB_COLUMN_NAME = "name";
@@ -18,7 +20,7 @@ public class CompanyDao {
 	private final static String GET_ALL_COMPANY = "SELECT * FROM "
 			+ DB_COMPANY_TABLE + ";";
 
-	public CompanyDao() {
+	private CompanyDao() {
 	}
 
 	public Company getByID(int companyId) {

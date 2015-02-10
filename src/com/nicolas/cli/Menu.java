@@ -1,7 +1,9 @@
 package com.nicolas.cli;
 
 
-public class Menu {
+public enum Menu {
+	INSTANCE;
+	
 	private final String MENU_HEADER = ""
 			+ "********************************************************\n"
 			+ "*                        MENU                          *\n"
@@ -24,12 +26,7 @@ public class Menu {
 		}
 	}
 
-	private CompanyCli companyCli;
-	private ComputerCli computerCli;
-
-	public Menu() {
-		companyCli = new CompanyCli();
-		computerCli = new ComputerCli();
+	private Menu() {
 	}
 
 	public void run() {
@@ -55,36 +52,36 @@ public class Menu {
 		switch (mEntrie) {
 		case SHOW_COMPUTER:
 			System.out.println("All computers :");
-			computerCli.showComputers();
+			ComputerCli.INSTANCE.showComputers();
 			System.out.println("");
 			break;
 			
 		case SHOW_PBYP_COMPUTER:
 			System.out.println("Computers :");
-			computerCli.showComputersByPage();
+			ComputerCli.INSTANCE.showComputersByPage();
 			System.out.println("");
 			break;	
 
 		case SHOW_COMPANIES:
 			System.out.println("All companies :");
-			companyCli.showCompanies();
+			CompanyCli.INSTANCE.showCompanies();
 			System.out.println("");
 			break;
 
 		case SHOW_COMPUTER_DETAILS:
-			computerCli.getComputerDetails();
+			ComputerCli.INSTANCE.getComputerDetails();
 			break;
 
 		case CREATE_COMPUTER:
-			computerCli.createComputer();
+			ComputerCli.INSTANCE.createComputer();
 			break;
 
 		case UPDATE_COMPUTER:
-			computerCli.updateComputer();
+			ComputerCli.INSTANCE.updateComputer();
 			break;
 
 		case DELETE_COMPUTER:
-			computerCli.deleteComputer();
+			ComputerCli.INSTANCE.deleteComputer();
 			break;
 
 		case QUIT:

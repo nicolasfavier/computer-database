@@ -7,18 +7,18 @@ public class Computer {
 	private String name;
 	private LocalDate introduced;
 	private LocalDate disconected;
-	private int company_id;
+	private Company company;
 	
 	public Computer(){}
 
 	public Computer(int id, String name, LocalDate introduced, LocalDate disconected,
-			int company_id) {
+			Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.disconected = disconected;
-		this.company_id = company_id;
+		this.company = company;
 	}
 
 	public int getId() {
@@ -45,11 +45,11 @@ public class Computer {
 	public void setDisconected(LocalDate disconected) {
 		this.disconected = disconected;
 	}
-	public int getCompany_id() {
-		return company_id;
+	public Company getCompany() {
+		return company;
 	}
-	public void setCompany_id(int company_id) {
-		this.company_id = company_id;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	@Override
@@ -59,8 +59,8 @@ public class Computer {
 			str += ", introduced= "+ introduced;
 		if(disconected != null)
 			str += ", disconected= "+ disconected;	
-		if(company_id != 0)
-			str += ", company_id= "+ company_id;
+		if(company != null)
+			str += ", "+ company.toString();
 		str += "]";
 		return str;
 	}

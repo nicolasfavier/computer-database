@@ -4,13 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nicolas.dao.fabric.DaoFabric;
 import com.nicolas.dao.instance.ComputerDao;
+import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 
-public class ComputerCli {
-	private ComputerDao computerDao;
+public enum ComputerCli {
+	INSTANCE;
+	
 	private final String MENU_COMPUTER_CREATION_HEADER = "############ Computer creation ############";
 	private final String MENU_COMPUTER_UPDATE_HEADER = "############ Computer Update ############";
 	private final String MENU_COMPUTER_DELETE_HEADER = "############ Computer Delete ############";
@@ -21,13 +22,12 @@ public class ComputerCli {
 	private final String MENU_COMPUTER_DETAILS_INDEX = "enter the computer index for details :";
 	private final String INVALID_INDEX = "This Index is not Valide";
 
-	public ComputerCli() {
-		computerDao = DaoFabric.getInstance().createComputerDao();
+	private ComputerCli() {
 	}
 
 	public void showComputers() {
 		List<Computer> computers = new ArrayList<Computer>();
-		computers = computerDao.getAll();
+		computers = ComputerDao.INSTANCE.getAll();
 		showComputers(computers);
 	}
 	
@@ -43,7 +43,7 @@ public class ComputerCli {
 		Page p;
 		
 		do{
-			p = computerDao.get(index);
+			p = ComputerDao.INSTANCE.get(index);
 			showComputers(p.getComputerList());
 			String input = InputCliUtils.getStringFromUser("enter for next page q for quit",false);
 			if(input.equals("q"))
@@ -56,20 +56,18 @@ public class ComputerCli {
 	
 	public void createComputer() {
 		System.out.println(MENU_COMPUTER_CREATION_HEADER);
-		String name = InputCliUtils.getStringFromUser(
-				MENU_COMPUTER_CREATION_NAME, true);
-		LocalDate introducedDate = InputCliUtils.getDateFromUser(
-				MENU_COMPUTER_CREATION_INTRODUCED, false);
-		LocalDate discontinuedDate = InputCliUtils.getDateFromUser(
-				MENU_COMPUTER_CREATION_DISCONTINUED, false);
-		int compuerCompany = 0;
-		CompanyCli cc = new CompanyCli();
-		int companyId = cc.selectValidCompanyIndex();
-		if(companyId != -1)
-			compuerCompany = companyId;
 		
-		Computer tmpComputer = new Computer(0, name, introducedDate, discontinuedDate, compuerCompany);
-		computerDao.add(tmpComputer);
+		String name = InputCliUtils.getStringFromUser( MENU_COMPUTER_CREATION_NAME, true);
+		LocalDate introducedDate = InputCliUtils.getDateFromUser( MENU_COMPUTER_CREATION_INTRODUCED, false);
+		LocalDate discontinuedDate = InputCliUtils.getDateFromUser( MENU_COMPUTER_CREATION_DISCONTINUED, false);
+		int companyId = CompanyCli.INSTANCE.selectValidCompanyIndex();
+		
+		Company tmpCompany = null;
+		if(companyId != -1)
+			tmpCompany = new Company(companyId,"");
+		
+		Computer tmpComputer = new Computer(0, name, introducedDate, discontinuedDate, tmpCompany);
+		ComputerDao.INSTANCE.add(tmpComputer);
 
 	}
 
@@ -89,18 +87,21 @@ public class ComputerCli {
 		if(discontinuedDate != null)
 			tmpComputer.setDisconected(discontinuedDate);
 
-		CompanyCli cc = new CompanyCli();
-		int companyId = cc.selectValidCompanyIndex();
+		int companyId = CompanyCli.INSTANCE.selectValidCompanyIndex();	
+		Company tmpCompany = null;
 		if(companyId != -1)
-			tmpComputer.setCompany_id(companyId);
+		{
+			tmpCompany = new Company(companyId,"");
+			tmpComputer.setCompany(tmpCompany);
+		}
 		
-		computerDao.update(tmpComputer);
+		ComputerDao.INSTANCE.update(tmpComputer);
 	}
 
 	public void getComputerDetails() {
 		int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX,
 				false);
-		Computer detail = computerDao.getByID(index);
+		Computer detail = ComputerDao.INSTANCE.getByID(index);
 		if (detail == null) {
 			System.out.println(INVALID_INDEX);
 		} else {
@@ -111,7 +112,7 @@ public class ComputerCli {
 	public void deleteComputer(){
 		System.out.println(MENU_COMPUTER_DELETE_HEADER);
 		int index = selectValidComputerIndex().getId();
-		if (computerDao.delete(index))
+		if (ComputerDao.INSTANCE.delete(index))
 			System.out.println("deleted with success");
 		else
 			System.out.println("error");
@@ -126,7 +127,7 @@ public class ComputerCli {
 				System.out.println("The index does not exist");
 			error = false;
 			int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_UPDATE_INDEX, false);
-			tmpComputer = computerDao.getByID(index);
+			tmpComputer = ComputerDao.INSTANCE.getByID(index);
 			if (tmpComputer == null)
 					error = true;
 		} while(error);

@@ -18,8 +18,8 @@ public enum DbConnection {
 	private DbConnection(){}
 	
 	public Connection getConnection(){
-		if(connection == null){
-			try {
+		 Connection connection = null;
+		 try {
 				connection = java.sql.DriverManager.getConnection("jdbc:mysql://"
 						+ DB_HOST + ":" + DB_PORT + "/" + DB_NAME
 						+ DB_TIME_BEHAVIOR, DB_USER, DB_PWD);
@@ -27,7 +27,6 @@ public enum DbConnection {
 				System.out.print("with error");
 				e.printStackTrace();
 			}	
-		}
 		return connection;
 	}
 }
