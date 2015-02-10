@@ -43,9 +43,9 @@ public enum CompanyDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			
-		//TODO find a better way, try catch in try catch sucks
 		}finally{
-			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			DaoUtils.closeResultSet(rs);
+			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		return company;
@@ -66,9 +66,9 @@ public enum CompanyDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 
-		//TODO find a better way, try catch in try catch sucks
 		}finally{
-			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			DaoUtils.closeResultSet(rs);
+			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		return CompanyList;

@@ -67,7 +67,11 @@ public enum ComputerCli {
 			tmpCompany = new Company(companyId,"");
 		
 		Computer tmpComputer = new Computer(0, name, introducedDate, discontinuedDate, tmpCompany);
-		ComputerDao.INSTANCE.add(tmpComputer);
+
+		if (ComputerDao.INSTANCE.add(tmpComputer))
+			System.out.println("create with success");
+		else
+			System.out.println("error");
 
 	}
 
@@ -95,7 +99,10 @@ public enum ComputerCli {
 			tmpComputer.setCompany(tmpCompany);
 		}
 		
-		ComputerDao.INSTANCE.update(tmpComputer);
+		if (ComputerDao.INSTANCE.update(tmpComputer))
+			System.out.println("update with success");
+		else
+			System.out.println("error");
 	}
 
 	public void getComputerDetails() {

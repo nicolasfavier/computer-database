@@ -61,9 +61,10 @@ public enum ComputerDao {
 	private ComputerDao() {
 	}
 
-	public void add(Computer computer) {
+	public boolean add(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
+		boolean res = false;
 		
 		try {
 
@@ -83,14 +84,16 @@ public enum ComputerDao {
 			else
 				preparedStatement.setNull(4, java.sql.Types.BIGINT);
 
-			preparedStatement.executeUpdate();
-
+			if (preparedStatement.executeUpdate() > 0)
+				res = true;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
+			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
+		return res;
 	}
 
 	public Computer getByID(int index) {
@@ -112,9 +115,9 @@ public enum ComputerDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		//TODO find a better way, try catch in try catch sucks
 		}finally{
-			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			DaoUtils.closeResultSet(rs);
+			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		
@@ -133,10 +136,9 @@ public enum ComputerDao {
 			computerList = ComputerRowMapper.INSTANCE.getList(rs); 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
-		//TODO find a better way, try catch in try catch suck
 		}finally{
-			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			DaoUtils.closeResultSet(rs);
+			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		
@@ -161,18 +163,19 @@ public enum ComputerDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		//TODO find a better way, try catch in try catch suck
 		}finally{
-			try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			DaoUtils.closeResultSet(rs);
+			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 		
 		return page;
 	}
 
-	public void update(Computer computer) {
+	public boolean update(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
+		boolean res = false;
 
 		try {
 			preparedStatement = connection.prepareStatement(UPDATE_COMPUTER_SQL);
@@ -192,31 +195,34 @@ public enum ComputerDao {
 			
 			preparedStatement.setInt(5, computer.getId());
 
-			preparedStatement.executeUpdate();
-
+			if (preparedStatement.executeUpdate() > 0)
+				res = true;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
+			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
+		return res;
 	}
 
 	public boolean delete(int index) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
-
+		boolean res = false;
+		
 		try {
 			preparedStatement = connection.prepareStatement(DELETE_COMPUTER_SQL);
 			preparedStatement.setInt(1, index);
 			preparedStatement.executeUpdate();
-
+			res = true;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
 		}finally{
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
-
-		return true;
+		return res;
 	}
 }
