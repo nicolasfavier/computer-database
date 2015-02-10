@@ -1,9 +1,9 @@
 package com.nicolas.dao.instance;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.nicolas.connection.DbConnection;
 import com.nicolas.models.Computer;
@@ -18,8 +18,34 @@ public class ComputerDao {
 	private final static String DB_COMPUTER_COLUMN_DISCONTINUED = "discontinued";
 	private final static String DB_COMPUTER_COLUMN_COMPANY_ID = "company_id";
 
-	public ComputerDao() {}
+	private final static String ADD_COMPUTER_SQL = "INSERT INTO `"
+			+ DB_COMPUTER_TABLE + "` " + "(" + DB_COMPUTER_COLUMN_NAME + ","
+			+ DB_COMPUTER_COLUMN_INTRODUCED + ","
+			+ DB_COMPUTER_COLUMN_DISCONTINUED + ","
+			+ DB_COMPUTER_COLUMN_COMPANY_ID + ") VALUES" + "(?,?,?,?);";
+	
+	private final static String FIND_COMPUTER_BY_ID_SQL = "SELECT * FROM "
+			+ DB_COMPUTER_TABLE + " WHERE " + DB_COMPUTER_COLUMN_ID + " =?";
 
+	private final static String SELECT_ALL_COMPUTERS_SQL = "SELECT * FROM "
+			+ DB_COMPUTER_TABLE + ";";
+
+	private final static String GET_PAGES_SQL = "SELECT * FROM "
+			+ DB_COMPUTER_TABLE + " ORDER BY " + DB_COMPUTER_COLUMN_ID
+			+ " LIMIT ?,?";
+
+	private final static String UPDATE_COMPUTER_SQL = "UPDATE `"
+			+ DB_COMPUTER_TABLE + "` SET `" + DB_COMPUTER_COLUMN_NAME + "`=?,`"
+			+ DB_COMPUTER_COLUMN_INTRODUCED + "`=?,`"
+			+ DB_COMPUTER_COLUMN_DISCONTINUED + "`=?,`"
+			+ DB_COMPUTER_COLUMN_COMPANY_ID + "`=? WHERE "
+			+ DB_COMPUTER_COLUMN_ID + " = ?";
+
+	private final static String DELETE_COMPUTER_SQL = "DELETE FROM "
+			+ DB_COMPUTER_TABLE + " WHERE " + DB_COMPUTER_COLUMN_ID + " =?";
+
+	public ComputerDao() {
+	}
 
 	public void addComputer(Computer computer) {
 		java.sql.Statement query;
@@ -29,16 +55,13 @@ public class ComputerDao {
 		try {
 			query = DbConnection.INSTANCE.getConnection().createStatement();
 
-			String addComputerSQL = "INSERT INTO `" 
-					+ DB_COMPUTER_TABLE + "` " + "(" + DB_COMPUTER_COLUMN_NAME
-					+ "," + DB_COMPUTER_COLUMN_INTRODUCED + ","
-					+ DB_COMPUTER_COLUMN_DISCONTINUED + ","
-					+ DB_COMPUTER_COLUMN_COMPANY_ID + ") VALUES" + "(?,?,?,?);";
-
-			preparedStatement = DbConnection.INSTANCE.getConnection().prepareStatement(addComputerSQL);
+			preparedStatement = DbConnection.INSTANCE.getConnection()
+					.prepareStatement(ADD_COMPUTER_SQL);
 			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setTimestamp(2,Utils.getTimestamp(computer.getIntroduced()));
-			preparedStatement.setTimestamp(3,Utils.getTimestamp(computer.getDisconected()));
+			preparedStatement.setTimestamp(2,
+					Utils.getTimestamp(computer.getIntroduced()));
+			preparedStatement.setTimestamp(3,
+					Utils.getTimestamp(computer.getDisconected()));
 			if (computer.getCompany_id() != 0)
 				preparedStatement.setInt(4, computer.getCompany_id());
 			else
@@ -58,10 +81,9 @@ public class ComputerDao {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
-			String findById = "SELECT * FROM " + DB_COMPUTER_TABLE + " WHERE "
-					+ DB_COMPUTER_COLUMN_ID + " =?";
 
-			preparedStatement = DbConnection.INSTANCE.getConnection().prepareStatement(findById);
+			preparedStatement = DbConnection.INSTANCE.getConnection()
+					.prepareStatement(FIND_COMPUTER_BY_ID_SQL);
 			preparedStatement.setInt(1, index);
 
 			ResultSet rs = preparedStatement.executeQuery();
@@ -84,17 +106,16 @@ public class ComputerDao {
 		return computer;
 	}
 
-	public ArrayList<Computer> getAllComputers() {
-		ArrayList<Computer> computerList = new ArrayList<Computer>();
+	public List<Computer> getAllComputers() {
+		List<Computer> computerList = new ArrayList<Computer>();
 		java.sql.Statement query;
 
 		try {
 			query = DbConnection.INSTANCE.getConnection().createStatement();
-			java.sql.ResultSet rs = query.executeQuery("SELECT * FROM "
-					+ DB_COMPUTER_TABLE + ";");
+			java.sql.ResultSet rs = query
+					.executeQuery(SELECT_ALL_COMPUTERS_SQL);
 
 			while (rs.next()) {
-
 				Computer computer = new Computer(
 						rs.getInt(DB_COMPUTER_COLUMN_ID),
 						rs.getString(DB_COMPUTER_COLUMN_NAME),
@@ -120,8 +141,10 @@ public class ComputerDao {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
-			String sqlPage = "SELECT * FROM "+DB_COMPUTER_TABLE+" ORDER BY "+DB_COMPUTER_COLUMN_ID+" LIMIT "+index * Page.NB_COMPUTERS +","+Page.NB_COMPUTERS;
-			preparedStatement = DbConnection.INSTANCE.getConnection().prepareStatement(sqlPage);
+			preparedStatement = DbConnection.INSTANCE.getConnection()
+					.prepareStatement(GET_PAGES_SQL);
+			preparedStatement.setInt(1, index * page.NB_COMPUTERS);
+			preparedStatement.setInt(2, page.NB_COMPUTERS);
 
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -130,8 +153,10 @@ public class ComputerDao {
 				Computer computer = new Computer(
 						rs.getInt(DB_COMPUTER_COLUMN_ID),
 						rs.getString(DB_COMPUTER_COLUMN_NAME),
-						Utils.getLocalDate(rs.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED)),
-						Utils.getLocalDate(rs.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED)),
+						Utils.getLocalDate(rs
+								.getTimestamp(DB_COMPUTER_COLUMN_INTRODUCED)),
+						Utils.getLocalDate(rs
+								.getTimestamp(DB_COMPUTER_COLUMN_DISCONTINUED)),
 						rs.getInt(DB_COMPUTER_COLUMN_COMPANY_ID));
 
 				page.getComputerList().add(computer);
@@ -143,28 +168,24 @@ public class ComputerDao {
 		}
 		return page;
 	}
-	
+
 	public void updateComputer(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
-			String updateComputerSQL = "UPDATE `" 
-					+ DB_COMPUTER_TABLE + "` SET `" + DB_COMPUTER_COLUMN_NAME
-					+ "`=?,`" + DB_COMPUTER_COLUMN_INTRODUCED + "`=?,`"
-					+ DB_COMPUTER_COLUMN_DISCONTINUED + "`=?,`"
-					+ DB_COMPUTER_COLUMN_COMPANY_ID + "`=? WHERE "
-					+ DB_COMPUTER_COLUMN_ID + " = ?";
-
-			preparedStatement = DbConnection.INSTANCE.getConnection().prepareStatement(updateComputerSQL);
+			preparedStatement = DbConnection.INSTANCE.getConnection()
+					.prepareStatement(UPDATE_COMPUTER_SQL);
 			preparedStatement.setString(1, computer.getName());
-			preparedStatement.setTimestamp(2,Utils.getTimestamp(computer.getIntroduced()));
-			preparedStatement.setTimestamp(3,Utils.getTimestamp(computer.getDisconected()));
+			preparedStatement.setTimestamp(2,
+					Utils.getTimestamp(computer.getIntroduced()));
+			preparedStatement.setTimestamp(3,
+					Utils.getTimestamp(computer.getDisconected()));
 			if (computer.getCompany_id() != 0)
 				preparedStatement.setInt(4, computer.getCompany_id());
 			else
 				preparedStatement.setNull(4, 0);
 			preparedStatement.setInt(5, computer.getId());
-			
+
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -173,22 +194,20 @@ public class ComputerDao {
 	}
 
 	public boolean deleteComputer(int index) {
-			java.sql.PreparedStatement preparedStatement = null;
+		java.sql.PreparedStatement preparedStatement = null;
 
-			try {
-				String deleteById = "DELETE FROM " + DB_COMPUTER_TABLE + " WHERE "
-						+ DB_COMPUTER_COLUMN_ID + " =?";
+		try {
+			preparedStatement = DbConnection.INSTANCE.getConnection()
+					.prepareStatement(DELETE_COMPUTER_SQL);
+			preparedStatement.setInt(1, index);
+			preparedStatement.executeUpdate();
 
-				preparedStatement = DbConnection.INSTANCE.getConnection().prepareStatement(deleteById);
-				preparedStatement.setInt(1, index);
-				preparedStatement.executeUpdate();
-				
-				DbConnection.INSTANCE.getConnection().close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return false;
-			}
-			
-		return true;
+			DbConnection.INSTANCE.getConnection().close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
+
+		return true;
+	}
 }
