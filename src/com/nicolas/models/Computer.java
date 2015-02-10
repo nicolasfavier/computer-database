@@ -6,18 +6,18 @@ public class Computer {
 	private int id;
 	private String name;
 	private LocalDate introduced;
-	private LocalDate disconected;
+	private LocalDate discontinued;
 	private Company company;
 	
 	public Computer(){}
 
-	public Computer(int id, String name, LocalDate introduced, LocalDate disconected,
+	public Computer(int id, String name, LocalDate introduced, LocalDate discontinued,
 			Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
-		this.disconected = disconected;
+		this.discontinued = discontinued;
 		this.company = company;
 	}
 
@@ -39,11 +39,11 @@ public class Computer {
 	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
-	public LocalDate getDisconected() {
-		return disconected;
+	public LocalDate getDiscontinued() {
+		return discontinued;
 	}
-	public void setDisconected(LocalDate disconected) {
-		this.disconected = disconected;
+	public void setDiscontinued(LocalDate discontinued) {
+		this.discontinued = discontinued;
 	}
 	public Company getCompany() {
 		return company;
@@ -57,8 +57,8 @@ public class Computer {
 		String str = "Computer [id=" + id + ", name=" + name ;
 		if(introduced != null)
 			str += ", introduced= "+ introduced;
-		if(disconected != null)
-			str += ", disconected= "+ disconected;	
+		if(discontinued != null)
+			str += ", discontinued= "+ discontinued;	
 		if(company != null)
 			str += ", "+ company.toString();
 		str += "]";

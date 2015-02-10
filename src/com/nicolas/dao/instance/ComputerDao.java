@@ -77,7 +77,7 @@ public enum ComputerDao {
 					Utils.getTimestamp(computer.getIntroduced()));
 			
 			preparedStatement.setTimestamp(3,
-					Utils.getTimestamp(computer.getDisconected()));
+					Utils.getTimestamp(computer.getDiscontinued()));
 			
 			if (computer.getCompany() != null)
 				preparedStatement.setInt(4, computer.getCompany().getId());
@@ -186,7 +186,7 @@ public enum ComputerDao {
 					Utils.getTimestamp(computer.getIntroduced()));
 			
 			preparedStatement.setTimestamp(3,
-					Utils.getTimestamp(computer.getDisconected()));
+					Utils.getTimestamp(computer.getDiscontinued()));
 			
 			if (computer.getCompany() != null)
 				preparedStatement.setInt(4, computer.getCompany().getId());

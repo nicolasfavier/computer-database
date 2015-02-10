@@ -89,7 +89,7 @@ public enum ComputerCli {
 		
 		LocalDate discontinuedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_DISCONTINUED, false);
 		if(discontinuedDate != null)
-			tmpComputer.setDisconected(discontinuedDate);
+			tmpComputer.setDiscontinued(discontinuedDate);
 
 		int companyId = CompanyCli.INSTANCE.selectValidCompanyIndex();	
 		Company tmpCompany = null;
