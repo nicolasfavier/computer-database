@@ -1,15 +1,11 @@
 package com.nicolas.cli;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.nicolas.dao.fabric.DaoFabric;
 import com.nicolas.dao.instance.CompanyDao;
 import com.nicolas.models.Company;
-import com.nicolas.models.Computer;
-import com.nicolas.utils.Utils;
 
 public class CompanyCli {
 	private CompanyDao companyDao;

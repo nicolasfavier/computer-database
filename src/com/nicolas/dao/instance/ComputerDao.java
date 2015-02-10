@@ -143,8 +143,8 @@ public class ComputerDao {
 		try {
 			preparedStatement = DbConnection.INSTANCE.getConnection()
 					.prepareStatement(GET_PAGES_SQL);
-			preparedStatement.setInt(1, index * page.NB_COMPUTERS);
-			preparedStatement.setInt(2, page.NB_COMPUTERS);
+			preparedStatement.setInt(1, index * Page.NB_COMPUTERS);
+			preparedStatement.setInt(2,  Page.NB_COMPUTERS);
 
 			ResultSet rs = preparedStatement.executeQuery();
 
