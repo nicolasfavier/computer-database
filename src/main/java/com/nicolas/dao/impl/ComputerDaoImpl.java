@@ -59,8 +59,9 @@ public enum ComputerDaoImpl implements ComputerDao {
 	private final static String DELETE_COMPUTER_SQL = "DELETE FROM " + DB_TABLE
 			+ " WHERE " + DB_COLUMN_ID + " =?";
 
-	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as " + DB_COLUMN_COUNT + " FROM " + DB_TABLE;
-	
+	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as "
+			+ DB_COLUMN_COUNT + " FROM " + DB_TABLE;
+
 	private ComputerDaoImpl() {
 	}
 
@@ -180,19 +181,23 @@ public enum ComputerDaoImpl implements ComputerDao {
 
 		return computerList;
 	}
-	
-	
+
 	public int getCount() {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		ResultSet rs = null;
 		int count = 0;
-		
+
 		try {
 			preparedStatement = connection.prepareStatement(GET_COUNT_SQL);
 			rs = preparedStatement.executeQuery();
 
-			count = rs.getInt(DB_COLUMN_COUNT);
+			if (rs.next()) {
+				count = rs.getInt(DB_COLUMN_COUNT);
+			} else {
+				System.out.println("error: could not get the record counts");
+			}
+
 			rs.close();
 
 		} catch (SQLException e) {

@@ -55,7 +55,7 @@ public class ComputerCli {
 
 		do {
 			p = ComputerServiceImpl.INSTANCE.get(index);
-			showComputers(p.getComputerList());
+			System.out.println(p.toString());
 			String input = InputCliUtils.getStringFromUser(
 					"enter for next page q for quit", false);
 			if (input.equals("q"))

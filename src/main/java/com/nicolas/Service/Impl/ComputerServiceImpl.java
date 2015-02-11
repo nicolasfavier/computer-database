@@ -1,5 +1,7 @@
 package com.nicolas.Service.Impl;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import com.nicolas.Service.Interfaces.ComputerService;
@@ -26,8 +28,10 @@ public enum ComputerServiceImpl implements ComputerService {
 	@Override
 	public Page get(int index) {
 		Page page = new Page();
-		page.setTotalPages(ComputerDaoImpl.INSTANCE.getCount());
-		page.setComputerList(ComputerDaoImpl.INSTANCE.getBoundedList(index));
+		int totalPages = Math.round(ComputerDaoImpl.INSTANCE.getCount() / Page.NB_COMPUTERS);
+		page.setTotalPages(totalPages);
+		page.setComputerList( ComputerDaoImpl.INSTANCE.getBoundedList(index));
+		page.setIndex(index);
 		return page;
 	}
 

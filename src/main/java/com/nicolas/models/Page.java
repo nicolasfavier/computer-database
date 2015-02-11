@@ -30,5 +30,15 @@ public class Page {
 	}
 	public void setTotalPages(int totalPages) {
 		this.totalPages = totalPages;
+	}
+	@Override
+	public String toString() {
+		String res = "*************** page " + index +" / "+  totalPages + " ***************\n";
+				
+				for (Computer c : computerList) {
+					res += c.toString() + "\n";
+				}
+		return res;
 	}	
+	
 }
