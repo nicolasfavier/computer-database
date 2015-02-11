@@ -3,7 +3,7 @@ package com.nicolas.cli;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nicolas.dao.instance.CompanyDaoImpl;
+import com.nicolas.dao.impl.CompanyDaoImpl;
 import com.nicolas.models.Company;
 
 public class CompanyCli {

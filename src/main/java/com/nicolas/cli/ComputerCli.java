@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nicolas.dao.instance.ComputerDaoImpl;
+import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;

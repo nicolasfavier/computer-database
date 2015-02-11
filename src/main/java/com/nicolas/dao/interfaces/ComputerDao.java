@@ -6,7 +6,8 @@ import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 
 
-public interface ComputerDao {/**
+public interface ComputerDao {
+	/**
 	* Permit to add a computer in the database.
 	* @param Computer
 	* @return true if it is successful or false if it's not.

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nicolas.dao.instance.ComputerDaoImpl;
+import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
