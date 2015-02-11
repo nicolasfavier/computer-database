@@ -3,7 +3,7 @@ package com.nicolas.cli;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nicolas.dao.instance.CompanyDao;
+import com.nicolas.dao.instance.CompanyDaoImpl;
 import com.nicolas.models.Company;
 
 public class CompanyCli {
@@ -17,7 +17,7 @@ public class CompanyCli {
 	 */
 	public static void showCompanies(){
 		List<Company> companies = new ArrayList<Company>();
-		companies = CompanyDao.INSTANCE.getAll();
+		companies = CompanyDaoImpl.INSTANCE.getAll();
 		for(Company c : companies){
 			System.out.println(c.toString());
 		}
@@ -43,7 +43,7 @@ public class CompanyCli {
 			choice = InputCliUtils.getUserInput(-1, MENU_COMPANY_INDEX, false);
 			if(choice == -1)
 				return -1;
-			tmpCompany = CompanyDao.INSTANCE.getByID(choice);
+			tmpCompany = CompanyDaoImpl.INSTANCE.getByID(choice);
 			if (tmpCompany == null)
 				error = true;
 		} while (error);

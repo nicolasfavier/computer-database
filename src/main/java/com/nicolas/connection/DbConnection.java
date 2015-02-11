@@ -21,6 +21,10 @@ public enum DbConnection {
 		}
 	}
 
+	/**
+	 * open and return a new connection 
+	 * @return Connection
+	 */
 	public Connection getConnection() {
 		Connection connection = null;
 		try {

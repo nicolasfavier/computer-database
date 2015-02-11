@@ -4,11 +4,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nicolas.dao.instance.ComputerDao;
+import com.nicolas.dao.instance.ComputerDaoImpl;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 
+/**
+ * 
+ * @author nicolas
+ *
+ * handle user input and actions on computer
+ */
 public class ComputerCli {
 
 	private static final String MENU_COMPUTER_CREATION_HEADER = "############ Computer creation ############";
@@ -23,10 +29,13 @@ public class ComputerCli {
 
 	private ComputerCli() {
 	}
-
+	
+	/**
+	 * show all computers return by the database
+	 */
 	public static void showComputers() {
 		List<Computer> computers = new ArrayList<Computer>();
-		computers = ComputerDao.INSTANCE.getAll();
+		computers = ComputerDaoImpl.INSTANCE.getAll();
 		showComputers(computers);
 	}
 
@@ -36,13 +45,16 @@ public class ComputerCli {
 		}
 	}
 
+	/**
+	 * show computers by blocks
+	 */
 	public static void showComputersByPage() {
 		int index = 0;
 		boolean exit = false;
 		Page p;
 
 		do {
-			p = ComputerDao.INSTANCE.get(index);
+			p = ComputerDaoImpl.INSTANCE.get(index);
 			showComputers(p.getComputerList());
 			String input = InputCliUtils.getStringFromUser(
 					"enter for next page q for quit", false);
@@ -72,7 +84,7 @@ public class ComputerCli {
 		Computer tmpComputer = new Computer(0, name, introducedDate,
 				discontinuedDate, tmpCompany);
 
-		if (ComputerDao.INSTANCE.add(tmpComputer))
+		if (ComputerDaoImpl.INSTANCE.add(tmpComputer))
 			System.out.println("create with success");
 		else
 			System.out.println("error");
@@ -105,7 +117,7 @@ public class ComputerCli {
 			tmpComputer.setCompany(tmpCompany);
 		}
 
-		if (ComputerDao.INSTANCE.update(tmpComputer))
+		if (ComputerDaoImpl.INSTANCE.update(tmpComputer))
 			System.out.println("update with success");
 		else
 			System.out.println("error");
@@ -114,7 +126,7 @@ public class ComputerCli {
 	public static void getComputerDetails() {
 		int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX,
 				false);
-		Computer detail = ComputerDao.INSTANCE.getByID(index);
+		Computer detail = ComputerDaoImpl.INSTANCE.getByID(index);
 		if (detail == null) {
 			System.out.println(INVALID_INDEX);
 		} else {
@@ -125,7 +137,7 @@ public class ComputerCli {
 	public static void deleteComputer() {
 		System.out.println(MENU_COMPUTER_DELETE_HEADER);
 		int index = selectValidComputerIndex().getId();
-		if (ComputerDao.INSTANCE.delete(index))
+		if (ComputerDaoImpl.INSTANCE.delete(index))
 			System.out.println("deleted with success");
 		else
 			System.out.println("error");
@@ -141,7 +153,7 @@ public class ComputerCli {
 			error = false;
 			int index = InputCliUtils.getUserInput(-1,
 					MENU_COMPUTER_UPDATE_INDEX, false);
-			tmpComputer = ComputerDao.INSTANCE.getByID(index);
+			tmpComputer = ComputerDaoImpl.INSTANCE.getByID(index);
 			if (tmpComputer == null)
 				error = true;
 		} while (error);
