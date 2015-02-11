@@ -32,10 +32,8 @@ public enum ComputerRowMapper implements RowMappable<Computer> {
 					rs.getInt(ComputerDao.DB_COMPUTER_COLUMN_COMPANY_ID),
 					rs.getString(ComputerDao.DB_COMPUTER_COLUMN_COMPANY_NAME));
 		}
-		computer = new Computer(
-				rs.getInt(ComputerDao.DB_COLUMN_ID),
-				rs.getString(ComputerDao.DB_COLUMN_NAME),
-				Utils.getLocalDate(rs
+		computer = new Computer(rs.getInt(ComputerDao.DB_COLUMN_ID),
+				rs.getString(ComputerDao.DB_COLUMN_NAME), Utils.getLocalDate(rs
 						.getTimestamp(ComputerDao.DB_COLUMN_INTRODUCED)),
 				Utils.getLocalDate(rs
 						.getTimestamp(ComputerDao.DB_COLUMN_DISCONTINUED)),

@@ -11,7 +11,7 @@ import com.nicolas.models.Page;
 
 public enum ComputerCli {
 	INSTANCE;
-	
+
 	private final String MENU_COMPUTER_CREATION_HEADER = "############ Computer creation ############";
 	private final String MENU_COMPUTER_UPDATE_HEADER = "############ Computer Update ############";
 	private final String MENU_COMPUTER_DELETE_HEADER = "############ Computer Delete ############";
@@ -30,8 +30,8 @@ public enum ComputerCli {
 		computers = ComputerDao.INSTANCE.getAll();
 		showComputers(computers);
 	}
-	
-	private void showComputers(List<Computer> computers){
+
+	private void showComputers(List<Computer> computers) {
 		for (Computer c : computers) {
 			System.out.println(c.toString());
 		}
@@ -41,32 +41,37 @@ public enum ComputerCli {
 		int index = 0;
 		boolean exit = false;
 		Page p;
-		
-		do{
+
+		do {
 			p = ComputerDao.INSTANCE.get(index);
 			showComputers(p.getComputerList());
-			String input = InputCliUtils.getStringFromUser("enter for next page q for quit",false);
-			if(input.equals("q"))
+			String input = InputCliUtils.getStringFromUser(
+					"enter for next page q for quit", false);
+			if (input.equals("q"))
 				exit = true;
-			if(p.getComputerList().size() < Page.NB_COMPUTERS)
+			if (p.getComputerList().size() < Page.NB_COMPUTERS)
 				exit = true;
 			index++;
-		}while(!exit);
+		} while (!exit);
 	}
-	
+
 	public void createComputer() {
 		System.out.println(MENU_COMPUTER_CREATION_HEADER);
-		
-		String name = InputCliUtils.getStringFromUser( MENU_COMPUTER_CREATION_NAME, true);
-		LocalDate introducedDate = InputCliUtils.getDateFromUser( MENU_COMPUTER_CREATION_INTRODUCED, false);
-		LocalDate discontinuedDate = InputCliUtils.getDateFromUser( MENU_COMPUTER_CREATION_DISCONTINUED, false);
+
+		String name = InputCliUtils.getStringFromUser(
+				MENU_COMPUTER_CREATION_NAME, true);
+		LocalDate introducedDate = InputCliUtils.getDateFromUser(
+				MENU_COMPUTER_CREATION_INTRODUCED, false);
+		LocalDate discontinuedDate = InputCliUtils.getDateFromUser(
+				MENU_COMPUTER_CREATION_DISCONTINUED, false);
 		int companyId = CompanyCli.INSTANCE.selectValidCompanyIndex();
-		
+
 		Company tmpCompany = null;
-		if(companyId != -1)
-			tmpCompany = new Company(companyId,"");
-		
-		Computer tmpComputer = new Computer(0, name, introducedDate, discontinuedDate, tmpCompany);
+		if (companyId != -1)
+			tmpCompany = new Company(companyId, "");
+
+		Computer tmpComputer = new Computer(0, name, introducedDate,
+				discontinuedDate, tmpCompany);
 
 		if (ComputerDao.INSTANCE.add(tmpComputer))
 			System.out.println("create with success");
@@ -79,26 +84,28 @@ public enum ComputerCli {
 		System.out.println(MENU_COMPUTER_UPDATE_HEADER);
 		Computer tmpComputer = selectValidComputerIndex();
 
-		String name = InputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, false);
-		if(!name.isEmpty())
+		String name = InputCliUtils.getStringFromUser(
+				MENU_COMPUTER_CREATION_NAME, false);
+		if (!name.isEmpty())
 			tmpComputer.setName(name);
-		
-		LocalDate introducedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_INTRODUCED, false);
-		if(introducedDate != null)
+
+		LocalDate introducedDate = InputCliUtils.getDateFromUser(
+				MENU_COMPUTER_CREATION_INTRODUCED, false);
+		if (introducedDate != null)
 			tmpComputer.setIntroduced(introducedDate);
-		
-		LocalDate discontinuedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_DISCONTINUED, false);
-		if(discontinuedDate != null)
+
+		LocalDate discontinuedDate = InputCliUtils.getDateFromUser(
+				MENU_COMPUTER_CREATION_DISCONTINUED, false);
+		if (discontinuedDate != null)
 			tmpComputer.setDiscontinued(discontinuedDate);
 
-		int companyId = CompanyCli.INSTANCE.selectValidCompanyIndex();	
+		int companyId = CompanyCli.INSTANCE.selectValidCompanyIndex();
 		Company tmpCompany = null;
-		if(companyId != -1)
-		{
-			tmpCompany = new Company(companyId,"");
+		if (companyId != -1) {
+			tmpCompany = new Company(companyId, "");
 			tmpComputer.setCompany(tmpCompany);
 		}
-		
+
 		if (ComputerDao.INSTANCE.update(tmpComputer))
 			System.out.println("update with success");
 		else
@@ -115,8 +122,8 @@ public enum ComputerCli {
 			System.out.println(detail.toString());
 		}
 	}
-	
-	public void deleteComputer(){
+
+	public void deleteComputer() {
 		System.out.println(MENU_COMPUTER_DELETE_HEADER);
 		int index = selectValidComputerIndex().getId();
 		if (ComputerDao.INSTANCE.delete(index))
@@ -130,14 +137,15 @@ public enum ComputerCli {
 		Computer tmpComputer = null;
 		boolean error = false;
 		do {
-			if(error)
+			if (error)
 				System.out.println("The index does not exist");
 			error = false;
-			int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_UPDATE_INDEX, false);
+			int index = InputCliUtils.getUserInput(-1,
+					MENU_COMPUTER_UPDATE_INDEX, false);
 			tmpComputer = ComputerDao.INSTANCE.getByID(index);
 			if (tmpComputer == null)
-					error = true;
-		} while(error);
+				error = true;
+		} while (error);
 		return tmpComputer;
 	}
 

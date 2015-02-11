@@ -32,7 +32,7 @@ public enum DbConnection {
 		}
 		return connection;
 	}
-	
+
 	public void closeConnection(Connection connection) {
 		try {
 			connection.close();

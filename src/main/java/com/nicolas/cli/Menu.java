@@ -1,16 +1,16 @@
 package com.nicolas.cli;
 
-
 public enum Menu {
 	INSTANCE;
-	
+
 	private final String MENU_HEADER = ""
 			+ "********************************************************\n"
 			+ "*                        MENU                          *\n"
 			+ "********************************************************\n";
 
 	public enum MenuEntries {
-		SHOW_COMPUTER("List computers"),SHOW_PBYP_COMPUTER("List computers page by page"), SHOW_COMPANIES("List companies"), SHOW_COMPUTER_DETAILS(
+		SHOW_COMPUTER("List computers"), SHOW_PBYP_COMPUTER(
+				"List computers page by page"), SHOW_COMPANIES("List companies"), SHOW_COMPUTER_DETAILS(
 				"Show computer details"), CREATE_COMPUTER("Create a computer"), UPDATE_COMPUTER(
 				"Update a computer"), DELETE_COMPUTER("Delete a computer"), QUIT(
 				"Quit");
@@ -32,7 +32,8 @@ public enum Menu {
 	public void run() {
 		while (true) {
 			display();
-			int choix = InputCliUtils.getUserInput(MenuEntries.values().length, true);
+			int choix = InputCliUtils.getUserInput(MenuEntries.values().length,
+					true);
 			select(choix);
 		}
 	}
@@ -55,12 +56,12 @@ public enum Menu {
 			ComputerCli.INSTANCE.showComputers();
 			System.out.println("");
 			break;
-			
+
 		case SHOW_PBYP_COMPUTER:
 			System.out.println("Computers :");
 			ComputerCli.INSTANCE.showComputersByPage();
 			System.out.println("");
-			break;	
+			break;
 
 		case SHOW_COMPANIES:
 			System.out.println("All companies :");

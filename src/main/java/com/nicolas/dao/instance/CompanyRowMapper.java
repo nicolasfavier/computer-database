@@ -24,8 +24,8 @@ public enum CompanyRowMapper implements RowMappable<Company> {
 
 	public Company getObject(ResultSet rs) throws SQLException {
 		Company company = null;
-			company = new Company(rs.getInt(CompanyDao.DB_COLUMN_ID),
-					rs.getString(CompanyDao.DB_COLUMN_NAME));
+		company = new Company(rs.getInt(CompanyDao.DB_COLUMN_ID),
+				rs.getString(CompanyDao.DB_COLUMN_NAME));
 		return company;
 	}
 }
