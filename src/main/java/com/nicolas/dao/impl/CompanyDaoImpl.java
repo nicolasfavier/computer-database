@@ -27,6 +27,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 	private CompanyDaoImpl() {
 	}
 
+	@Override
 	public Company getByID(int companyId) {
 		PreparedStatement preparedStatement = null;
 		java.sql.ResultSet rs = null;
@@ -54,6 +55,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 		return company;
 	}
 
+	@Override
 	public List<Company> getAll() {
 		PreparedStatement preparedStatement = null;
 		List<Company> CompanyList = new ArrayList<Company>();

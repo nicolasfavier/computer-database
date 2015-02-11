@@ -14,7 +14,7 @@ import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.utils.Utils;
 
-public enum ComputerDaoImpl implements ComputerDao{
+public enum ComputerDaoImpl implements ComputerDao {
 	INSTANCE;
 
 	public final static String DB_TABLE = "computer";
@@ -32,13 +32,16 @@ public enum ComputerDaoImpl implements ComputerDao{
 			+ ") VALUES" + "(?,?,?,?);";
 
 	private final static String SELECT_ALL_COMPUTERS_SQL = "SELECT "
-			+ ComputerDaoImpl.DB_TABLE + ".*, " + CompanyDaoImpl.DB_COMPANY_TABLE + "."
+			+ ComputerDaoImpl.DB_TABLE + ".*, "
+			+ CompanyDaoImpl.DB_COMPANY_TABLE + "."
 			+ CompanyDaoImpl.DB_COLUMN_NAME + " AS "
-			+ DB_COMPUTER_COLUMN_COMPANY_NAME + " FROM " + ComputerDaoImpl.DB_TABLE
-			+ " LEFT JOIN " + CompanyDaoImpl.DB_COMPANY_TABLE + " ON "
+			+ DB_COMPUTER_COLUMN_COMPANY_NAME + " FROM "
+			+ ComputerDaoImpl.DB_TABLE + " LEFT JOIN "
+			+ CompanyDaoImpl.DB_COMPANY_TABLE + " ON "
 			+ ComputerDaoImpl.DB_TABLE + "."
 			+ ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID + "="
-			+ CompanyDaoImpl.DB_COMPANY_TABLE + "." + CompanyDaoImpl.DB_COLUMN_ID;
+			+ CompanyDaoImpl.DB_COMPANY_TABLE + "."
+			+ CompanyDaoImpl.DB_COLUMN_ID;
 
 	private final static String FIND_COMPUTER_BY_ID_SQL = SELECT_ALL_COMPUTERS_SQL
 			+ " WHERE " + DB_TABLE + "." + DB_COLUMN_ID + " =?";
@@ -58,6 +61,7 @@ public enum ComputerDaoImpl implements ComputerDao{
 	private ComputerDaoImpl() {
 	}
 
+	@Override
 	public boolean add(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
@@ -93,6 +97,7 @@ public enum ComputerDaoImpl implements ComputerDao{
 		return res;
 	}
 
+	@Override
 	public Computer getByID(int index) {
 		Computer computer = null;
 		java.sql.PreparedStatement preparedStatement = null;
@@ -122,6 +127,7 @@ public enum ComputerDaoImpl implements ComputerDao{
 		return computer;
 	}
 
+	@Override
 	public List<Computer> getAll() {
 		List<Computer> computerList = new ArrayList<Computer>();
 		Connection connection = DbConnection.INSTANCE.getConnection();
@@ -144,6 +150,7 @@ public enum ComputerDaoImpl implements ComputerDao{
 		return computerList;
 	}
 
+	@Override
 	public Page get(int index) {
 		Page page = new Page();
 		java.sql.PreparedStatement preparedStatement = null;
@@ -172,6 +179,7 @@ public enum ComputerDaoImpl implements ComputerDao{
 		return page;
 	}
 
+	@Override
 	public boolean update(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
@@ -208,6 +216,7 @@ public enum ComputerDaoImpl implements ComputerDao{
 		return res;
 	}
 
+	@Override
 	public boolean delete(int index) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
