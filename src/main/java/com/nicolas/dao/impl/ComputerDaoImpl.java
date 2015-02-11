@@ -25,6 +25,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 	public final static String DB_COMPUTER_COLUMN_COMPANY_ID = "company_id";
 	public final static String DB_COMPUTER_COLUMN_COMPANY_NAME = "companyName";
 	public final static String DB_COLUMN_COMPANY_ID = "companyId";
+	public final static String DB_COLUMN_COUNT = "count";
 
 	private final static String ADD_COMPUTER_SQL = "INSERT INTO `" + DB_TABLE
 			+ "` " + "(" + DB_COLUMN_NAME + "," + DB_COLUMN_INTRODUCED + ","
@@ -58,6 +59,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 	private final static String DELETE_COMPUTER_SQL = "DELETE FROM " + DB_TABLE
 			+ " WHERE " + DB_COLUMN_ID + " =?";
 
+	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as " + DB_COLUMN_COUNT + " FROM " + DB_TABLE;
+	
 	private ComputerDaoImpl() {
 	}
 
@@ -151,8 +154,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public Page get(int index) {
-		Page page = new Page();
+	public List<Computer> getBoundedList(int index) {
+		List<Computer> computerList = new ArrayList<Computer>();
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		ResultSet rs = null;
@@ -164,8 +167,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 
 			rs = preparedStatement.executeQuery();
 
-			page.getComputerList().addAll(
-					ComputerRowMapper.INSTANCE.getList(rs));
+			computerList = ComputerRowMapper.INSTANCE.getList(rs);
 			rs.close();
 
 		} catch (SQLException e) {
@@ -176,7 +178,32 @@ public enum ComputerDaoImpl implements ComputerDao {
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
 
-		return page;
+		return computerList;
+	}
+	
+	
+	public int getCount() {
+		java.sql.PreparedStatement preparedStatement = null;
+		Connection connection = DbConnection.INSTANCE.getConnection();
+		ResultSet rs = null;
+		int count = 0;
+		
+		try {
+			preparedStatement = connection.prepareStatement(GET_COUNT_SQL);
+			rs = preparedStatement.executeQuery();
+
+			count = rs.getInt(DB_COLUMN_COUNT);
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DaoUtils.closeResultSet(rs);
+			DaoUtils.closePreparedStatement(preparedStatement);
+			DbConnection.INSTANCE.closeConnection(connection);
+		}
+
+		return count;
 	}
 
 	@Override

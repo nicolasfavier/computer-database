@@ -25,7 +25,7 @@ public interface ComputerDao {
 	* @param index represent the actual page.
 	* @return a List<Computer> that is the page[index].
 	*/
-	public Page get(int index);
+	public List<Computer> getBoundedList(int index);
 
 	/**
 	* Delete a computer in the database.
@@ -47,5 +47,11 @@ public interface ComputerDao {
 	* @return the computer find in the database or null if not found.
 	*/
 	public Computer getByID(int computerId);
+	
+	/**
+	 * 
+	 * @return int the number of computers in the database
+	 */
+	public int getCount();
 	
 }

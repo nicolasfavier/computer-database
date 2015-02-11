@@ -9,39 +9,42 @@ import com.nicolas.models.Page;
 
 public enum ComputerServiceImpl implements ComputerService {
 	INSTANCE;
-		
-	private ComputerServiceImpl(){}
+
+	private ComputerServiceImpl() {
+	}
 
 	@Override
-	public boolean add(Computer computer){
+	public boolean add(Computer computer) {
 		return ComputerDaoImpl.INSTANCE.add(computer);
 	}
-	
+
 	@Override
-	public List<Computer> getAll(){
+	public List<Computer> getAll() {
 		return ComputerDaoImpl.INSTANCE.getAll();
 	}
-	
-	@Override	
-	public Page get(int index){
-		return ComputerDaoImpl.INSTANCE.get(index);
 
+	@Override
+	public Page get(int index) {
+		Page page = new Page();
+		page.setTotalPages(ComputerDaoImpl.INSTANCE.getCount());
+		page.setComputerList(ComputerDaoImpl.INSTANCE.getBoundedList(index));
+		return page;
 	}
-	
-	@Override	
-	public boolean delete(int computerId){
+
+	@Override
+	public boolean delete(int computerId) {
 		return ComputerDaoImpl.INSTANCE.delete(computerId);
 
 	}
-	
-	@Override	
-	public boolean update(Computer computer){
+
+	@Override
+	public boolean update(Computer computer) {
 		return ComputerDaoImpl.INSTANCE.update(computer);
 
 	}
-	
+
 	@Override
-	public Computer getByID(int computerId){
+	public Computer getByID(int computerId) {
 		return ComputerDaoImpl.INSTANCE.getByID(computerId);
 
 	}

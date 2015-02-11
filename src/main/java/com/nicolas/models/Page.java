@@ -7,7 +7,8 @@ public class Page {
 	public final static int NB_COMPUTERS = 10;
 	private List<Computer> computerList;
 	private int index;
-	
+	private int totalPages;
+
 	public Page() {
 		super();
 		this.computerList = new ArrayList<Computer>();
@@ -23,5 +24,11 @@ public class Page {
 	}
 	public void setIndex(int index) {
 		this.index = index;
+	}
+	public int getTotalPages() {
+		return totalPages;
+	}
+	public void setTotalPages(int totalPages) {
+		this.totalPages = totalPages;
 	}	
 }
