@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InputCliUtils {
-	// TODO le singleton est il nécessaire ? multiple instances ?
-	// public static Scanner sc = new Scanner(System.in);
-
 	private static Scanner scannerInstance = null;
+	
+	private static final String DATE_REGEX = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/(19|20)\\d\\d$";
+	private static final String INT_REGEX = "^[0-9]*$";
 
 	public static synchronized Scanner getScannerInstance() {
 		if (scannerInstance == null)
@@ -45,29 +47,46 @@ public class InputCliUtils {
 		System.out.println(description);
 		LocalDate date = null;
 		String strDate = "";
-		boolean error = false;
+		boolean wrongInput = false;
 		
 
 		do {
 			try {
-				error = false;
+				wrongInput = false;
 				strDate = getScannerInstance().nextLine();
 				if (strDate.isEmpty() && !isNeeded) {
 					return null;
 				}
-				DateTimeFormatter formatter = DateTimeFormatter
-						.ofPattern("dd/MM/yyyy");
-				date = LocalDate.parse(strDate, formatter);
-				System.out.printf("%s%n", date);
+				
+				if(!checkDate(strDate)){
+					System.out.printf("%s does not respect the format dd/MM/yyyy !%n",strDate);
+					wrongInput = true;
+				}
+				else{
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					date = LocalDate.parse(strDate, formatter);
+				}
+				
 			} catch (DateTimeParseException exc) {
-				System.out.printf("%s does not respect the format dd/MM/yyyy !%n",strDate);
-				error = true;
+				System.out.printf(exc.toString());
 			}
-		} while (error);
+		} while (wrongInput);
 
 		return date;
 	}
 
+	private static boolean checkDate(String inputString){
+		Pattern p = Pattern.compile(DATE_REGEX); 
+		Matcher m = p.matcher(inputString);   
+		return m.find(); 
+	}
+	
+	private static boolean checkInt(String inputString){
+		Pattern p = Pattern.compile(INT_REGEX); 
+		Matcher m = p.matcher(inputString);   
+		return m.matches(); 
+	}
+	
 	public static int getUserInput(int maxVal, String description,
 			boolean isNeeded) {
 		System.out.println(description);
@@ -75,11 +94,11 @@ public class InputCliUtils {
 	}
 
 	public static int getUserInput(int maxVal, boolean isNeeded) {
-		boolean error = false;
+		boolean wrongInput = false;
 		int userVal = 0;
 
 		do {
-			error = false;
+			wrongInput = false;
 
 			try {
 				String tmp = getScannerInstance().nextLine();
@@ -87,20 +106,22 @@ public class InputCliUtils {
 				if (tmp.trim().isEmpty() && !isNeeded) {
 					return -1;
 				}
-
-				userVal = Integer.parseInt(tmp);
-				if (maxVal != -1 && userVal > maxVal) {
-					error = true;
+				if(!checkInt(tmp)){
+					wrongInput = true;
 					wrongEntrie(maxVal);
 				}
+				else{
+					userVal = Integer.parseInt(tmp);
+					if (maxVal != -1 && userVal > maxVal) {
+						wrongInput = true;
+						wrongEntrie(maxVal);
+					}
+				}
 			} catch (Exception e) {
-				error = true;
-				wrongEntrie(maxVal);
+				System.out.printf(e.toString());
 			}
-		} while (error);
+		} while (wrongInput);
 
-		// TODO see why close import error
-		// sc.close();
 		return userVal;
 	}
 

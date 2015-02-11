@@ -1,9 +1,8 @@
 package com.nicolas.cli;
 
-public enum Menu {
-	INSTANCE;
+public class Menu {
 
-	private final String MENU_HEADER = ""
+	private static final String MENU_HEADER = ""
 			+ "********************************************************\n"
 			+ "*                        MENU                          *\n"
 			+ "********************************************************\n";
@@ -26,10 +25,7 @@ public enum Menu {
 		}
 	}
 
-	private Menu() {
-	}
-
-	public void run() {
+	public static void run() {
 		while (true) {
 			display();
 			int choix = InputCliUtils.getUserInput(MenuEntries.values().length,
@@ -38,7 +34,7 @@ public enum Menu {
 		}
 	}
 
-	private void display() {
+	private static void display() {
 		int i = 0;
 		System.out.println(MENU_HEADER);
 		for (MenuEntries entrie : MenuEntries.values()) {
@@ -47,42 +43,42 @@ public enum Menu {
 		}
 	}
 
-	private void select(int choice) {
+	private static void select(int choice) {
 		MenuEntries mEntrie = MenuEntries.values()[choice];
 
 		switch (mEntrie) {
 		case SHOW_COMPUTER:
 			System.out.println("All computers :");
-			ComputerCli.INSTANCE.showComputers();
+			ComputerCli.showComputers();
 			System.out.println("");
 			break;
 
 		case SHOW_PBYP_COMPUTER:
 			System.out.println("Computers :");
-			ComputerCli.INSTANCE.showComputersByPage();
+			ComputerCli.showComputersByPage();
 			System.out.println("");
 			break;
 
 		case SHOW_COMPANIES:
 			System.out.println("All companies :");
-			CompanyCli.INSTANCE.showCompanies();
+			CompanyCli.showCompanies();
 			System.out.println("");
 			break;
 
 		case SHOW_COMPUTER_DETAILS:
-			ComputerCli.INSTANCE.getComputerDetails();
+			ComputerCli.getComputerDetails();
 			break;
 
 		case CREATE_COMPUTER:
-			ComputerCli.INSTANCE.createComputer();
+			ComputerCli.createComputer();
 			break;
 
 		case UPDATE_COMPUTER:
-			ComputerCli.INSTANCE.updateComputer();
+			ComputerCli.updateComputer();
 			break;
 
 		case DELETE_COMPUTER:
-			ComputerCli.INSTANCE.deleteComputer();
+			ComputerCli.deleteComputer();
 			break;
 
 		case QUIT:
@@ -95,7 +91,7 @@ public enum Menu {
 
 	}
 
-	private void quit() {
+	private static void quit() {
 		System.out.println("See you next time!");
 		System.exit(0);
 	}

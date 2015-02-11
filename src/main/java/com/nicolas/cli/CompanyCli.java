@@ -6,15 +6,13 @@ import java.util.List;
 import com.nicolas.dao.instance.CompanyDao;
 import com.nicolas.models.Company;
 
-public enum CompanyCli {
-	INSTANCE;
-	
-	private final String MENU_COMPANY_INDEX = "enter the computer index:";
+public class CompanyCli {
+	private static final String MENU_COMPANY_INDEX = "enter the computer index:";
 
 	private CompanyCli(){
 	}
 	
-	public void showCompanies(){
+	public static void showCompanies(){
 		List<Company> companies = new ArrayList<Company>();
 		companies = CompanyDao.INSTANCE.getAll();
 		for(Company c : companies){
@@ -22,7 +20,7 @@ public enum CompanyCli {
 		}
 	}
 	
-	public int selectValidCompanyIndex() {
+	public static int selectValidCompanyIndex() {
 		int choice = 0;
 		boolean error = false;
 
