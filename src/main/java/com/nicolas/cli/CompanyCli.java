@@ -12,6 +12,9 @@ public class CompanyCli {
 	private CompanyCli(){
 	}
 	
+	/**
+	 * show all companies return by the database
+	 */
 	public static void showCompanies(){
 		List<Company> companies = new ArrayList<Company>();
 		companies = CompanyDao.INSTANCE.getAll();
@@ -20,6 +23,13 @@ public class CompanyCli {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return int
+	 * 
+	 * ask for a company Id, if the id exist in the db return it else ask again,
+	 * if nothing is enter, skip and return null
+	 */
 	public static int selectValidCompanyIndex() {
 		int choice = 0;
 		boolean error = false;

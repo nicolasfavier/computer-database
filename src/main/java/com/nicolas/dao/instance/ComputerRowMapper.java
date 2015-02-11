@@ -8,7 +8,12 @@ import java.util.List;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
-
+/**
+ * 
+ * @author nicolas
+ *
+ *map a row from the db to a computer
+ */
 public enum ComputerRowMapper implements RowMappable<Computer> {
 	INSTANCE;
 	private ComputerRowMapper() {
@@ -26,7 +31,8 @@ public enum ComputerRowMapper implements RowMappable<Computer> {
 	public Computer getObject(ResultSet rs) throws SQLException {
 		Computer computer = null;
 		Company company = null;
-
+		
+		//if the company is not null we have to map it too
 		if (rs.getInt(ComputerDao.DB_COMPUTER_COLUMN_COMPANY_ID) != 0) {
 			company = new Company(
 					rs.getInt(ComputerDao.DB_COMPUTER_COLUMN_COMPANY_ID),
