@@ -8,7 +8,7 @@ import com.nicolas.models.Page;
 public interface ComputerService {
 		/**
 		* Permit to add a computer in the database.
-		* @param Computer
+		* @param ComputerTest
 		* @return true if it is successful or false if it's not.
 		*/
 		public boolean add(Computer computer);

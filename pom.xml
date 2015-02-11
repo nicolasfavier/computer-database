@@ -19,6 +19,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>computer-database</finalName>
