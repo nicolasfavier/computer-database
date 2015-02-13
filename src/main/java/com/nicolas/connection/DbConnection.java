@@ -8,12 +8,12 @@ import com.nicolas.utils.Property;
 public enum DbConnection {
 	INSTANCE;
 
-	private static final String DB_HOST = "localhost";
-	private static final String DB_PORT = "3306";
-	private static final String DB_NAME = Property.INSTANCE.getDataBaseName();
-	private static final String DB_TIME_BEHAVIOR = "?zeroDateTimeBehavior=convertToNull";
-	private static final String DB_USER = "admincdb";
-	private static final String DB_PWD = "qwerty1234";
+	public static final String DB_HOST = "localhost";
+	public static final String DB_PORT = "3306";
+	public static final String DB_NAME = Property.INSTANCE.getDataBaseName();
+	public static final String DB_TIME_BEHAVIOR = "?zeroDateTimeBehavior=convertToNull";
+	public static final String DB_USER = "admincdb";
+	public static final String DB_PWD = "qwerty1234";
 
 	private DbConnection() {
 		try {

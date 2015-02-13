@@ -71,6 +71,9 @@ public enum ComputerDaoImpl implements ComputerDao {
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		boolean res = false;
 
+		if(computer == null)
+			return false;
+		
 		try {
 
 			preparedStatement = DbConnection.INSTANCE.getConnection()
@@ -108,6 +111,9 @@ public enum ComputerDaoImpl implements ComputerDao {
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		ResultSet rs = null;
 
+		if(index<0)
+			return computer;
+		
 		try {
 
 			preparedStatement = connection
@@ -161,6 +167,9 @@ public enum ComputerDaoImpl implements ComputerDao {
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		ResultSet rs = null;
 
+		if(index<0)
+			return computerList;
+		
 		try {
 			preparedStatement = connection.prepareStatement(GET_PAGES_SQL);
 			preparedStatement.setInt(1, index * Page.NB_COMPUTERS);
@@ -217,6 +226,9 @@ public enum ComputerDaoImpl implements ComputerDao {
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		boolean res = false;
 
+		if(computer == null)
+			return false;
+		
 		try {
 			preparedStatement = connection
 					.prepareStatement(UPDATE_COMPUTER_SQL);
@@ -254,12 +266,15 @@ public enum ComputerDaoImpl implements ComputerDao {
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		boolean res = false;
 
+		if(index<0)
+			return false;
+		
 		try {
 			preparedStatement = connection
 					.prepareStatement(DELETE_COMPUTER_SQL);
 			preparedStatement.setInt(1, index);
-			preparedStatement.executeUpdate();
-			res = true;
+			if (preparedStatement.executeUpdate() > 0)
+				res = true;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
