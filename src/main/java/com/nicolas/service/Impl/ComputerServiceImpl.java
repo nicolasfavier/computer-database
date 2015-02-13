@@ -1,13 +1,11 @@
-package com.nicolas.Service.Impl;
+package com.nicolas.service.Impl;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.List;
 
-import com.nicolas.Service.Interfaces.ComputerService;
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
+import com.nicolas.service.Interfaces.ComputerService;
 
 public enum ComputerServiceImpl implements ComputerService {
 	INSTANCE;

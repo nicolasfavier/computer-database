@@ -1,8 +1,8 @@
-package com.nicolas.Service.Impl;
+package com.nicolas.service.Impl;
 
 import java.util.List;
 
-import com.nicolas.Service.Interfaces.CompanyService;
+import com.nicolas.service.Interfaces.CompanyService;
 import com.nicolas.dao.impl.CompanyDaoImpl;
 import com.nicolas.models.Company;
 

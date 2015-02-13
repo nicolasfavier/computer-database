@@ -3,8 +3,8 @@ package com.nicolas.cli;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nicolas.Service.Impl.CompanyServiceImpl;
 import com.nicolas.models.Company;
+import com.nicolas.service.Impl.CompanyServiceImpl;
 
 public class CompanyCli {
 	private static final String MENU_COMPANY_INDEX = "enter the computer index:";

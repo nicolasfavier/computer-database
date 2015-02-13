@@ -1,4 +1,4 @@
-package com.nicolas.Service.Interfaces;
+package com.nicolas.service.Interfaces;
 
 import java.util.List;
 
