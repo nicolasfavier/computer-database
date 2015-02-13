@@ -8,12 +8,11 @@ import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.service.Interfaces.ComputerService;
 
-public enum ComputerServiceImpl implements ComputerService {
-	INSTANCE;
+public class ComputerServiceImpl implements ComputerService {
 
 	private ComputerDaoImpl computerDaoImpl = DaoManagerImpl.INSTANCE.getComputerDaoImpl();
 
-	private ComputerServiceImpl() {
+	public ComputerServiceImpl() {
 	}
 
 	@Override

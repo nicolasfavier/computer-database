@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.nicolas.models.Company;
 import com.nicolas.service.Impl.CompanyServiceImpl;
+import com.nicolas.service.Impl.ServiceManagerImpl;
 
 public class CompanyCli {
 	private static final String MENU_COMPANY_INDEX = "enter the computer index:";
-
+	private static CompanyServiceImpl companyServiceImpl = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
+	
 	private CompanyCli(){
 	}
 	
@@ -17,7 +19,7 @@ public class CompanyCli {
 	 */
 	public static void showCompanies(){
 		List<Company> companies = new ArrayList<Company>();
-		companies = CompanyServiceImpl.INSTANCE.getAll();
+		companies = companyServiceImpl.getAll();
 		for(Company c : companies){
 			System.out.println(c.toString());
 		}
@@ -43,7 +45,7 @@ public class CompanyCli {
 			choice = InputCliUtils.getUserInput(-1, MENU_COMPANY_INDEX, false);
 			if(choice == -1)
 				return -1;
-			tmpCompany = CompanyServiceImpl.INSTANCE.getByID(choice);
+			tmpCompany = companyServiceImpl.getByID(choice);
 			if (tmpCompany == null)
 				error = true;
 		} while (error);

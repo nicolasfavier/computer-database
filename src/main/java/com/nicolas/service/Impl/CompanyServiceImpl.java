@@ -7,12 +7,11 @@ import com.nicolas.dao.impl.DaoManagerImpl;
 import com.nicolas.models.Company;
 import com.nicolas.service.Interfaces.CompanyService;
 
-public enum CompanyServiceImpl implements CompanyService {
-	INSTANCE;
+public class CompanyServiceImpl implements CompanyService {
 	
 	private CompanyDaoImpl companyDaoImpl =DaoManagerImpl.INSTANCE.getCompanyDaoImpl();
 	
-	private CompanyServiceImpl(){}
+	public CompanyServiceImpl(){}
 	
 	@Override
 	public Company getByID(int companyId) {
