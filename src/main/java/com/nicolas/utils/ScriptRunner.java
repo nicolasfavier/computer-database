@@ -8,7 +8,7 @@ import com.nicolas.connection.DbConnection;
 
 public class ScriptRunner {
 
-	public static void runScript(String fileName) {
+	public static void runScript() {
 		String line;
 		Process p;
 		try {

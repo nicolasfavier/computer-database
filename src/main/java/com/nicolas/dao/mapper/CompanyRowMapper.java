@@ -1,4 +1,4 @@
-package com.nicolas.dao;
+package com.nicolas.dao.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

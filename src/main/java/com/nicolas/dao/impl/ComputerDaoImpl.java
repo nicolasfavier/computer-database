@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nicolas.connection.DbConnection;
-import com.nicolas.dao.ComputerRowMapper;
 import com.nicolas.dao.DaoUtils;
 import com.nicolas.dao.interfaces.ComputerDao;
+import com.nicolas.dao.mapper.ComputerRowMapper;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.utils.Utils;
 
-public enum ComputerDaoImpl implements ComputerDao {
-	INSTANCE;
+public class ComputerDaoImpl implements ComputerDao {
 
 	public final static String DB_TABLE = "computer";
 	public final static String DB_COLUMN_ID = "id";
@@ -62,7 +61,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as "
 			+ DB_COLUMN_COUNT + " FROM " + DB_TABLE;
 
-	private ComputerDaoImpl() {
+	public ComputerDaoImpl() {
 	}
 
 	@Override

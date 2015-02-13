@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nicolas.connection.DbConnection;
-import com.nicolas.dao.CompanyRowMapper;
 import com.nicolas.dao.DaoUtils;
 import com.nicolas.dao.interfaces.CompanyDao;
+import com.nicolas.dao.mapper.CompanyRowMapper;
 import com.nicolas.models.Company;
 
-public enum CompanyDaoImpl implements CompanyDao {
-	INSTANCE;
+public class CompanyDaoImpl implements CompanyDao {
 
 	public final static String DB_COMPANY_TABLE = "company";
 	public final static String DB_COLUMN_ID = "id";
@@ -24,7 +23,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 	private final static String GET_ALL_COMPANY = "SELECT * FROM "
 			+ DB_COMPANY_TABLE + ";";
 
-	private CompanyDaoImpl() {
+	public CompanyDaoImpl() {
 	}
 
 	@Override
