@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import com.nicolas.utils.Utils;
 
 /**
  * 
@@ -15,9 +15,6 @@ import java.util.regex.Pattern;
  */
 public class InputCliUtils {
 	private static Scanner scannerInstance = null;
-	
-	private static final String DATE_REGEX = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/(19|20)\\d\\d$";
-	private static final String INT_REGEX = "^[0-9]*$";
 
 	private static synchronized Scanner getScannerInstance() {
 		if (scannerInstance == null)
@@ -82,7 +79,7 @@ public class InputCliUtils {
 					return null;
 				}
 				
-				if(!checkDate(strDate)){
+				if(!Utils.checkDate(strDate)){
 					System.out.printf("%s does not respect the format dd/MM/yyyy !%n",strDate);
 					wrongInput = true;
 				}
@@ -99,31 +96,7 @@ public class InputCliUtils {
 		return date;
 	}
 	
-	/**
-	 * 
-	 * @param inputString
-	 * @return boolean
-	 * 
-	 * validate a date using regex
-	 */
-	private static boolean checkDate(String inputString){
-		Pattern p = Pattern.compile(DATE_REGEX); 
-		Matcher m = p.matcher(inputString);   
-		return m.find(); 
-	}
-	
-	/**
-	 * 
-	 * @param inputString
-	 * @return boolean
-	 * 
-	 * validate a int using regex
-	 */
-	private static boolean checkInt(String inputString){
-		Pattern p = Pattern.compile(INT_REGEX); 
-		Matcher m = p.matcher(inputString);   
-		return m.matches(); 
-	}
+
 	
 	/**
 	 * 
@@ -155,7 +128,7 @@ public class InputCliUtils {
 				if (tmp.trim().isEmpty() && !isNeeded) {
 					return -1;
 				}
-				if(!checkInt(tmp)){
+				if(!Utils.checkInt(tmp)){
 					wrongInput = true;
 					wrongEntrie(maxVal);
 				}
