@@ -1,11 +1,9 @@
 package service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.time.LocalDate;
 import java.time.Month;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -17,6 +15,7 @@ import com.nicolas.models.Computer;
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerServiceImplTest {
 		@Mock private Company cmp;
+		@Mock private Computer computer;
 
 		@Test
 		public void testComputerConstructor() {
@@ -27,7 +26,13 @@ public class ComputerServiceImplTest {
 			Computer c = new Computer();
 			Computer c1 = new Computer(id, name, date, date, cmp);
 
-			assertNotNull(c);
-			assertNotNull(c1);
+			Assert.assertNotNull(c);
+			Assert.assertNotNull(c1);
 		}
+//		
+//		List<Computer> computerList = new ArrayList<Computer>();
+//		for( int i = 0 ; i<20 ; i++)
+//		{
+//			computerList.add(computer);
+//		}
 }

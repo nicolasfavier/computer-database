@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.nicolas.dao.impl.CompanyDaoImpl;
-import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dao.impl.DaoManagerImpl;
 import com.nicolas.models.Company;
 import com.nicolas.utils.ScriptRunner;

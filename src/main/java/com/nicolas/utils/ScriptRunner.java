@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.nicolas.connection.DbConnection;
-
 public class ScriptRunner {
 
 	public static void runScript() {
