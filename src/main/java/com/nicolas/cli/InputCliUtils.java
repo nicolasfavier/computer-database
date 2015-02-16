@@ -79,13 +79,11 @@ public class InputCliUtils {
 					return null;
 				}
 				
-				if(!Utils.checkDate(strDate)){
-					System.out.printf("%s does not respect the format dd/MM/yyyy !%n",strDate);
+				date = Utils.getDateFromString(strDate);
+				
+				if(date == null){
+					System.out.printf("%s does not respect the format yyyy-mm-dd !%n",strDate);
 					wrongInput = true;
-				}
-				else{
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-					date = LocalDate.parse(strDate, formatter);
 				}
 				
 			} catch (DateTimeParseException exc) {

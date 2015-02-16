@@ -1,7 +1,6 @@
 package com.nicolas.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,9 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.nicolas.models.Computer;
+import com.nicolas.models.Page;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
+import com.nicolas.utils.Utils;
 
 /**
  * Servlet implementation class DashboardServlet
@@ -35,9 +35,29 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		int index =0;
+		int nbComputerPerPage = 10;
+		String search ="";
+		
+		String strIndex = request.getParameter("page");
+		if(strIndex != null)
+		index = Utils.getIntFromString(strIndex);
 
-		List<Computer> computers = this.computerService.getAll();
-		request.setAttribute("computerList", computers);
+		search = request.getParameter("search");
+		if(search == null)
+			search = "";
+		
+		request.setAttribute("search", search);
+		
+		String strNbPerPage = request.getParameter("nbPerPage");
+		if(strNbPerPage != null)
+		{
+			nbComputerPerPage = Utils.getIntFromString(strNbPerPage);
+		}
+		
+		Page page = this.computerService.getPage(index, nbComputerPerPage, search);
+		request.setAttribute("page", page);
+		
 		RequestDispatcher dispatch = getServletContext().getRequestDispatcher(
 				"/views/dashboard.jsp");
 		dispatch.forward(request, response);

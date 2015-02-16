@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -7,128 +7,112 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="<c:url value="css/bootstrap.min.css"/>" rel="stylesheet" media="screen">
-<link href="<c:url value="css/font-awesome.css"/>" rel="stylesheet" media="screen">
-<link href="<c:url value="css/main.css"/>" rel="stylesheet" media="screen">
+<link href="<c:url value="css/bootstrap.min.css"/>" rel="stylesheet"
+	media="screen">
+<link href="<c:url value="css/font-awesome.css"/>" rel="stylesheet"
+	media="screen">
+<link href="<c:url value="css/main.css"/>" rel="stylesheet"
+	media="screen">
 </head>
 <body>
-    <header class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
-        </div>
-    </header>
-   
-    <section id="main">
-        <div class="container">
-            <h1 id="homeTitle">
-                 ${computerList.size()} Computers found
-            </h1>
-            <div id="actions" class="form-horizontal">
-                <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
+	<header class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<a class="navbar-brand" href="dashboard.html"> Application -
+				Computer Database </a>
+		</div>
+	</header>
 
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
-                        class="btn btn-primary" />
-                    </form>
-                </div>
-                <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer.html">Add Computer</a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
-                </div>
-            </div>
-        </div>
+	<section id="main">
+		<div class="container">
+			<h1 id="homeTitle">${page.totalComputers} Computers found</h1>
+			<div id="actions" class="form-horizontal">
+				<div class="pull-left">
+					<form id="searchForm" action="#" method="GET" class="form-inline">
 
-        <form id="deleteForm" action="#" method="POST">
-            <input type="hidden" name="selection" value="">
-        </form>
-        
+						<input type="search" id="searchbox" name="search"
+							class="form-control" placeholder="Search name" <c:if test="${search != null}">value="${search}"</c:if>/> <input
+							type="submit" id="searchsubmit" value="Filter by name" 
+							class="btn btn-primary" />
+					</form>
+				</div>
+				<div class="pull-right">
+					<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
+						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
+						onclick="$.fn.toggleEditMode();">Edit</a>
+				</div>
+			</div>
+		</div>
 
-        <div class="container" style="margin-top: 10px;">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <!-- Variable declarations for passing labels as parameters -->
-                        <!-- Table header for Computer Name -->
+		<form id="deleteForm" action="#" method="POST">
+			<input type="hidden" name="selection" value="">
+		</form>
 
-                        <th class="editMode" style="width: 60px; height: 22px;">
-                            <input type="checkbox" id="selectall" /> 
-                            <span style="vertical-align: top;">
-                                 -  <a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();">
-                                        <i class="fa fa-trash-o fa-lg"></i>
-                                    </a>
-                            </span>
-                        </th>
-                        <th>
-                            Computer name
-                        </th>
-                        <th>
-                            Introduced date
-                        </th>
-                        <!-- Table header for Discontinued Date -->
-                        <th>
-                            Discontinued date
-                        </th>
-                        <!-- Table header for Company -->
-                        <th>
-                            Company
-                        </th>
 
-                    </tr>
-                </thead>
-                <!-- Browse attribute computers -->
-                <tbody id="results">
-                        <c:forEach items="${computerList}" var="computer">
-                
-                    <tr>
-                        <td class="editMode">
-                            <input sizetype="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href='editComputer?id=${computer.id}' onclick="">${computer.name}</a>
-                        </td>
-                        <td>${computer.introduced}</td>
-                        <td>${computer.discontinued}</td>
-                        <td>${computer.company.name}</td>
+		<div class="container" style="margin-top: 10px;">
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<!-- Variable declarations for passing labels as parameters -->
+						<!-- Table header for Computer Name -->
 
-                    </tr>
-                    </c:forEach>         
-                </tbody>
-            </table>
-            
-        </div>
-    </section>
+						<th class="editMode" style="width: 60px; height: 22px;"><input
+							type="checkbox" id="selectall" /> <span
+							style="vertical-align: top;"> - <a href="#"
+								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+									class="fa fa-trash-o fa-lg"></i>
+							</a>
+						</span></th>
+						<th>Computer name</th>
+						<th>Introduced date</th>
+						<!-- Table header for Discontinued Date -->
+						<th>Discontinued date</th>
+						<!-- Table header for Company -->
+						<th>Company</th>
 
-    <footer class="navbar-fixed-bottom">
-        <div class="container text-center">
-            <ul class="pagination">
-                <li>
-                    <a href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                  </a>
-              </li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
+					</tr>
+				</thead>
+				<!-- Browse attribute computers -->
+				<tbody id="results">
+					<c:forEach items="${page.computerList}" var="computer">
+						<tr>
+							<td class="editMode"><input type="checkbox" name="cb" class="cb" value="0"></td>
+							<td><a href='editComputer?id=${computer.id}' onclick="">${computer.name}</a>
+							</td>
+							<td>${computer.introduced}</td>
+							<td>${computer.discontinued}</td>
+							<td>${computer.company.name}</td>
 
-        <div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default">10</button>
-            <button type="button" class="btn btn-default">50</button>
-            <button type="button" class="btn btn-default">100</button>
-        </div>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
 
-    </footer>
-<script src="<c:url value="js/jquery.min.js"/>"></script>
-<script src="<c:url value="js/bootstrap.min.js"/>"></script>
-<script src="<c:url value="js/dashboard.js"/>"></script>
+		</div>
+	</section>
+
+	<footer class="navbar-fixed-bottom">
+		<div class="container text-center">
+			<ul class="pagination">
+				<li <c:if test="${page.index == 0}">class="disabled"</c:if>><a href="dashboard?page=${page.index -1}&nbPerPage=${page.nbComputerPerPage}&search=${search}" aria-label="Previous"> <span
+						aria-hidden="true">&laquo;</span>
+				</a></li>
+				<c:forEach begin="${page.range[0]}" end="${page.range[1]}" var="index">
+					<li <c:if test="${page.index == index}">class="active"</c:if>><a href="dashboard?page=${index}&nbPerPage=${page.nbComputerPerPage}&search=${search}">${index+1}</a></li>
+				</c:forEach>
+				<li <c:if test="${page.index == page.totalPages}">class="disabled"</c:if>><a href="dashboard?page=${page.index +1}&nbPerPage=${page.nbComputerPerPage}&search=${search}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+			<div class="btn-group btn-group-sm pull-right" role="group">
+				<a type="button" href="dashboard?page=0&nbPerPage=10&search=${search}" ${page.nbComputerPerPage == 10 ? 'class="btn btn-primary"' : 'class="btn btn-default"'}>10</a>
+				<a type="button" href="dashboard?page=0&nbPerPage=50&search=${search}" ${page.nbComputerPerPage == 50 ? 'class="btn btn-primary"' : 'class="btn btn-default"'}>50</a>
+				<a type="button" href="dashboard?page=0&nbPerPage=100&search=${search}" ${page.nbComputerPerPage == 100 ? 'class="btn btn-primary"' : 'class="btn btn-default"'}>100</a>
+			</div>
+
+		</div>
+	</footer>
+	<script src="<c:url value="js/jquery.min.js"/>"></script>
+	<script src="<c:url value="js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="js/dashboard.js"/>"></script>
 
 </body>
 </html>

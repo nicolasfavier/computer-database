@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Page {
-	public final static int NB_COMPUTERS = 10;
+	public int nbComputerPerPage = 10;
+	private int totalComputers =0;
 	private List<Computer> computerList;
 	private int index;
 	private int totalPages;
+	private int[] range;
+	private final static int MAX_PAGE = 10;
 
 	public Page() {
 		super();
@@ -31,6 +34,38 @@ public class Page {
 	public void setTotalPages(int totalPages) {
 		this.totalPages = totalPages;
 	}
+	public int getNbComputerPerPage() {
+		return nbComputerPerPage;
+	}
+	public void setNbComputerPerPage(int nbComputerPerPage) {
+		this.nbComputerPerPage = nbComputerPerPage;
+	}
+	public int getTotalComputers() {
+		return totalComputers;
+	}
+	public void setTotalComputers(int totalComputers) {
+		this.totalComputers = totalComputers;
+	}
+	public int[] getRange() {
+		int ofset = (int) MAX_PAGE/2;
+
+		if(totalPages < MAX_PAGE){
+			return new int[] {0,totalPages};
+		}
+		if(index < ofset  )
+		{
+			return new int[] {0,MAX_PAGE};
+		}
+		if(index > totalPages - ofset )
+		{
+			return new int[] {totalPages - MAX_PAGE,totalPages};
+		}
+		else
+		{
+			return new int[] {index -ofset,index +ofset};
+		}
+	}
+	
 	@Override
 	public String toString() {
 		String res = "*************** page " + index +" / "+  totalPages + " ***************\n";

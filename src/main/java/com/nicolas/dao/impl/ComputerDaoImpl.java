@@ -44,10 +44,10 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ CompanyDaoImpl.DB_COLUMN_ID;
 
 	private final static String FIND_COMPUTER_BY_ID_SQL = SELECT_ALL_COMPUTERS_SQL
-			+ " WHERE " + DB_TABLE + "." + DB_COLUMN_ID + " =?";
+			+ " WHERE " +DB_TABLE + "." + DB_COLUMN_ID + " =?";
 
 	private final static String GET_PAGES_SQL = SELECT_ALL_COMPUTERS_SQL
-			+ " ORDER BY " + DB_COLUMN_ID + " LIMIT ?,?";
+			+ " WHERE "+ DB_TABLE+"."+DB_COLUMN_NAME+" LIKE ? ORDER BY " + DB_COLUMN_ID + " LIMIT ?,? ";
 
 	private final static String UPDATE_COMPUTER_SQL = "UPDATE `" + DB_TABLE
 			+ "` SET `" + DB_COLUMN_NAME + "`=?,`" + DB_COLUMN_INTRODUCED
@@ -59,7 +59,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ " WHERE " + DB_COLUMN_ID + " =?";
 
 	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as "
-			+ DB_COLUMN_COUNT + " FROM " + DB_TABLE;
+			+ DB_COLUMN_COUNT + " FROM " + DB_TABLE + " WHERE " + DB_COLUMN_NAME +" LIKE  ?";
 
 	public ComputerDaoImpl() {
 	}
@@ -160,7 +160,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public List<Computer> getBoundedList(int index) {
+	public List<Computer> getBoundedList(int index, int nbComputerPerPage, String name) {
 		List<Computer> computerList = new ArrayList<Computer>();
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
@@ -171,8 +171,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		
 		try {
 			preparedStatement = connection.prepareStatement(GET_PAGES_SQL);
-			preparedStatement.setInt(1, index * Page.NB_COMPUTERS);
-			preparedStatement.setInt(2, Page.NB_COMPUTERS);
+			preparedStatement.setString(1, "%" + name + "%");
+			preparedStatement.setInt(2, index * nbComputerPerPage);
+			preparedStatement.setInt(3, nbComputerPerPage);
 
 			rs = preparedStatement.executeQuery();
 
@@ -190,7 +191,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		return computerList;
 	}
 
-	public int getCount() {
+	public int getCount(String name) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		ResultSet rs = null;
@@ -198,6 +199,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		try {
 			preparedStatement = connection.prepareStatement(GET_COUNT_SQL);
+			preparedStatement.setString(1, "%" + name + "%");
 			rs = preparedStatement.executeQuery();
 
 			if (rs.next()) {

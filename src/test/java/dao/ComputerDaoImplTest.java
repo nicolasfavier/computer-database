@@ -71,7 +71,7 @@ public class ComputerDaoImplTest {
 
 	@Test
 	public void testGetCount() {
-		int count = computerDaoImpl.getCount();
+		int count = computerDaoImpl.getCount("");
 		Assert.assertEquals(21, count);
 	}
 
@@ -131,21 +131,21 @@ public class ComputerDaoImplTest {
 	@Test
 	public void testGetBoundedList() {
 		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(0);
-		Assert.assertEquals(Page.NB_COMPUTERS, computerList.size());
+		computerList = computerDaoImpl.getBoundedList(0,10,"");
+		Assert.assertEquals(10, computerList.size());
 	}
 
 	@Test
 	public void testGetBoundedListEmpty() {
 		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(20);
+		computerList = computerDaoImpl.getBoundedList(20,10,"");
 		Assert.assertEquals(0, computerList.size());
 	}
 
 	@Test
 	public void testGetBoundedListWrongIndex() {
 		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(-10);
+		computerList = computerDaoImpl.getBoundedList(-10,10,"");
 		Assert.assertEquals(0, computerList.size());
 	}
 }

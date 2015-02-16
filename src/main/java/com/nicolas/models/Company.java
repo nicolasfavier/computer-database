@@ -6,6 +6,11 @@ public class Company {
 
 	public Company(){}
 	
+	public Company(int id) {
+		super();
+		this.id = id;
+	}
+	
 	public Company(int id, String name) {
 		super();
 		this.id = id;

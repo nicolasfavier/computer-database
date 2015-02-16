@@ -1,6 +1,7 @@
 package com.nicolas.servlet;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -77,6 +78,23 @@ public class EditComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher dispatch; 
+		String redirectView = "/views/editComputer.jsp";
+		String computerName = request.getParameter("computerName");
+		LocalDate introduced  = Utils.getDateFromString(request.getParameter("introduced"));
+		LocalDate discontinued  = Utils.getDateFromString(request.getParameter("discontinued"));
+		int companyId =  Utils.getIntFromString(request.getParameter("companyId"));
+		int id = 12;
+
+		Computer computer = new Computer(id, computerName,introduced,discontinued, companyId);
+		if(!this.computerService.update(computer)){
+			redirectView = "/views/500.jsp";
+		}
+
+		dispatch = getServletContext().getRequestDispatcher(redirectView);
+		dispatch.forward(request, response);
+		
+
 	}
 
 }

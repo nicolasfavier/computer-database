@@ -57,13 +57,13 @@ public class ComputerCli {
 		Page p;
 
 		do {
-			p = computerServiceImpl.get(index);
+			p = computerServiceImpl.getPage(index, 10, "");
 			System.out.println(p.toString());
 			String input = InputCliUtils.getStringFromUser(
 					"enter for next page q for quit", false);
 			if (input.equals("q"))
 				exit = true;
-			if (p.getComputerList().size() < Page.NB_COMPUTERS)
+			if (p.getComputerList().size() < p.nbComputerPerPage)
 				exit = true;
 			index++;
 		} while (!exit);
