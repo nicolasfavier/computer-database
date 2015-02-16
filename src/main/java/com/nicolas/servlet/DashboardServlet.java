@@ -26,7 +26,8 @@ public class DashboardServlet extends HttpServlet {
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public DashboardServlet() {
-		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
+		this.computerService = ServiceManagerImpl.INSTANCE
+				.getComputerServiceImpl();
 	}
 
 	/**
@@ -35,29 +36,29 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		int index =0;
+		int index = 0;
 		int nbComputerPerPage = 10;
-		String search ="";
-		
+		String search = "";
+
 		String strIndex = request.getParameter("page");
-		if(strIndex != null)
-		index = Utils.getIntFromString(strIndex);
+		if (strIndex != null)
+			index = Utils.getIntFromString(strIndex);
 
 		search = request.getParameter("search");
-		if(search == null)
+		if (search == null)
 			search = "";
-		
+
 		request.setAttribute("search", search);
-		
+
 		String strNbPerPage = request.getParameter("nbPerPage");
-		if(strNbPerPage != null)
-		{
+		if (strNbPerPage != null) {
 			nbComputerPerPage = Utils.getIntFromString(strNbPerPage);
 		}
-		
-		Page page = this.computerService.getPage(index, nbComputerPerPage, search);
+
+		Page page = this.computerService.getPage(index, nbComputerPerPage,
+				search);
 		request.setAttribute("page", page);
-		
+
 		RequestDispatcher dispatch = getServletContext().getRequestDispatcher(
 				"/views/dashboard.jsp");
 		dispatch.forward(request, response);
@@ -69,6 +70,19 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		String idsToDelete = request.getParameter("selection");
+
+		if(idsToDelete != null)
+		{
+			String[] array = idsToDelete.split(",");
+			for (String idString : array) {
+				int id = Utils.getIntFromString(idString);
+				this.computerService.delete(id);
+			}
+		}
+		
+		request.setAttribute("message", "Computer(s) deleted with success");
+		doGet(request,response);
 	}
 
 }

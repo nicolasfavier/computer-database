@@ -41,6 +41,15 @@ public interface ComputerDao {
 	 * @return true if the delete is successful or false if it isn't.
 	 */
 	public boolean delete(int computerId);
+	
+	/**
+	 * Delete a computer in the database.
+	 * 
+	 * @param computerIds
+	 *            ,  ids of computers to delete.
+	 * @return true if the delete is successful or false if it isn't.
+	 */
+	public boolean deleteIds(String computerIds);
 
 	/**
 	 * Update a computer in the database.

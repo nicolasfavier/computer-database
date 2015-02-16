@@ -45,30 +45,23 @@ public class EditComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatch;
 		String strIndex = request.getParameter("id");
-		if( Utils.checkInt(strIndex))
-		{
+		if (Utils.checkInt(strIndex)) {
 			int index = Integer.parseInt(strIndex);
 			Computer computer = this.computerService.getByID(index);
-			if(computer != null)
-			{
-			List<Company> companies = this.companyService.getAll();
-			request.setAttribute("computer", computer);
-			request.setAttribute("companies", companies);
-			 dispatch = getServletContext().getRequestDispatcher(
-					"/views/editComputer.jsp");
-			}
-			else{
+			if (computer != null) {
+				List<Company> companies = this.companyService.getAll();
+				request.setAttribute("computer", computer);
+				request.setAttribute("companies", companies);
+				dispatch = getServletContext().getRequestDispatcher(
+						"/views/editComputer.jsp");
+			} else {
 				dispatch = getServletContext().getRequestDispatcher(
 						"/views/404.jsp");
 			}
-		}
-		else
-		{
-			 dispatch = getServletContext().getRequestDispatcher(
+		} else {
+			dispatch = getServletContext().getRequestDispatcher(
 					"/views/404.jsp");
 		}
-		
-		
 		dispatch.forward(request, response);
 	}
 
@@ -78,23 +71,28 @@ public class EditComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatch; 
-		String redirectView = "/views/editComputer.jsp";
+		RequestDispatcher dispatch;
+		String redirectView = "/dashboard";
 		String computerName = request.getParameter("computerName");
-		LocalDate introduced  = Utils.getDateFromString(request.getParameter("introduced"));
-		LocalDate discontinued  = Utils.getDateFromString(request.getParameter("discontinued"));
-		int companyId =  Utils.getIntFromString(request.getParameter("companyId"));
-		int id = 12;
+		LocalDate introduced = Utils.getDateFromString(request
+				.getParameter("introduced"));
+		LocalDate discontinued = Utils.getDateFromString(request
+				.getParameter("discontinued"));
+		int companyId = Utils.getIntFromString(request
+				.getParameter("companyId"));
+		int id = Utils.getIntFromString(request.getParameter("id"));
 
-		Computer computer = new Computer(id, computerName,introduced,discontinued, companyId);
-		if(!this.computerService.update(computer)){
-			redirectView = "/views/500.jsp";
+		Computer computer = new Computer(id, computerName, introduced,
+				discontinued, companyId);
+		if (!this.computerService.update(computer)) {
+			dispatch = getServletContext().getRequestDispatcher(
+					"/views/500.jsp");
+			dispatch.forward(request, response);
 		}
-
-		dispatch = getServletContext().getRequestDispatcher(redirectView);
-		dispatch.forward(request, response);
-		
-
+		else{
+		request.setAttribute("message", "edit successful");
+		response.sendRedirect(request.getContextPath()+"/dashboard");
+		}
 	}
 
 }

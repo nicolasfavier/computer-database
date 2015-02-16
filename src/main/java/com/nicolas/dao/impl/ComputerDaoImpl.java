@@ -58,6 +58,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	private final static String DELETE_COMPUTER_SQL = "DELETE FROM " + DB_TABLE
 			+ " WHERE " + DB_COLUMN_ID + " =?";
 
+	private final static String DELETE_COMPUTERS_SQL = "DELETE FROM " + DB_TABLE
+			+ " WHERE " + DB_COLUMN_ID + " IN ?";
+	
 	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as "
 			+ DB_COLUMN_COUNT + " FROM " + DB_TABLE + " WHERE " + DB_COLUMN_NAME +" LIKE  ?";
 
@@ -70,7 +73,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		boolean res = false;
 
-		if(computer == null)
+		if(computer == null || computer.getName().trim().isEmpty())
 			return false;
 		
 		try {
@@ -227,7 +230,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		boolean res = false;
 
-		if(computer == null)
+		if(computer == null || computer.getName().trim().isEmpty())
 			return false;
 		
 		try {
@@ -274,6 +277,30 @@ public class ComputerDaoImpl implements ComputerDao {
 			preparedStatement = connection
 					.prepareStatement(DELETE_COMPUTER_SQL);
 			preparedStatement.setInt(1, index);
+			if (preparedStatement.executeUpdate() > 0)
+				res = true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbConnection.INSTANCE.closeConnection(connection);
+		}
+		return res;
+	}
+
+	@Override
+	public boolean deleteIds(String computerIds) {
+		java.sql.PreparedStatement preparedStatement = null;
+		Connection connection = DbConnection.INSTANCE.getConnection();
+		boolean res = false;
+
+		if(computerIds == null)
+			return false;
+		
+		try {
+			preparedStatement = connection
+					.prepareStatement(DELETE_COMPUTERS_SQL);
+			preparedStatement.setString(1, "("+computerIds+")");
 			if (preparedStatement.executeUpdate() > 0)
 				res = true;
 

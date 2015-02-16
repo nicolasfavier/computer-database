@@ -34,6 +34,13 @@ public interface ComputerService {
 		public boolean delete(int computerId);
 
 		/**
+		* Delete a computer in the database.
+		* @param computerId, the id of the computer to delete.
+		* @return true if the delete is successful or false if it isn't.
+		*/
+		public boolean deleteIds(String computerIds);
+		
+		/**
 		* Update a computer in the database.
 		* @param computer that is the computer to update.
 		* @return true if the update is successful of false if it isn't.

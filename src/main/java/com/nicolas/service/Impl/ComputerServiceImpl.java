@@ -55,4 +55,9 @@ public class ComputerServiceImpl implements ComputerService {
 		return computerDaoImpl.getByID(computerId);
 
 	}
+
+	@Override
+	public boolean deleteIds(String computerIds) {
+		return computerDaoImpl.deleteIds(computerIds);
+	}
 }

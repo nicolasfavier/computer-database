@@ -21,7 +21,7 @@
 				Computer Database </a>
 		</div>
 	</header>
-
+	<div id="messages" >${message}</div>
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">${page.totalComputers} Computers found</h1>
@@ -36,9 +36,10 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer">Add
+						Computer</a> 
+					<a class="btn btn-default" id="editComputer"
+						href="#" onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
@@ -75,7 +76,7 @@
 				<tbody id="results">
 					<c:forEach items="${page.computerList}" var="computer">
 						<tr>
-							<td class="editMode"><input type="checkbox" name="cb" class="cb" value="0"></td>
+							<td class="editMode"><input type="checkbox" name="cb" class="cb" value="${computer.id}"></td>
 							<td><a href='editComputer?id=${computer.id}' onclick="">${computer.name}</a>
 							</td>
 							<td>${computer.introduced}</td>
