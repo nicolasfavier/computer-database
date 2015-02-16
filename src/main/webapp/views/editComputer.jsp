@@ -1,18 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Computer Database</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap -->
-<link href="<c:url value="css/bootstrap.min.css"/>" rel="stylesheet"
-	media="screen">
-<link href="<c:url value="css/font-awesome.css"/>" rel="stylesheet"
-	media="screen">
-<link href="<c:url value="css/main.css"/>" rel="stylesheet"
-	media="screen">
-</head>
+<jsp:include page="templates/headers.jsp"/>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -62,7 +50,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Edit" class="btn btn-primary">
-							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+							or <a href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>

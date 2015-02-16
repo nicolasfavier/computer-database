@@ -1,19 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Computer Database</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="utf-8">
-<!-- Bootstrap -->
-<link href="<c:url value="css/bootstrap.min.css"/>" rel="stylesheet"
-	media="screen">
-<link href="<c:url value="css/font-awesome.css"/>" rel="stylesheet"
-	media="screen">
-<link href="<c:url value="css/main.css"/>" rel="stylesheet"
-	media="screen">
-</head>
+<jsp:include page="templates/headers.jsp"/>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -94,13 +81,13 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li <c:if test="${page.index == 0}">class="disabled"</c:if>><a href="dashboard?page=${page.index -1}&nbPerPage=${page.nbComputerPerPage}&search=${search}" aria-label="Previous"> <span
+				<li <c:if test="${page.index == 0}">style="display:none;"</c:if>><a href="dashboard?page=${page.index -1}&nbPerPage=${page.nbComputerPerPage}&search=${search}" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach begin="${page.range[0]}" end="${page.range[1]}" var="index">
 					<li <c:if test="${page.index == index}">class="active"</c:if>><a href="dashboard?page=${index}&nbPerPage=${page.nbComputerPerPage}&search=${search}">${index+1}</a></li>
 				</c:forEach>
-				<li <c:if test="${page.index == page.totalPages}">class="disabled"</c:if>><a href="dashboard?page=${page.index +1}&nbPerPage=${page.nbComputerPerPage}&search=${search}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<li <c:if test="${page.index == page.totalPages}">style="display:none;"</c:if>><a href="dashboard?page=${page.index +1}&nbPerPage=${page.nbComputerPerPage}&search=${search}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
@@ -111,9 +98,7 @@
 
 		</div>
 	</footer>
-	<script src="<c:url value="js/jquery.min.js"/>"></script>
-	<script src="<c:url value="js/bootstrap.min.js"/>"></script>
-	<script src="<c:url value="js/dashboard.js"/>"></script>
 
+<jsp:include page="/views/templates/footer.jsp"/>
 </body>
 </html>

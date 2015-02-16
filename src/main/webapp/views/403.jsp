@@ -9,9 +9,9 @@
 	</header>
 
 	<section id="main">
-		<div class="container">	
+		<div class="container">
 			<div class="alert alert-danger">
-				Error 500: An error has occured!
+				Error 403: Access denied!
 				<br/>
 				<!-- stacktrace -->
 			</div>
@@ -19,6 +19,7 @@
 	</section>
 
 <jsp:include page="/views/templates/footer.jsp"/>
+
 
 </body>
 </html>
