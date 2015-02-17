@@ -17,6 +17,10 @@ public class ComputerServiceImpl implements ComputerService {
 	public ComputerServiceImpl() {
 	}
 
+	public ComputerServiceImpl(ComputerDaoImpl computerDaoImpl) {
+		this.computerDaoImpl = computerDaoImpl;
+	}
+	
 	@Override
 	public boolean add(Computer computer) {
 		return computerDaoImpl.add(computer);

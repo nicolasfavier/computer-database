@@ -35,7 +35,7 @@
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="datetime-local" class="form-control" id="discontinued"
-									name="discontinued" placeholder="Discontinued date"
+									name="discontinued" placeholder="Ditestscontinued date"
 									value="${fn:escapeXml(computer.discontinued)}">
 							</div>
 							<div class="form-group">

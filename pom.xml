@@ -12,28 +12,26 @@
 		<mysql-connector-version>5.1.6</mysql-connector-version>
 		<mockito-version>1.9.5</mockito-version>
 		<taglibs-version>1.1.2</taglibs-version>
-		<junit-version>4.11</junit-version>
+		<junit.version>4.11</junit.version>
 		<jstl-version>1.2</jstl-version>
 		<slf4j-api-version>1.7.10</slf4j-api-version>
+		<logback-version>1.1.2</logback-version>
+		<selenium-version>2.44.0</selenium-version>
 		<maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit-version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-connector-version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>${mockito-version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>
@@ -41,14 +39,35 @@
 			<version>${taglibs-version}</version>
 		</dependency>
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl-version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j-api-version}</version>
+			<scope>compile</scope>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback-version}</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 	<build>
