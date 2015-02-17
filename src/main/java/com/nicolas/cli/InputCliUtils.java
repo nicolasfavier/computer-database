@@ -64,9 +64,8 @@ public class InputCliUtils {
 	 * Ask the user to enter a date, the message shown is pass in description
 	 * if isNeeded is false, enter will skip the input and the function will return null
 	 */
-	public static LocalDate getDateFromUser(String description, boolean isNeeded) {
+	public static String getDateFromUser(String description, boolean isNeeded) {
 		System.out.println(description);
-		LocalDate date = null;
 		String strDate = "";
 		boolean wrongInput = false;
 		
@@ -78,10 +77,8 @@ public class InputCliUtils {
 				if (strDate.isEmpty() && !isNeeded) {
 					return null;
 				}
-				
-				date = Utils.getDateFromString(strDate);
-				
-				if(date == null){
+						
+				if(Utils.getDateFromString(strDate) == null){
 					System.out.printf("%s does not respect the format yyyy-mm-dd !%n",strDate);
 					wrongInput = true;
 				}
@@ -91,7 +88,7 @@ public class InputCliUtils {
 			}
 		} while (wrongInput);
 
-		return date;
+		return strDate;
 	}
 	
 

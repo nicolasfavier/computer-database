@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dao.impl.DaoManagerImpl;
+import com.nicolas.dto.ComputerDto;
+import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.service.Interfaces.ComputerService;
@@ -32,7 +34,8 @@ public class ComputerServiceImpl implements ComputerService {
 		int totalPages = Math.round(computerDaoImpl.getCount(name) / nbComputerPerPage);
 		page.setTotalPages(totalPages);
 		page.setTotalComputers(totalComputers);
-		page.setComputerList( computerDaoImpl.getBoundedList(index, nbComputerPerPage, name));
+		List<Computer> computers = computerDaoImpl.getBoundedList(index, nbComputerPerPage, name);
+		page.setComputerList(ComputerDtoMapper.ComputerToDto(computers));
 		page.setIndex(index);
 		page.setNbComputerPerPage(nbComputerPerPage);
 		return page;

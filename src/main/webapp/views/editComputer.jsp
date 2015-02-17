@@ -57,5 +57,6 @@
 			</div>
 		</div>
 	</section>
+<jsp:include page="/views/templates/footer.jsp"/>
 </body>
 </html>

@@ -1,7 +1,6 @@
 package com.nicolas.servlet;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nicolas.dto.ComputerDto;
+import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.service.Impl.CompanyServiceImpl;
@@ -26,7 +27,6 @@ public class EditComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerServiceImpl computerService;
 	private CompanyServiceImpl companyService;
-
 
 	public EditComputerServlet() {
 		this.computerService = ServiceManagerImpl.INSTANCE
@@ -47,7 +47,8 @@ public class EditComputerServlet extends HttpServlet {
 			Computer computer = this.computerService.getByID(index);
 			if (computer != null) {
 				List<Company> companies = this.companyService.getAll();
-				request.setAttribute("computer", computer);
+
+				request.setAttribute("computer", ComputerDtoMapper.ComputerToDto(computer));
 				request.setAttribute("companies", companies);
 				dispatch = getServletContext().getRequestDispatcher(
 						"/views/editComputer.jsp");
@@ -68,28 +69,33 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatch;
-		
-		//get data about the computer to update
+
+		// get data about the computer to update
 		String computerName = request.getParameter("computerName");
-		LocalDate introduced = Utils.getDateFromString(request
-				.getParameter("introduced"));
-		LocalDate discontinued = Utils.getDateFromString(request
-				.getParameter("discontinued"));
+		//TODO check on server side
+		// LocalDate introduced = Utils.getDateFromString(request
+		// .getParameter("introduced"));
+		// LocalDate discontinued = Utils.getDateFromString(request
+		// .getParameter("discontinued"));
+		String introduced = request.getParameter("introduced");
+		String discontinued = request.getParameter("discontinued");
+
 		int companyId = Utils.getIntFromString(request
 				.getParameter("companyId"));
 		int id = Utils.getIntFromString(request.getParameter("id"));
 
-		Computer computer = new Computer(id, computerName, introduced, discontinued, companyId);
-		
+		ComputerDto computerDto = new ComputerDto(id, computerName, introduced,
+				discontinued, companyId);
+
 		// if the update didn't go through
-		if (!this.computerService.update(computer)) {
+		if (!this.computerService.update(ComputerDtoMapper.ComputerFromDto(computerDto))) {
 			dispatch = getServletContext().getRequestDispatcher(
 					"/views/500.jsp");
 			dispatch.forward(request, response);
 		}
-		// else redirect to the dashboard page 
-		else{
-		response.sendRedirect(request.getContextPath()+"/dashboard");
+		// else redirect to the dashboard page
+		else {
+			response.sendRedirect(request.getContextPath() + "/dashboard");
 		}
 	}
 

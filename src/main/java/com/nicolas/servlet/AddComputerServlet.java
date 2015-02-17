@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nicolas.dto.ComputerDto;
+import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.service.Impl.CompanyServiceImpl;
@@ -61,16 +63,22 @@ public class AddComputerServlet extends HttpServlet {
 		RequestDispatcher dispatch;
 
 		String computerName = request.getParameter("computerName");
-		LocalDate introduced = Utils.getDateFromString(request
-				.getParameter("introduced"));
-		LocalDate discontinued = Utils.getDateFromString(request
-				.getParameter("discontinued"));
+// TODO check and resend to view if error
+//		LocalDate introduced = Utils.getDateFromString(request
+//				.getParameter("introduced"));
+//		LocalDate discontinued = Utils.getDateFromString(request
+//				.getParameter("discontinued"));
+		String introduced = request.getParameter("introduced");
+		String discontinued = request.getParameter("discontinued");
+
+		
 		int companyId = Utils.getIntFromString(request
 				.getParameter("companyId"));
 
-		Computer computer = new Computer(0, computerName, introduced,
+		ComputerDto computerDto = new ComputerDto(0, computerName, introduced,
 				discontinued, companyId);
-		if (!this.computerService.add(computer)) {
+		
+		if (!this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto))) {
 			dispatch = getServletContext().getRequestDispatcher(
 					"/views/500.jsp");
 			dispatch.forward(request, response);

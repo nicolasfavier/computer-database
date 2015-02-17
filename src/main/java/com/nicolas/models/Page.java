@@ -3,10 +3,13 @@ package com.nicolas.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nicolas.dao.interfaces.ComputerDao;
+import com.nicolas.dto.ComputerDto;
+
 public class Page {
 	public int nbComputerPerPage = 10;
 	private int totalComputers =0;
-	private List<Computer> computerList;
+	private List<ComputerDto> computerList;
 	private int index;
 	private int totalPages;
 	private int[] range;
@@ -14,12 +17,12 @@ public class Page {
 
 	public Page() {
 		super();
-		this.computerList = new ArrayList<Computer>();
+		this.computerList = new ArrayList<ComputerDto>();
 	}
-	public List<Computer> getComputerList() {
+	public List<ComputerDto> getComputerList() {
 		return computerList;
 	}
-	public void setComputerList(List<Computer> computerList) {
+	public void setComputerList(List<ComputerDto> computerList) {
 		this.computerList = computerList;
 	}
 	public int getIndex() {
@@ -70,7 +73,7 @@ public class Page {
 	public String toString() {
 		String res = "*************** page " + index +" / "+  totalPages + " ***************\n";
 				
-				for (Computer c : computerList) {
+				for (ComputerDto c : computerList) {
 					res += c.toString() + "\n";
 				}
 		return res;

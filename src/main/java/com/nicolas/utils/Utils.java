@@ -71,6 +71,10 @@ public final class Utils {
 	public static LocalDate getDateFromString(String inputString) {
 
 		LocalDate date = null;
+
+		if (inputString == null)
+			return date;
+
 		Pattern p = Pattern.compile(DATE_REGEX);
 		Matcher m = p.matcher(inputString);
 

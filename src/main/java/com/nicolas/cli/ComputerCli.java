@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nicolas.dto.ComputerDto;
+import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
@@ -37,13 +39,13 @@ public class ComputerCli {
 	 * show all computers return by the database
 	 */
 	public static void showComputers() {
-		List<Computer> computers = new ArrayList<Computer>();
-		computers = computerServiceImpl.getAll();
-		showComputers(computers);
+		List<ComputerDto> computerDtos = new ArrayList<ComputerDto>();
+		computerDtos = ComputerDtoMapper.ComputerToDto(computerServiceImpl.getAll());
+		showComputers(computerDtos);
 	}
 
-	private static void showComputers(List<Computer> computers) {
-		for (Computer c : computers) {
+	private static void showComputers(List<ComputerDto> computerDtos) {
+		for (ComputerDto c : computerDtos) {
 			System.out.println(c.toString());
 		}
 	}
@@ -74,9 +76,9 @@ public class ComputerCli {
 
 		String name = InputCliUtils.getStringFromUser(
 				MENU_COMPUTER_CREATION_NAME, true);
-		LocalDate introducedDate = InputCliUtils.getDateFromUser(
+		String introducedDate = InputCliUtils.getDateFromUser(
 				MENU_COMPUTER_CREATION_INTRODUCED, false);
-		LocalDate discontinuedDate = InputCliUtils.getDateFromUser(
+		String discontinuedDate = InputCliUtils.getDateFromUser(
 				MENU_COMPUTER_CREATION_DISCONTINUED, false);
 		int companyId = CompanyCli.selectValidCompanyIndex();
 
@@ -84,10 +86,10 @@ public class ComputerCli {
 		if (companyId != -1)
 			tmpCompany = new Company(companyId, "");
 
-		Computer tmpComputer = new Computer(0, name, introducedDate,
+		ComputerDto computerDto = new ComputerDto(0, name, introducedDate,
 				discontinuedDate, tmpCompany);
 
-		if (computerServiceImpl.add(tmpComputer))
+		if (computerServiceImpl.add(ComputerDtoMapper.ComputerFromDto(computerDto)))
 			System.out.println("create with success");
 		else
 			System.out.println("error");
@@ -96,31 +98,31 @@ public class ComputerCli {
 
 	public static void updateComputer() {
 		System.out.println(MENU_COMPUTER_UPDATE_HEADER);
-		Computer tmpComputer = selectValidComputerIndex();
+		ComputerDto computerDto = ComputerDtoMapper.ComputerToDto(selectValidComputerIndex());
 
 		String name = InputCliUtils.getStringFromUser(
 				MENU_COMPUTER_CREATION_NAME, false);
 		if (!name.isEmpty())
-			tmpComputer.setName(name);
+			computerDto.setName(name);
 
-		LocalDate introducedDate = InputCliUtils.getDateFromUser(
+		String introducedDate = InputCliUtils.getDateFromUser(
 				MENU_COMPUTER_CREATION_INTRODUCED, false);
 		if (introducedDate != null)
-			tmpComputer.setIntroduced(introducedDate);
+			computerDto.setIntroduced(introducedDate);
 
-		LocalDate discontinuedDate = InputCliUtils.getDateFromUser(
+		String discontinuedDate = InputCliUtils.getDateFromUser(
 				MENU_COMPUTER_CREATION_DISCONTINUED, false);
 		if (discontinuedDate != null)
-			tmpComputer.setDiscontinued(discontinuedDate);
+			computerDto.setDiscontinued(discontinuedDate);
 
 		int companyId = CompanyCli.selectValidCompanyIndex();
 		Company tmpCompany = null;
 		if (companyId != -1) {
 			tmpCompany = new Company(companyId, "");
-			tmpComputer.setCompany(tmpCompany);
+			computerDto.setCompany(tmpCompany);
 		}
 
-		if (computerServiceImpl.update(tmpComputer))
+		if (computerServiceImpl.update(ComputerDtoMapper.ComputerFromDto(computerDto)))
 			System.out.println("update with success");
 		else
 			System.out.println("error");
