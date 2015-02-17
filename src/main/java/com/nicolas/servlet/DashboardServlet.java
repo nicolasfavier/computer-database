@@ -15,24 +15,20 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 
 /**
- * Servlet implementation class DashboardServlet
+ *  load all computers on get  and delete them on post call
  */
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerServiceImpl computerService;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public DashboardServlet() {
 		this.computerService = ServiceManagerImpl.INSTANCE
 				.getComputerServiceImpl();
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * load all computers and send them back to the view
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -48,6 +44,7 @@ public class DashboardServlet extends HttpServlet {
 		if (search == null)
 			search = "";
 
+		// the view need it put in back in the search input
 		request.setAttribute("search", search);
 
 		String strNbPerPage = request.getParameter("nbPerPage");
@@ -65,8 +62,7 @@ public class DashboardServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * To delete computers
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -75,6 +71,7 @@ public class DashboardServlet extends HttpServlet {
 		if(idsToDelete != null)
 		{
 			String[] array = idsToDelete.split(",");
+			//TODO send an unique command for delete
 			for (String idString : array) {
 				int id = Utils.getIntFromString(idString);
 				this.computerService.delete(id);

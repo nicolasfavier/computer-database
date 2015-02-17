@@ -19,7 +19,7 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 
 /**
- * Servlet implementation class DashboardServlet
+ * update a computer
  */
 @WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
@@ -27,9 +27,7 @@ public class EditComputerServlet extends HttpServlet {
 	private ComputerServiceImpl computerService;
 	private CompanyServiceImpl companyService;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
+
 	public EditComputerServlet() {
 		this.computerService = ServiceManagerImpl.INSTANCE
 				.getComputerServiceImpl();
@@ -38,8 +36,7 @@ public class EditComputerServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * Send all information about the computer to update in the view
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -66,13 +63,11 @@ public class EditComputerServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * update a computer
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatch;
-		String redirectView = "/dashboard";
 		String computerName = request.getParameter("computerName");
 		LocalDate introduced = Utils.getDateFromString(request
 				.getParameter("introduced"));
@@ -82,15 +77,16 @@ public class EditComputerServlet extends HttpServlet {
 				.getParameter("companyId"));
 		int id = Utils.getIntFromString(request.getParameter("id"));
 
-		Computer computer = new Computer(id, computerName, introduced,
-				discontinued, companyId);
+		Computer computer = new Computer(id, computerName, introduced, discontinued, companyId);
+		
+		// if the update didn't go through
 		if (!this.computerService.update(computer)) {
 			dispatch = getServletContext().getRequestDispatcher(
 					"/views/500.jsp");
 			dispatch.forward(request, response);
 		}
+		// else redirect to the dashboard page 
 		else{
-		request.setAttribute("message", "edit successful");
 		response.sendRedirect(request.getContextPath()+"/dashboard");
 		}
 	}

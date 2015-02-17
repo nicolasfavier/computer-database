@@ -21,60 +21,63 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 
 /**
- * Servlet implementation class ComputerServlet
+ * Servlet implementation show and add computers when the uri: /addComputer is call
  */
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
-		private static final long serialVersionUID = 1L;
-		private ComputerServiceImpl computerService;
-		private CompanyServiceImpl companyService;
+	private static final long serialVersionUID = 1L;
+	private ComputerServiceImpl computerService;
+	private CompanyServiceImpl companyService;
 
-
-		public AddComputerServlet() {
-			this.computerService = ServiceManagerImpl.INSTANCE
-					.getComputerServiceImpl();
-			this.companyService = ServiceManagerImpl.INSTANCE
-					.getCompanyServiceImpl();
-		}
-
-
-		protected void doGet(HttpServletRequest request,
-				HttpServletResponse response) throws ServletException, IOException {
-			RequestDispatcher dispatch;
-			
-			String redirectView = "/views/addComputer.jsp";
-
-			List<Company> companies = this.companyService.getAll();
-			request.setAttribute("companies", companies);
-			
-			dispatch = getServletContext().getRequestDispatcher(redirectView);
-			dispatch.forward(request, response);
-		}
-
-		/**
-		 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-		 *      response)
-		 */
-		protected void doPost(HttpServletRequest request,
-				HttpServletResponse response) throws ServletException, IOException {
-			RequestDispatcher dispatch; 
-			String redirectView = "/dashboard";
-			
-			String computerName = request.getParameter("computerName");
-			LocalDate introduced  = Utils.getDateFromString(request.getParameter("introduced"));
-			LocalDate discontinued  = Utils.getDateFromString(request.getParameter("discontinued"));
-			int companyId =  Utils.getIntFromString(request.getParameter("companyId"));
-
-			Computer computer = new Computer(0, computerName,introduced,discontinued, companyId);
-			if(!this.computerService.add(computer)){
-				dispatch = getServletContext().getRequestDispatcher(
-						"/views/500.jsp");
-				dispatch.forward(request, response);
-			}
-			else{
-			request.setAttribute("message", "Computer added with success");
-			response.sendRedirect(request.getContextPath()+"/dashboard");
-			}
-		}
-
+	public AddComputerServlet() {
+		this.computerService = ServiceManagerImpl.INSTANCE
+				.getComputerServiceImpl();
+		this.companyService = ServiceManagerImpl.INSTANCE
+				.getCompanyServiceImpl();
 	}
+
+	/**
+	 * get all the company and resent them to the view
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher dispatch;
+
+		String redirectView = "/views/addComputer.jsp";
+
+		List<Company> companies = this.companyService.getAll();
+		request.setAttribute("companies", companies);
+
+		dispatch = getServletContext().getRequestDispatcher(redirectView);
+		dispatch.forward(request, response);
+	}
+
+	/**
+	 * add a computer if success call the doGet if not redirect to a 505error
+	 * page
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher dispatch;
+
+		String computerName = request.getParameter("computerName");
+		LocalDate introduced = Utils.getDateFromString(request
+				.getParameter("introduced"));
+		LocalDate discontinued = Utils.getDateFromString(request
+				.getParameter("discontinued"));
+		int companyId = Utils.getIntFromString(request
+				.getParameter("companyId"));
+
+		Computer computer = new Computer(0, computerName, introduced,
+				discontinued, companyId);
+		if (!this.computerService.add(computer)) {
+			dispatch = getServletContext().getRequestDispatcher(
+					"/views/500.jsp");
+			dispatch.forward(request, response);
+		} else {
+			request.setAttribute("message", "Computer added with success");
+			response.sendRedirect(request.getContextPath() + "/dashboard");
+		}
+	}
+
+}
