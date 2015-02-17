@@ -48,7 +48,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			}
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -71,7 +71,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			CompanyList = CompanyRowMapper.INSTANCE.getList(rs);
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);

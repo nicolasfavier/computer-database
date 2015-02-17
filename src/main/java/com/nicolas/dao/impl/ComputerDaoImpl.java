@@ -101,7 +101,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				res = true;
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
@@ -132,7 +132,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			}
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -155,7 +155,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			rs = preparedStatement.executeQuery();
 			computerList = ComputerRowMapper.INSTANCE.getList(rs);
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -187,7 +187,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			rs.close();
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -217,7 +217,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			rs.close();
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -259,7 +259,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				res = true;
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
@@ -284,7 +284,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				res = true;
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
@@ -308,7 +308,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				res = true;
 
 		} catch (SQLException e) {
-			LOGGER.info(e.toString());
+			LOGGER.error(e.toString());
 		} finally {
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
