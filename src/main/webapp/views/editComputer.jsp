@@ -20,7 +20,7 @@
 						<input type="hidden" value="0" />
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <input
+								<label for="computerName">Computer name</label> <input required
 									type="text" class="form-control" id="computerName"
 									name="computerName" placeholder="Computer name"
 									value="${fn:escapeXml(computer.name)}">
