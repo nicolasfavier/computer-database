@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <jsp:include page="templates/headers.jsp"/>
 <body>
@@ -64,11 +65,11 @@
 					<c:forEach items="${page.computerList}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb" class="cb" value="${computer.id}"></td>
-							<td><a href='editComputer?id=${computer.id}' onclick="">${computer.name}</a>
+							<td><a href='editComputer?id=${computer.id}' onclick=""><c:out value="${computer.name}"/></a>
 							</td>
-							<td>${computer.introduced}</td>
-							<td>${computer.discontinued}</td>
-							<td>${computer.company.name}</td>
+							<td><c:out value="${computer.introduced}"/></td>
+							<td><c:out value="${computer.discontinued}"/></td>
+							<td><c:out value="${computer.company.name}"/></td>
 
 						</tr>
 					</c:forEach>
