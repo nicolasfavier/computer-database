@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.nicolas.connection.DbConnection;
 import com.nicolas.dao.DaoUtils;
 import com.nicolas.dao.interfaces.CompanyDao;
@@ -13,6 +16,7 @@ import com.nicolas.dao.mapper.CompanyRowMapper;
 import com.nicolas.models.Company;
 
 public class CompanyDaoImpl implements CompanyDao {
+    static Logger LOGGER = LoggerFactory.getLogger(CompanyDaoImpl.class);
 
 	public final static String DB_COMPANY_TABLE = "company";
 	public final static String DB_COLUMN_ID = "id";
@@ -44,8 +48,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-
+			LOGGER.info(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -68,8 +71,7 @@ public class CompanyDaoImpl implements CompanyDao {
 			CompanyList = CompanyRowMapper.INSTANCE.getList(rs);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-
+			LOGGER.info(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);

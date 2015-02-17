@@ -6,15 +6,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.nicolas.connection.DbConnection;
 import com.nicolas.dao.DaoUtils;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.dao.mapper.ComputerRowMapper;
 import com.nicolas.models.Computer;
-import com.nicolas.models.Page;
 import com.nicolas.utils.Utils;
 
 public class ComputerDaoImpl implements ComputerDao {
+    static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
 	public final static String DB_TABLE = "computer";
 	public final static String DB_COLUMN_ID = "id";
@@ -98,7 +101,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				res = true;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.info(e.toString());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
@@ -129,7 +132,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.info(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -152,7 +155,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			rs = preparedStatement.executeQuery();
 			computerList = ComputerRowMapper.INSTANCE.getList(rs);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.info(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -184,7 +187,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			rs.close();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.info(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -214,7 +217,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			rs.close();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.info(e.toString());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -256,7 +259,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				res = true;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.info(e.toString());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
@@ -281,7 +284,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				res = true;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.info(e.toString());
 		} finally {
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
@@ -305,7 +308,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				res = true;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.info(e.toString());
 		} finally {
 			DbConnection.INSTANCE.closeConnection(connection);
 		}

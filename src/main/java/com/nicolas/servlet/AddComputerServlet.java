@@ -75,7 +75,6 @@ public class AddComputerServlet extends HttpServlet {
 					"/views/500.jsp");
 			dispatch.forward(request, response);
 		} else {
-			request.setAttribute("message", "Computer added with success");
 			response.sendRedirect(request.getContextPath() + "/dashboard");
 		}
 	}
