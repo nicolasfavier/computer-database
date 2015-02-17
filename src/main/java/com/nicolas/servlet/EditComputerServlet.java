@@ -68,6 +68,8 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatch;
+		
+		//get data about the computer to update
 		String computerName = request.getParameter("computerName");
 		LocalDate introduced = Utils.getDateFromString(request
 				.getParameter("introduced"));
