@@ -15,6 +15,7 @@ import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dao.impl.DaoManagerImpl;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
+import com.nicolas.models.Page;
 import com.nicolas.utils.ScriptRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -116,22 +117,8 @@ public class ComputerDaoImplTest {
 
 	@Test
 	public void testGetBoundedList() {
-		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(0, 10, "");
-		Assert.assertEquals(10, computerList.size());
-	}
-
-	@Test
-	public void testGetBoundedListEmpty() {
-		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(20, 10, "");
-		Assert.assertEquals(0, computerList.size());
-	}
-
-	@Test
-	public void testGetBoundedListWrongIndex() {
-		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(-10, 10, "");
-		Assert.assertEquals(0, computerList.size());
+		Page page = new Page();
+		page = computerDaoImpl.getPage(page, "");
+		Assert.assertEquals(10, page.getComputerList().size());
 	}
 }

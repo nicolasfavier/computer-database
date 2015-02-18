@@ -31,16 +31,12 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
-	public Page getPage(int index, int nbComputerPerPage, String name) {
-		Page page = new Page();
+	public Page getPage(Page page, String name) {
 		int totalComputers = computerDaoImpl.getCount(name); 
-		int totalPages = Math.round(computerDaoImpl.getCount(name) / nbComputerPerPage);
+		int totalPages = Math.round(computerDaoImpl.getCount(name) / page.getNbComputerPerPage());
 		page.setTotalPages(totalPages);
 		page.setTotalComputers(totalComputers);
-		List<Computer> computers = computerDaoImpl.getBoundedList(index, nbComputerPerPage, name);
-		page.setComputerList(ComputerDtoMapper.ComputerToDto(computers));
-		page.setIndex(index);
-		page.setNbComputerPerPage(nbComputerPerPage);
+		page = computerDaoImpl.getPage(page, name);
 		return page;
 	}
 

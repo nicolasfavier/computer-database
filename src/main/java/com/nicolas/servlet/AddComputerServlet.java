@@ -19,7 +19,8 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 
 /**
- * Servlet implementation show and add computers when the uri: /addComputer is call
+ * Servlet implementation show and add computers when the uri: /addComputer is
+ * call
  */
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
@@ -28,17 +29,15 @@ public class AddComputerServlet extends HttpServlet {
 	private CompanyServiceImpl companyService;
 
 	public AddComputerServlet() {
-		this.computerService = ServiceManagerImpl.INSTANCE
-				.getComputerServiceImpl();
-		this.companyService = ServiceManagerImpl.INSTANCE
-				.getCompanyServiceImpl();
+		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
+		this.companyService = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
 	}
 
 	/**
 	 * get all the company and resent them to the view
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		RequestDispatcher dispatch;
 
 		String redirectView = "/views/addComputer.jsp";
@@ -54,47 +53,46 @@ public class AddComputerServlet extends HttpServlet {
 	 * add a computer if success call the doGet if not redirect to a 505error
 	 * page
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		boolean error = false;
-		String errorMessage="";
-		
+		String errorMessage = "";
+
 		// get data about the computer to add
 		String computerName = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
-		int companyId = Utils.getIntFromString(request
-				.getParameter("companyId"));
+		int companyId = Utils.getIntFromString(request.getParameter("companyId"));
 
-		//check if there is a name
-		if(computerName.isEmpty()){
+		// check if there is a name
+		if (computerName.isEmpty()) {
 			error = true;
 			errorMessage += "name can't be empty  <br/>";
-		}		
-		
-		//check if dates are valid
-		if(!Utils.isDate(introduced)){
+		}
+
+		// check if dates are valid
+		if (!Utils.isDate(introduced)) {
 			error = true;
-			errorMessage += "date : "+ introduced +" doesn't follow the format yyyy/mm/dd  <br/>";
-		}		
-			
-		if(!Utils.isDate(discontinued)){
+			errorMessage += "date : " + introduced + " doesn't follow the format yyyy/mm/dd  <br/>";
+		}
+
+		if (!Utils.isDate(discontinued)) {
 			error = true;
-			errorMessage += "date : "+ discontinued +" doesn't follow the format yyyy/mm/dd  <br/>";
-		}		
-		
-		if(error){
+			errorMessage += "date : " + discontinued
+					+ " doesn't follow the format yyyy/mm/dd  <br/>";
+		}
+
+		if (error) {
 			request.setAttribute("errorMessage", errorMessage);
-			doGet(request,response);
+			doGet(request, response);
 			return;
 		}
-		
-		ComputerDto computerDto = new ComputerDto(0, computerName, introduced,
-				discontinued, companyId);
-		
-		this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto));
 
+		ComputerDto computerDto = new ComputerDto(0, computerName, introduced, discontinued,
+				companyId);
+
+		this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto));
 
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 

@@ -3,6 +3,7 @@ package com.nicolas.dao.interfaces;
 import java.util.List;
 
 import com.nicolas.models.Computer;
+import com.nicolas.models.Page;
 
 public interface ComputerDao {
 	/**
@@ -23,16 +24,15 @@ public interface ComputerDao {
 	/**
 	 * Get a page of Computer from the database.
 	 * 
-	 * @param index
+	 * @param page
 	 *            represent the actual page.
-	 * @param nbComputerPerPage
-	 *            number of computers needed
+	 * 
 	 * @param name
 	 *            to filter with
+	 *            
 	 * @return a List<Computer> that is the page[index].
 	 */
-	public List<Computer> getBoundedList(int index, int nbComputerPerPage,
-			String name);
+	public Page getPage(Page page, String name);
 
 	/**
 	 * Delete a computer in the database.

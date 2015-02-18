@@ -24,7 +24,7 @@ public interface ComputerService {
 		* @param index represent the actual page.
 		* @return a List<Computer> that is the page[index].
 		*/
-		public Page getPage(int index, int nbComputerPerPage, String name);
+		public Page getPage(Page page, String name); 
 
 		/**
 		* Delete a computer in the database.

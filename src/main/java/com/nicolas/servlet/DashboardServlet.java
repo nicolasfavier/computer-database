@@ -15,7 +15,7 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 
 /**
- *  load all computers on get  and delete them on post call
+ * load all computers on get and delete them on post call
  */
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
@@ -23,22 +23,20 @@ public class DashboardServlet extends HttpServlet {
 	private ComputerServiceImpl computerService;
 
 	public DashboardServlet() {
-		this.computerService = ServiceManagerImpl.INSTANCE
-				.getComputerServiceImpl();
+		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
 	}
 
 	/**
 	 * load all computers and send them back to the view
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		int index = 0;
-		int nbComputerPerPage = 10;
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Page p = new Page();
 		String search = "";
 
 		String strIndex = request.getParameter("page");
 		if (strIndex != null)
-			index = Utils.getIntFromString(strIndex);
+			p.setIndex( Utils.getIntFromString(strIndex));
 
 		search = request.getParameter("search");
 		if (search == null)
@@ -49,11 +47,10 @@ public class DashboardServlet extends HttpServlet {
 
 		String strNbPerPage = request.getParameter("nbPerPage");
 		if (strNbPerPage != null) {
-			nbComputerPerPage = Utils.getIntFromString(strNbPerPage);
+			p.setNbComputerPerPage(Utils.getIntFromString(strNbPerPage));
 		}
 
-		Page page = this.computerService.getPage(index, nbComputerPerPage,
-				search);
+		Page page = this.computerService.getPage(p, search);
 		request.setAttribute("page", page);
 
 		RequestDispatcher dispatch = getServletContext().getRequestDispatcher(
@@ -64,22 +61,21 @@ public class DashboardServlet extends HttpServlet {
 	/**
 	 * To delete computers
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String idsToDelete = request.getParameter("selection");
 
-		if(idsToDelete != null)
-		{
+		if (idsToDelete != null) {
 			String[] array = idsToDelete.split(",");
-			//TODO send an unique command for delete
+			// TODO send an unique command for delete
 			for (String idString : array) {
 				int id = Utils.getIntFromString(idString);
 				this.computerService.delete(id);
 			}
 		}
-		
+
 		request.setAttribute("message", "Computer(s) deleted with success");
-		doGet(request,response);
+		doGet(request, response);
 	}
 
 }

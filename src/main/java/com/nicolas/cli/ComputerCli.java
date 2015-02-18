@@ -57,10 +57,10 @@ public class ComputerCli {
 	public static void showComputersByPage() {
 		int index = 0;
 		boolean exit = false;
-		Page p;
+		Page p = new Page();
 
 		do {
-			p = computerServiceImpl.getPage(index, 10, "");
+			p = computerServiceImpl.getPage(p,"");
 			System.out.println(p.toString());
 			String input = InputCliUtils.getStringFromUser(
 					"enter for next page q for quit", false);
@@ -68,7 +68,7 @@ public class ComputerCli {
 				exit = true;
 			if (p.getComputerList().size() < p.nbComputerPerPage)
 				exit = true;
-			index++;
+			p.setIndex(p.getIndex() + 1);
 		} while (!exit);
 	}
 
