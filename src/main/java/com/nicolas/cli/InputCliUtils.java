@@ -1,7 +1,5 @@
 package com.nicolas.cli;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
@@ -11,7 +9,8 @@ import com.nicolas.utils.Utils;
  * 
  * @author nicolas
  *
- * this class offer methods to get inputs from user and validate their values
+ *         this class offer methods to get inputs from user and validate their
+ *         values
  */
 public class InputCliUtils {
 	private static Scanner scannerInstance = null;
@@ -25,12 +24,13 @@ public class InputCliUtils {
 
 	/**
 	 * 
-	 * @param description 
+	 * @param description
 	 * @param isNeeded
 	 * @return String
 	 * 
-	 * Ask the user to enter a string, the message shown is pass in description
-	 * if isNeeded is false, enter will skip the input and the function will return null
+	 *         Ask the user to enter a string, the message shown is pass in
+	 *         description if isNeeded is false, enter will skip the input and
+	 *         the function will return null
 	 */
 	public static String getStringFromUser(String description, boolean isNeeded) {
 		String res = null;
@@ -57,18 +57,18 @@ public class InputCliUtils {
 
 	/**
 	 * 
-	 * @param description 
+	 * @param description
 	 * @param isNeeded
 	 * @return LocalDate
 	 * 
-	 * Ask the user to enter a date, the message shown is pass in description
-	 * if isNeeded is false, enter will skip the input and the function will return null
+	 *         Ask the user to enter a date, the message shown is pass in
+	 *         description if isNeeded is false, enter will skip the input and
+	 *         the function will return null
 	 */
 	public static String getDateFromUser(String description, boolean isNeeded) {
 		System.out.println(description);
 		String strDate = "";
 		boolean wrongInput = false;
-		
 
 		do {
 			try {
@@ -77,12 +77,14 @@ public class InputCliUtils {
 				if (strDate.isEmpty() && !isNeeded) {
 					return null;
 				}
-						
-				if(Utils.getDateFromString(strDate) == null){
-					System.out.printf("%s does not respect the format yyyy-mm-dd !%n",strDate);
+
+				if (Utils.getDateFromString(strDate) == null) {
+					System.out.printf(
+							"%s does not respect the format yyyy-mm-dd !%n",
+							strDate);
 					wrongInput = true;
 				}
-				
+
 			} catch (DateTimeParseException exc) {
 				System.out.printf(exc.toString());
 			}
@@ -90,9 +92,7 @@ public class InputCliUtils {
 
 		return strDate;
 	}
-	
 
-	
 	/**
 	 * 
 	 * @param maxVal
@@ -100,8 +100,9 @@ public class InputCliUtils {
 	 * @param isNeeded
 	 * @return int
 	 * 
-	 * Ask the user to enter a int , the message shown is pass in description
-	 * if isNeeded is false, enter will skip the input and the function will return null
+	 *         Ask the user to enter a int , the message shown is pass in
+	 *         description if isNeeded is false, enter will skip the input and
+	 *         the function will return null
 	 * 
 	 */
 	public static int getUserInput(int maxVal, String description,
@@ -123,11 +124,10 @@ public class InputCliUtils {
 				if (tmp.trim().isEmpty() && !isNeeded) {
 					return -1;
 				}
-				if(!Utils.checkInt(tmp)){
+				if (!Utils.checkInt(tmp)) {
 					wrongInput = true;
 					wrongEntrie(maxVal);
-				}
-				else{
+				} else {
 					userVal = Integer.parseInt(tmp);
 					if (maxVal != -1 && userVal > maxVal) {
 						wrongInput = true;

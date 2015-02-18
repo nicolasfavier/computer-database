@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +19,7 @@ import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
 
 public class ComputerDaoImpl implements ComputerDao {
-    static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
+	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
 	public final static String DB_TABLE = "computer";
 	public final static String DB_COLUMN_ID = "id";
@@ -47,10 +49,11 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ CompanyDaoImpl.DB_COLUMN_ID;
 
 	private final static String FIND_COMPUTER_BY_ID_SQL = SELECT_ALL_COMPUTERS_SQL
-			+ " WHERE " +DB_TABLE + "." + DB_COLUMN_ID + " =?";
+			+ " WHERE " + DB_TABLE + "." + DB_COLUMN_ID + " =?";
 
 	private final static String GET_PAGES_SQL = SELECT_ALL_COMPUTERS_SQL
-			+ " WHERE "+ DB_TABLE+"."+DB_COLUMN_NAME+" LIKE ? ORDER BY " + DB_COLUMN_ID + " LIMIT ?,? ";
+			+ " WHERE " + DB_TABLE + "." + DB_COLUMN_NAME + " LIKE ? ORDER BY "
+			+ DB_COLUMN_ID + " LIMIT ?,? ";
 
 	private final static String UPDATE_COMPUTER_SQL = "UPDATE `" + DB_TABLE
 			+ "` SET `" + DB_COLUMN_NAME + "`=?,`" + DB_COLUMN_INTRODUCED
@@ -61,24 +64,21 @@ public class ComputerDaoImpl implements ComputerDao {
 	private final static String DELETE_COMPUTER_SQL = "DELETE FROM " + DB_TABLE
 			+ " WHERE " + DB_COLUMN_ID + " =?";
 
-	private final static String DELETE_COMPUTERS_SQL = "DELETE FROM " + DB_TABLE
-			+ " WHERE " + DB_COLUMN_ID + " IN ?";
-	
+	private final static String DELETE_COMPUTERS_SQL = "DELETE FROM "
+			+ DB_TABLE + " WHERE " + DB_COLUMN_ID + " IN ?";
+
 	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as "
-			+ DB_COLUMN_COUNT + " FROM " + DB_TABLE + " WHERE " + DB_COLUMN_NAME +" LIKE  ?";
+			+ DB_COLUMN_COUNT + " FROM " + DB_TABLE + " WHERE "
+			+ DB_COLUMN_NAME + " LIKE  ?";
 
 	public ComputerDaoImpl() {
 	}
 
 	@Override
-	public boolean add(Computer computer) {
+	public void add(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
-		boolean res = false;
 
-		if(computer == null || computer.getName().trim().isEmpty())
-			return false;
-		
 		try {
 
 			preparedStatement = DbConnection.INSTANCE.getConnection()
@@ -97,16 +97,15 @@ public class ComputerDaoImpl implements ComputerDao {
 			else
 				preparedStatement.setNull(4, java.sql.Types.BIGINT);
 
-			if (preparedStatement.executeUpdate() > 0)
-				res = true;
+			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
-		return res;
 	}
 
 	@Override
@@ -116,9 +115,6 @@ public class ComputerDaoImpl implements ComputerDao {
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		ResultSet rs = null;
 
-		if(index<0)
-			return computer;
-		
 		try {
 
 			preparedStatement = connection
@@ -133,6 +129,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -156,6 +153,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			computerList = ComputerRowMapper.INSTANCE.getList(rs);
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -166,15 +164,13 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public List<Computer> getBoundedList(int index, int nbComputerPerPage, String name) {
+	public List<Computer> getBoundedList(int index, int nbComputerPerPage,
+			String name) {
 		List<Computer> computerList = new ArrayList<Computer>();
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		ResultSet rs = null;
 
-		if(index<0)
-			return computerList;
-		
 		try {
 			preparedStatement = connection.prepareStatement(GET_PAGES_SQL);
 			preparedStatement.setString(1, "%" + name + "%");
@@ -188,6 +184,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -218,6 +215,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -228,14 +226,10 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public boolean update(Computer computer) {
+	public void update(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
-		boolean res = false;
 
-		if(computer == null || computer.getName().trim().isEmpty())
-			return false;
-		
 		try {
 			preparedStatement = connection
 					.prepareStatement(UPDATE_COMPUTER_SQL);
@@ -255,63 +249,52 @@ public class ComputerDaoImpl implements ComputerDao {
 
 			preparedStatement.setInt(5, computer.getId());
 
-			if (preparedStatement.executeUpdate() > 0)
-				res = true;
+			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
-		return res;
 	}
 
 	@Override
-	public boolean delete(int index) {
+	public void delete(int index){
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
-		boolean res = false;
 
-		if(index<0)
-			return false;
-		
 		try {
 			preparedStatement = connection
 					.prepareStatement(DELETE_COMPUTER_SQL);
 			preparedStatement.setInt(1, index);
-			if (preparedStatement.executeUpdate() > 0)
-				res = true;
+			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
-		return res;
 	}
 
 	@Override
-	public boolean deleteIds(String computerIds) {
+	public void deleteIds(String computerIds) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
-		boolean res = false;
 
-		if(computerIds == null)
-			return false;
-		
 		try {
 			preparedStatement = connection
 					.prepareStatement(DELETE_COMPUTERS_SQL);
-			preparedStatement.setString(1, "("+computerIds+")");
-			if (preparedStatement.executeUpdate() > 0)
-				res = true;
+			preparedStatement.setString(1, "(" + computerIds + ")");
+			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DbConnection.INSTANCE.closeConnection(connection);
 		}
-		return res;
 	}
 }

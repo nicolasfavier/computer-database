@@ -68,7 +68,6 @@ public class EditComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatch;
 		
 		boolean error = false;
 		String errorMessage="";
@@ -106,16 +105,8 @@ public class EditComputerServlet extends HttpServlet {
 		ComputerDto computerDto = new ComputerDto(id, computerName, introduced,
 				discontinued, companyId);
 
-		// if the update didn't go through
-		if (!this.computerService.update(ComputerDtoMapper.ComputerFromDto(computerDto))) {
-			dispatch = getServletContext().getRequestDispatcher(
-					"/views/500.jsp");
-			dispatch.forward(request, response);
-		}
-		// else redirect to the dashboard page
-		else {
-			response.sendRedirect(request.getContextPath() + "/dashboard");
-		}
+		this.computerService.update(ComputerDtoMapper.ComputerFromDto(computerDto));
+			
+		response.sendRedirect(request.getContextPath() + "/dashboard");
 	}
-
 }

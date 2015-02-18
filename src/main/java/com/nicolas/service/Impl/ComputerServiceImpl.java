@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dao.impl.DaoManagerImpl;
-import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
@@ -22,8 +21,8 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 	
 	@Override
-	public boolean add(Computer computer) {
-		return computerDaoImpl.add(computer);
+	public void add(Computer computer) {
+		computerDaoImpl.add(computer);
 	}
 
 	@Override
@@ -46,14 +45,14 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
-	public boolean delete(int computerId) {
-		return computerDaoImpl.delete(computerId);
+	public void delete(int computerId) {
+		computerDaoImpl.delete(computerId);
 
 	}
 
 	@Override
-	public boolean update(Computer computer) {
-		return computerDaoImpl.update(computer);
+	public void update(Computer computer) {
+		computerDaoImpl.update(computer);
 
 	}
 
@@ -64,7 +63,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
-	public boolean deleteIds(String computerIds) {
-		return computerDaoImpl.deleteIds(computerIds);
+	public void deleteIds(String computerIds) {
+		computerDaoImpl.deleteIds(computerIds);
 	}
 }

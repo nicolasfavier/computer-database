@@ -3,7 +3,6 @@ package com.nicolas.dao.interfaces;
 import java.util.List;
 
 import com.nicolas.models.Computer;
-import com.nicolas.models.Page;
 
 public interface ComputerDao {
 	/**
@@ -12,7 +11,7 @@ public interface ComputerDao {
 	 * @param ComputerTest
 	 * @return true if it is successful or false if it's not.
 	 */
-	public boolean add(Computer computer);
+	public void add(Computer computer);
 
 	/**
 	 * Get a list of Computer from the database.
@@ -24,10 +23,12 @@ public interface ComputerDao {
 	/**
 	 * Get a page of Computer from the database.
 	 * 
-	 * @param index	 
-	 *        represent the actual page.
-	 * @param nbComputerPerPage number of computers needed
-	 * @param name to filter with
+	 * @param index
+	 *            represent the actual page.
+	 * @param nbComputerPerPage
+	 *            number of computers needed
+	 * @param name
+	 *            to filter with
 	 * @return a List<Computer> that is the page[index].
 	 */
 	public List<Computer> getBoundedList(int index, int nbComputerPerPage,
@@ -40,16 +41,16 @@ public interface ComputerDao {
 	 *            , the id of the computer to delete.
 	 * @return true if the delete is successful or false if it isn't.
 	 */
-	public boolean delete(int computerId);
-	
+	public void delete(int computerId);
+
 	/**
 	 * Delete a computer in the database.
 	 * 
 	 * @param computerIds
-	 *            ,  ids of computers to delete.
+	 *            , ids of computers to delete.
 	 * @return true if the delete is successful or false if it isn't.
 	 */
-	public boolean deleteIds(String computerIds);
+	public void deleteIds(String computerIds);
 
 	/**
 	 * Update a computer in the database.
@@ -58,7 +59,7 @@ public interface ComputerDao {
 	 *            that is the computer to update.
 	 * @return true if the update is successful of false if it isn't.
 	 */
-	public boolean update(Computer computer);
+	public void update(Computer computer);
 
 	/**
 	 * Get a computer by id from the database
@@ -71,7 +72,8 @@ public interface ComputerDao {
 
 	/**
 	 * 
-	 * @param name to filter with, "" to skip filtering
+	 * @param name
+	 *            to filter with, "" to skip filtering
 	 * @return int the number of computers in the database
 	 */
 	public int getCount(String name);

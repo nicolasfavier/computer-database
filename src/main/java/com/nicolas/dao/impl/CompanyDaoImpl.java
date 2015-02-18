@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +51,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
@@ -72,6 +75,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);

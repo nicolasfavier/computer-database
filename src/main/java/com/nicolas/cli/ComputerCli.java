@@ -1,6 +1,5 @@
 package com.nicolas.cli;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
  * 
  * @author nicolas
  *
- * handle user input and actions on computer
+ *         handle user input and actions on computer
  */
 public class ComputerCli {
 
@@ -30,17 +29,19 @@ public class ComputerCli {
 	private static final String MENU_COMPUTER_DETAILS_INDEX = "enter the computer index for details :";
 	private static final String INVALID_INDEX = "This Index is not Valide";
 
-	private static ComputerServiceImpl computerServiceImpl = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
+	private static ComputerServiceImpl computerServiceImpl = ServiceManagerImpl.INSTANCE
+			.getComputerServiceImpl();
 
 	private ComputerCli() {
 	}
-	
+
 	/**
 	 * show all computers return by the database
 	 */
 	public static void showComputers() {
 		List<ComputerDto> computerDtos = new ArrayList<ComputerDto>();
-		computerDtos = ComputerDtoMapper.ComputerToDto(computerServiceImpl.getAll());
+		computerDtos = ComputerDtoMapper.ComputerToDto(computerServiceImpl
+				.getAll());
 		showComputers(computerDtos);
 	}
 
@@ -89,16 +90,15 @@ public class ComputerCli {
 		ComputerDto computerDto = new ComputerDto(0, name, introducedDate,
 				discontinuedDate, tmpCompany);
 
-		if (computerServiceImpl.add(ComputerDtoMapper.ComputerFromDto(computerDto)))
-			System.out.println("create with success");
-		else
-			System.out.println("error");
+		computerServiceImpl.add(ComputerDtoMapper.ComputerFromDto(computerDto));
+		System.out.println("create with success");
 
 	}
 
 	public static void updateComputer() {
 		System.out.println(MENU_COMPUTER_UPDATE_HEADER);
-		ComputerDto computerDto = ComputerDtoMapper.ComputerToDto(selectValidComputerIndex());
+		ComputerDto computerDto = ComputerDtoMapper
+				.ComputerToDto(selectValidComputerIndex());
 
 		String name = InputCliUtils.getStringFromUser(
 				MENU_COMPUTER_CREATION_NAME, false);
@@ -122,10 +122,10 @@ public class ComputerCli {
 			computerDto.setCompany(tmpCompany);
 		}
 
-		if (computerServiceImpl.update(ComputerDtoMapper.ComputerFromDto(computerDto)))
-			System.out.println("update with success");
-		else
-			System.out.println("error");
+		computerServiceImpl.update(ComputerDtoMapper
+				.ComputerFromDto(computerDto));
+		System.out.println("update with success");
+
 	}
 
 	public static void getComputerDetails() {
@@ -142,10 +142,8 @@ public class ComputerCli {
 	public static void deleteComputer() {
 		System.out.println(MENU_COMPUTER_DELETE_HEADER);
 		int index = selectValidComputerIndex().getId();
-		if (computerServiceImpl.delete(index))
-			System.out.println("deleted with success");
-		else
-			System.out.println("error");
+		computerServiceImpl.delete(index);
+		System.out.println("deleted with success");
 
 	}
 

@@ -15,7 +15,6 @@ import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dao.impl.DaoManagerImpl;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
-import com.nicolas.models.Page;
 import com.nicolas.utils.ScriptRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -77,46 +76,33 @@ public class ComputerDaoImplTest {
 
 	@Test
 	public void testdelete() {
-		boolean res = false;
-		res = computerDaoImpl.delete(17);
+		computerDaoImpl.delete(17);
 		Computer c = computerDaoImpl.getByID(17);
-		Assert.assertEquals(res, true);
 		Assert.assertNull(c);
 	}
 
 	@Test
-	public void testdeleteBadId() {
-		boolean res = false;
-		res = computerDaoImpl.delete(30);
-		Assert.assertEquals(res, false);
-	}
-
-	@Test
 	public void testAdd() {
-		boolean res = false;
 		LocalDate in = LocalDate.of(1983, 12, 01);
 		LocalDate dis = LocalDate.of(1984, 04, 01);
 		Company refCompany = new Company(1, "Apple Inc.");
 		Computer refComputer = new Computer(22, "Apple III Plus", in, dis,
 				refCompany);
 
-		res = computerDaoImpl.add(refComputer);
-		Assert.assertEquals(res, true);
+		computerDaoImpl.add(refComputer);
 		Computer c = computerDaoImpl.getByID(22);
 		Assert.assertEquals(refComputer, c);
 	}
 
 	@Test
 	public void testUpdate() {
-		boolean res = false;
 		LocalDate in = LocalDate.of(1983, 12, 01);
 		LocalDate dis = LocalDate.of(1984, 04, 01);
 		Company refCompany = new Company(1, "Apple Inc.");
 		Computer refComputer = new Computer(12, "Apple III Plus", in, dis,
 				refCompany);
 
-		res = computerDaoImpl.update(refComputer);
-		Assert.assertEquals(res, true);
+		computerDaoImpl.update(refComputer);
 		Computer c = computerDaoImpl.getByID(12);
 		Assert.assertEquals(refComputer, c);
 	}
@@ -131,21 +117,21 @@ public class ComputerDaoImplTest {
 	@Test
 	public void testGetBoundedList() {
 		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(0,10,"");
+		computerList = computerDaoImpl.getBoundedList(0, 10, "");
 		Assert.assertEquals(10, computerList.size());
 	}
 
 	@Test
 	public void testGetBoundedListEmpty() {
 		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(20,10,"");
+		computerList = computerDaoImpl.getBoundedList(20, 10, "");
 		Assert.assertEquals(0, computerList.size());
 	}
 
 	@Test
 	public void testGetBoundedListWrongIndex() {
 		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDaoImpl.getBoundedList(-10,10,"");
+		computerList = computerDaoImpl.getBoundedList(-10, 10, "");
 		Assert.assertEquals(0, computerList.size());
 	}
 }

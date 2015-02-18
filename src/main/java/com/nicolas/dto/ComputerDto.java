@@ -1,8 +1,6 @@
 package com.nicolas.dto;
 
 import com.nicolas.models.Company;
-import com.nicolas.models.Computer;
-import com.nicolas.utils.Utils;
 
 public class ComputerDto {
 	private int id;

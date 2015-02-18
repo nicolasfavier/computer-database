@@ -56,7 +56,6 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatch;
 		
 		boolean error = false;
 		String errorMessage="";
@@ -94,16 +93,11 @@ public class AddComputerServlet extends HttpServlet {
 		ComputerDto computerDto = new ComputerDto(0, computerName, introduced,
 				discontinued, companyId);
 		
-		//if there is an error during the add function return error 500
-		if (!this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto))) {
-			dispatch = getServletContext().getRequestDispatcher(
-					"/views/500.jsp");
-			dispatch.forward(request, response);
-			
-		//else redirect to the dashboard
-		} else {
-			response.sendRedirect(request.getContextPath() + "/dashboard");
-		}
+		this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto));
+
+
+		response.sendRedirect(request.getContextPath() + "/dashboard");
+
 	}
 
 }

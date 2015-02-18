@@ -1,5 +1,7 @@
 package service;
 
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.nicolas.dao.impl.CompanyDaoImpl;
 import com.nicolas.models.Company;
-import com.nicolas.models.Computer;
 import com.nicolas.service.Impl.CompanyServiceImpl;
-import com.nicolas.service.Impl.ServiceManagerImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CompanyServiceImplTest {
