@@ -85,4 +85,26 @@ public final class Utils {
 		}
 		return date;
 	}
+	
+	/**
+	 * 
+	 * @param inputString
+	 * @return true if date or blank false else
+	 * 
+	 *         validate a date using regex
+	 */
+	public static boolean isDate(String inputString) {
+		if (inputString == null || inputString.isEmpty())
+			return true;
+
+		Pattern p = Pattern.compile(DATE_REGEX);
+		Matcher m = p.matcher(inputString);
+
+		if (m.find()) {
+			DateTimeFormatter formatter = DateTimeFormatter
+					.ofPattern("yyyy-MM-dd");
+			return true;
+		}
+		return false;
+	}
 }

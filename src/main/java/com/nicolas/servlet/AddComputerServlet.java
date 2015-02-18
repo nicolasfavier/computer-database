@@ -1,9 +1,6 @@
 package com.nicolas.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -16,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
-import com.nicolas.models.Computer;
 import com.nicolas.service.Impl.CompanyServiceImpl;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
@@ -63,18 +59,24 @@ public class AddComputerServlet extends HttpServlet {
 		RequestDispatcher dispatch;
 
 		String computerName = request.getParameter("computerName");
-// TODO check and resend to view if error
-//		LocalDate introduced = Utils.getDateFromString(request
-//				.getParameter("introduced"));
-//		LocalDate discontinued = Utils.getDateFromString(request
-//				.getParameter("discontinued"));
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
-
-		
 		int companyId = Utils.getIntFromString(request
 				.getParameter("companyId"));
 
+		//check if data are valid
+		if(computerName.isEmpty()){
+			request.setAttribute("message", "name can't be empty");
+			doGet(request,response);
+			return;
+		}		
+		
+		if(!Utils.isDate(introduced) || !Utils.isDate(discontinued)){
+			request.setAttribute("message", "date(s) doesn't follow the format yyyy/mm/dd");
+			doGet(request,response);
+			return;
+		}		
+				
 		ComputerDto computerDto = new ComputerDto(0, computerName, introduced,
 				discontinued, companyId);
 		

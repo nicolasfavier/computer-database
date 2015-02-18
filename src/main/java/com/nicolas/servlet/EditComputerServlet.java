@@ -72,17 +72,24 @@ public class EditComputerServlet extends HttpServlet {
 
 		// get data about the computer to update
 		String computerName = request.getParameter("computerName");
-		//TODO check on server side
-		// LocalDate introduced = Utils.getDateFromString(request
-		// .getParameter("introduced"));
-		// LocalDate discontinued = Utils.getDateFromString(request
-		// .getParameter("discontinued"));
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
-
-		int companyId = Utils.getIntFromString(request
-				.getParameter("companyId"));
+		int companyId = Utils.getIntFromString(request.getParameter("companyId"));
 		int id = Utils.getIntFromString(request.getParameter("id"));
+		
+		//check if data are valid
+		if(computerName.isEmpty()){
+			request.setAttribute("message", "name can't be empty");
+			doGet(request,response);
+			return;
+		}		
+		
+		if(!Utils.isDate(introduced) || !Utils.isDate(discontinued)){
+			request.setAttribute("message", "date(s) doesn't follow the format yyyy/mm/dd");
+			doGet(request,response);
+			return;
+		}
+		
 
 		ComputerDto computerDto = new ComputerDto(id, computerName, introduced,
 				discontinued, companyId);

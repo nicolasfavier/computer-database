@@ -9,7 +9,7 @@
 				Computer Database </a>
 		</div>
 	</header>
-
+	<div id="messages" >${message}</div>
 	<section id="main">
 		<div class="container">
 			<div class="row">

@@ -9,6 +9,7 @@
 				Computer Database </a>
 		</div>
 	</header>
+	<div id="messages" >${message}</div>
 	<section id="main">
 		<div class="container">
 			<div class="row">
@@ -50,7 +51,7 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Edit" class="btn btn-primary">
+							<input type="submit" value="Edit" class="btn btn-primary validation">
 							or <a href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
