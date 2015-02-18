@@ -10,10 +10,10 @@ public enum DbConnection {
 
 	public static final String DB_HOST = "localhost";
 	public static final String DB_PORT = "3306";
-	public static final String DB_NAME = Property.INSTANCE.getDataBaseName();
+	public static final String DB_NAME = Property.INSTANCE.getDbName();
 	public static final String DB_TIME_BEHAVIOR = "?zeroDateTimeBehavior=convertToNull";
-	public static final String DB_USER = "admincdb";
-	public static final String DB_PWD = "qwerty1234";
+	public static final String DB_USER = Property.INSTANCE.getDbUser();
+	public static final String DB_PWD = Property.INSTANCE.getDbPassword();
 
 	private DbConnection() {
 		try {

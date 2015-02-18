@@ -7,12 +7,11 @@ import java.util.Properties;
 public enum Property {
 	INSTANCE;
 
+	private String dbName;
+	private String dbUser;
+	private String dbPassword;
+
 	private Property() {
-	}
-
-	public String getDataBaseName() {
-
-		String dataBaseName = "";
 		Properties prop = new Properties();
 		String propFileName = "db.properties";
 
@@ -31,8 +30,23 @@ public enum Property {
 					+ "' not found in the classpath");
 		}
 
-		dataBaseName = prop.getProperty("dbname");
+		dbName = prop.getProperty("dbName");
+		dbUser = prop.getProperty("dbUser");
+		dbPassword = prop.getProperty("dbPassword");
 
-		return dataBaseName;
 	}
+
+	public String getDbName() {
+		return dbName;
+	}
+
+	public String getDbUser() {
+		return dbUser;
+	}
+
+	public String getDbPassword() {
+		return dbPassword;
+	}
+
 }
+
