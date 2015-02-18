@@ -71,22 +71,22 @@ public class AddComputerServlet extends HttpServlet {
 		//check if there is a name
 		if(computerName.isEmpty()){
 			error = true;
-			errorMessage += "name can't be empty  ";
+			errorMessage += "name can't be empty  <br/>";
 		}		
 		
 		//check if dates are valid
 		if(!Utils.isDate(introduced)){
 			error = true;
-			errorMessage += "date : "+ introduced +" doesn't follow the format yyyy/mm/dd  ";
+			errorMessage += "date : "+ introduced +" doesn't follow the format yyyy/mm/dd  <br/>";
 		}		
 			
 		if(!Utils.isDate(discontinued)){
 			error = true;
-			errorMessage += "date : "+ discontinued +" doesn't follow the format yyyy/mm/dd  ";
+			errorMessage += "date : "+ discontinued +" doesn't follow the format yyyy/mm/dd  <br/>";
 		}		
 		
 		if(error){
-			request.setAttribute("message", errorMessage);
+			request.setAttribute("errorMessage", errorMessage);
 			doGet(request,response);
 			return;
 		}

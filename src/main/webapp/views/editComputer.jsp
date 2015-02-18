@@ -1,17 +1,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<jsp:include page="templates/headers.jsp"/>
+<jsp:include page="templates/headers.jsp" />
 <body>
-<jsp:include page="templates/navbar.jsp"/>
-	<div id="messages" ><c:out value="${message}"/></div>
+	<jsp:include page="templates/navbar.jsp" />
 	<section id="main">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">${computer.id}</div>
 					<h1>Edit Computer</h1>
-
+					<c:if test="${errorMessage != null}">
+						<div class="alert alert-danger">
+							Error: <p>${errorMessage}</p><br />
+						</div>
+					</c:if>
 					<form action="editComputer" method="POST">
 						<input type="hidden" value="0" />
 						<fieldset>
@@ -21,7 +24,8 @@
 									name="computerName" placeholder="Computer name"
 									value="${fn:escapeXml(computer.name)}">
 							</div>
-							<input type="hidden" id="computerId" name="id" value="${computer.id}">
+							<input type="hidden" id="computerId" name="id"
+								value="${computer.id}">
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="datetime-local" class="form-control" id="introduced"
@@ -40,20 +44,21 @@
 									<c:forEach items="${companies}" var="company">
 										<option
 											<c:if test="${company.id == computer.id}">selected</c:if>
-											value="${company.id}"><c:out value="${company.name}"/></option>
+											value="${company.id}"><c:out value="${company.name}" /></option>
 									</c:forEach>
 								</select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Edit" class="btn btn-primary validation">
-							or <a href="dashboard" class="btn btn-default">Cancel</a>
+							<input type="submit" value="Edit"
+								class="btn btn-primary validation"> or <a
+								href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 	</section>
-<jsp:include page="/views/templates/footer.jsp"/>
+	<jsp:include page="/views/templates/footer.jsp" />
 </body>
 </html>

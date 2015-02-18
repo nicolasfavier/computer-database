@@ -4,12 +4,16 @@
 <jsp:include page="templates/headers.jsp" />
 <body>
 	<jsp:include page="templates/navbar.jsp" />
-	<div id="messages" ><c:out value="${message}"/></div>
 	<section id="main">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
+					<c:if test="${errorMessage != null}">
+						<div class="alert alert-danger">
+							Error: <p>${errorMessage}</p><br />
+						</div>
+					</c:if>
 					<form action="addComputer" method="POST">
 						<fieldset>
 							<div class="form-group">
