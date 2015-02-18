@@ -23,10 +23,13 @@
 	</li>
 </ul>
 <div class="btn-group btn-group-sm pull-right" role="group">
-	<a type="button" href="dashboard?page=0&nbPerPage=10&search=${search}"
+	<a type="button" href="<myTags:link target="dashboard" index="0"
+				nbPerPage="10" search="${search}"/>"
 		${page.nbComputerPerPage == 10 ? 'class="btn btn-primary"' : 'class="btn btn-default"'}>10</a>
-	<a type="button" href="dashboard?page=0&nbPerPage=50&search=${search}"
+	<a type="button" href="<myTags:link target="dashboard" index="0"
+				nbPerPage="50" search="${search}"/>"
 		${page.nbComputerPerPage == 50 ? 'class="btn btn-primary"' : 'class="btn btn-default"'}>50</a>
-	<a type="button" href="dashboard?page=0&nbPerPage=100&search=${search}"
+	<a type="button" href="<myTags:link target="dashboard" index="0"
+				nbPerPage="100" search="${search}"/>"
 		${page.nbComputerPerPage == 100 ? 'class="btn btn-primary"' : 'class="btn btn-default"'}>100</a>
 </div>
