@@ -69,7 +69,9 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatch;
-
+		
+		boolean error = false;
+		String errorMessage="";
 		// get data about the computer to update
 		String computerName = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
@@ -77,15 +79,25 @@ public class EditComputerServlet extends HttpServlet {
 		int companyId = Utils.getIntFromString(request.getParameter("companyId"));
 		int id = Utils.getIntFromString(request.getParameter("id"));
 		
-		//check if data are valid
+		//check if there is a name
 		if(computerName.isEmpty()){
-			request.setAttribute("message", "name can't be empty");
-			doGet(request,response);
-			return;
+			error = true;
+			errorMessage += "name can't be empty ";
 		}		
 		
-		if(!Utils.isDate(introduced) || !Utils.isDate(discontinued)){
-			request.setAttribute("message", "date(s) doesn't follow the format yyyy/mm/dd");
+		//check if dates are valid
+		if(!Utils.isDate(introduced)){
+			error = true;
+			errorMessage += "date : "+ introduced +" doesn't follow the format yyyy/mm/dd ";
+		}		
+			
+		if(!Utils.isDate(discontinued)){
+			error = true;
+			errorMessage += "date : "+ discontinued +" doesn't follow the format yyyy/mm/dd ";
+		}		
+		
+		if(error){
+			request.setAttribute("message", errorMessage);
 			doGet(request,response);
 			return;
 		}

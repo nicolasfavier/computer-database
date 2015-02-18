@@ -57,33 +57,50 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatch;
-
+		
+		boolean error = false;
+		String errorMessage="";
+		
+		// get data about the computer to add
 		String computerName = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		int companyId = Utils.getIntFromString(request
 				.getParameter("companyId"));
 
-		//check if data are valid
+		//check if there is a name
 		if(computerName.isEmpty()){
-			request.setAttribute("message", "name can't be empty");
-			doGet(request,response);
-			return;
+			error = true;
+			errorMessage += "name can't be empty  ";
 		}		
 		
-		if(!Utils.isDate(introduced) || !Utils.isDate(discontinued)){
-			request.setAttribute("message", "date(s) doesn't follow the format yyyy/mm/dd");
+		//check if dates are valid
+		if(!Utils.isDate(introduced)){
+			error = true;
+			errorMessage += "date : "+ introduced +" doesn't follow the format yyyy/mm/dd  ";
+		}		
+			
+		if(!Utils.isDate(discontinued)){
+			error = true;
+			errorMessage += "date : "+ discontinued +" doesn't follow the format yyyy/mm/dd  ";
+		}		
+		
+		if(error){
+			request.setAttribute("message", errorMessage);
 			doGet(request,response);
 			return;
-		}		
-				
+		}
+		
 		ComputerDto computerDto = new ComputerDto(0, computerName, introduced,
 				discontinued, companyId);
 		
+		//if there is an error during the add function return error 500
 		if (!this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto))) {
 			dispatch = getServletContext().getRequestDispatcher(
 					"/views/500.jsp");
 			dispatch.forward(request, response);
+			
+		//else redirect to the dashboard
 		} else {
 			response.sendRedirect(request.getContextPath() + "/dashboard");
 		}

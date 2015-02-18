@@ -3,13 +3,8 @@
 
 <jsp:include page="templates/headers.jsp"/>
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
-				Computer Database </a>
-		</div>
-	</header>
-	<div id="messages" >${message}</div>
+<jsp:include page="templates/navbar.jsp"/>
+	<div id="messages" ><c:out value="${message}"/></div>
 	<section id="main">
 		<div class="container">
 			<div class="row">

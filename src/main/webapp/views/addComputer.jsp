@@ -1,15 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <jsp:include page="templates/headers.jsp" />
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
-				Computer Database </a>
-		</div>
-	</header>
-	<div id="messages" >${message}</div>
+	<jsp:include page="templates/navbar.jsp" />
+	<div id="messages" ><c:out value="${message}"/></div>
 	<section id="main">
 		<div class="container">
 			<div class="row">
@@ -26,15 +21,16 @@
 							<input type="hidden" id="computerId" name="id"
 								value="${computer.id}">
 							<div class="form-group">
-								<label for="introduced">Introduced date <span class="errorMessage"></span></label> <input
-									type="datetime-local" class="form-control date" id="introduced"
-									name="introduced" placeholder="Introduced date"
+								<label for="introduced">Introduced date <span
+									class="errorMessage"></span></label> <input type="datetime-local"
+									class="form-control date" id="introduced" name="introduced"
+									placeholder="Introduced date"
 									value="${fn:escapeXml(computer.introduced)}">
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date <span class="errorMessage"></span></label> <input
-									type="datetime-local" class="form-control date"
-									id="discontinued" name="discontinued"
+								<label for="discontinued">Discontinued date <span
+									class="errorMessage"></span></label> <input type="datetime-local"
+									class="form-control date" id="discontinued" name="discontinued"
 									placeholder="Discontinued date"
 									value="${fn:escapeXml(computer.discontinued)}">
 							</div>
@@ -42,7 +38,8 @@
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyId">
 									<c:forEach items="${companies}" var="company">
-										<option value="${company.id}"><c:out value="${company.name}"/></option>
+										<option value="${company.id}"><c:out
+												value="${company.name}" /></option>
 									</c:forEach>
 								</select>
 							</div>
