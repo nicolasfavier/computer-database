@@ -2,11 +2,7 @@
 
 <jsp:include page="templates/headers.jsp"/>
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
-		</div>
-	</header>
+	<jsp:include page="templates/navbar.jsp" />
 
 	<section id="main">
 		<div class="container">	

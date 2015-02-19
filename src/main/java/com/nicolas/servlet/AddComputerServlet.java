@@ -25,10 +25,10 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 
 /**
- * Servlet implementation show and add computers when the uri: /addComputer is
+ * Servlet implementation show and add computers when the uri: /add-computer is
  * call
  */
-@WebServlet("/addComputer")
+@WebServlet("/add-computer")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerServiceImpl computerService;

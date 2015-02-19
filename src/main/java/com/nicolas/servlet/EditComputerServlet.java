@@ -28,7 +28,7 @@ import com.nicolas.utils.Utils;
 /**
  * update a computer
  */
-@WebServlet("/editComputer")
+@WebServlet("/edit-computer")
 public class EditComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ComputerServiceImpl computerService;
