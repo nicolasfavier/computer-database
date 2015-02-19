@@ -19,7 +19,7 @@
 							</ul>
 						</div>
 					</c:if>
-					<form action="addComputer" method="POST">
+					<form action="add-computer" method="POST">
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input required

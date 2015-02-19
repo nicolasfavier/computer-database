@@ -68,9 +68,11 @@ public final class Utils {
 	 *         validate a date using regex
 	 */
 	public static LocalDate getDateFromString(String inputString) {
-
 		LocalDate date = null;
 
+		if(inputString == null || inputString.isEmpty())
+			return date;
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		date = LocalDate.parse(inputString, formatter);
 

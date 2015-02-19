@@ -2,6 +2,7 @@ package com.nicolas.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
@@ -49,18 +50,10 @@ public final class ComputerDtoMapper {
 	}
 
 	public static List<ComputerDto> ComputerToDto(List<Computer> computers) {
-		List<ComputerDto> computersDto = new ArrayList<ComputerDto>();
-		for (Computer computer : computers) {
-			computersDto.add(ComputerToDto(computer));
-		}
-		return computersDto;
+	     return computers.stream().map(c->ComputerToDto(c)).collect(Collectors.toList());
 	}
 
-	public static List<Computer> ComputerFromDto(List<ComputerDto> ComputerDtos) {
-		List<Computer> computers = new ArrayList<Computer>();
-		for (ComputerDto computerDto : ComputerDtos) {
-			computers.add(ComputerFromDto(computerDto));
-		}
-		return computers;
+	public static List<Computer> ComputerFromDto(List<ComputerDto> computerDtos) {	
+	     return computerDtos.stream().map(c->ComputerFromDto(c)).collect(Collectors.toList());
 	}
 }

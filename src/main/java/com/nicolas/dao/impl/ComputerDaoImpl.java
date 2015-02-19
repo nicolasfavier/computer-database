@@ -24,6 +24,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
 	public final static String DB_TABLE = "computer";
+	public final static String DB_TABLE_COMPANY = "company";
 	public final static String DB_COLUMN_ID = "id";
 	public final static String DB_COLUMN_NAME = "name";
 	public final static String DB_COLUMN_INTRODUCED = "introduced";
@@ -48,7 +49,7 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ DB_TABLE + "." + DB_COLUMN_ID + " =?";
 
 	private final static String GET_PAGES_SQL = SELECT_ALL_COMPUTERS_SQL + " WHERE " + DB_TABLE
-			+ "." + DB_COLUMN_NAME + " LIKE ? ORDER BY " + DB_COLUMN_ID + " LIMIT ?,? ";
+			+ "." + DB_COLUMN_NAME + " LIKE ? OR "+DB_TABLE_COMPANY+"."+DB_COLUMN_NAME+" LIKE ? ORDER BY " + DB_COLUMN_ID + " LIMIT ?,? ";
 
 	private final static String UPDATE_COMPUTER_SQL = "UPDATE `" + DB_TABLE + "` SET `"
 			+ DB_COLUMN_NAME + "`=?,`" + DB_COLUMN_INTRODUCED + "`=?,`" + DB_COLUMN_DISCONTINUED
@@ -60,8 +61,11 @@ public class ComputerDaoImpl implements ComputerDao {
 	private final static String DELETE_COMPUTERS_SQL = "DELETE FROM " + DB_TABLE + " WHERE "
 			+ DB_COLUMN_ID + " IN ?";
 
-	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as " + DB_COLUMN_COUNT + " FROM "
-			+ DB_TABLE + " WHERE " + DB_COLUMN_NAME + " LIKE  ?";
+	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as " + DB_COLUMN_COUNT + " FROM " +ComputerDaoImpl.DB_TABLE
+			+ " LEFT JOIN " + CompanyDaoImpl.DB_COMPANY_TABLE + " ON " + ComputerDaoImpl.DB_TABLE
+			+ "." + ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID + "="
+			+ CompanyDaoImpl.DB_COMPANY_TABLE + "." + CompanyDaoImpl.DB_COLUMN_ID 
+			+ " WHERE " +DB_TABLE+"."+ DB_COLUMN_NAME + " LIKE  ? OR "+DB_TABLE_COMPANY+"."+DB_COLUMN_NAME+" LIKE ?";
 
 	public ComputerDaoImpl() {
 	}
@@ -82,7 +86,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 			preparedStatement.setTimestamp(3, Utils.getTimestamp(computer.getDiscontinued()));
 
-			if (computer.getCompany() != null)
+			if (computer.getCompany() != null && computer.getCompany().getId() != 0)
 				preparedStatement.setInt(4, computer.getCompany().getId());
 			else
 				preparedStatement.setNull(4, java.sql.Types.BIGINT);
@@ -153,7 +157,6 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	@Override
 	public Page getPage(Page page, String name) {
-		List<Computer> computerList = new ArrayList<Computer>();
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = DbConnection.INSTANCE.getConnection();
 		ResultSet rs = null;
@@ -161,8 +164,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			preparedStatement = connection.prepareStatement(GET_PAGES_SQL);
 			preparedStatement.setString(1, "%" + name + "%");
-			preparedStatement.setInt(2, page.getIndex() * page.getNbComputerPerPage());
-			preparedStatement.setInt(3, page.getNbComputerPerPage());
+			preparedStatement.setString(2, "%" + name + "%");
+			preparedStatement.setInt(3, page.getIndex() * page.getNbComputerPerPage());
+			preparedStatement.setInt(4, page.getNbComputerPerPage());
 
 			rs = preparedStatement.executeQuery();
 
@@ -191,6 +195,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			preparedStatement = connection.prepareStatement(GET_COUNT_SQL);
 			preparedStatement.setString(1, "%" + name + "%");
+			preparedStatement.setString(2, "%" + name + "%");
 			rs = preparedStatement.executeQuery();
 
 			if (rs.next()) {
@@ -227,7 +232,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 			preparedStatement.setTimestamp(3, Utils.getTimestamp(computer.getDiscontinued()));
 
-			if (computer.getCompany() != null)
+			if (computer.getCompany() != null && computer.getCompany().getId() != 0)
 				preparedStatement.setInt(4, computer.getCompany().getId());
 			else
 				preparedStatement.setNull(4, java.sql.Types.BIGINT);
