@@ -3,10 +3,18 @@ package com.nicolas.connection;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.management.RuntimeErrorException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.utils.Property;
 
 public enum DbConnection {
 	INSTANCE;
+
+	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
 	public static final String DB_HOST = "localhost";
 	public static final String DB_PORT = "3306";
@@ -24,17 +32,18 @@ public enum DbConnection {
 	}
 
 	/**
-	 * open and return a new connection 
+	 * open and return a new connection
+	 * 
 	 * @return Connection
 	 */
 	public Connection getConnection() {
 		Connection connection = null;
 		try {
-			connection = java.sql.DriverManager.getConnection("jdbc:mysql://"
-					+ DB_HOST + ":" + DB_PORT + "/" + DB_NAME
-					+ DB_TIME_BEHAVIOR, DB_USER, DB_PWD);
+			connection = java.sql.DriverManager.getConnection("jdbc:mysql://" + DB_HOST + ":"
+					+ DB_PORT + "/" + DB_NAME + DB_TIME_BEHAVIOR, DB_USER, DB_PWD);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		}
 		return connection;
 	}
@@ -43,7 +52,8 @@ public enum DbConnection {
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.error(e.toString());
+			throw new RuntimeErrorException(new Error());
 		}
 	}
 }

@@ -16,6 +16,7 @@ public final class ComputerDtoMapper {
 
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());
+		computerDto.setCompany(computer.getCompany());
 
 		String introduced = "";
 		if (computer.getIntroduced() != null)

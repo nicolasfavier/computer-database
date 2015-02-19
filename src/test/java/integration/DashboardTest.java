@@ -1,12 +1,14 @@
 package integration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -18,13 +20,16 @@ public class DashboardTest {
 	private String baseUrl;
 	private StringBuffer verificationErrors = new StringBuffer();
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public void openDriver() throws Exception {
 		// init driver
 		driver = new FirefoxDriver();
 		baseUrl = "http://localhost:8080/computer-database/dashboard";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
+	}
+	
+	@Before
+	public void setUp() throws Exception {
 		// connect to the url
 		driver.get(baseUrl);
 	}

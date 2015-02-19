@@ -20,7 +20,7 @@
 							</ul>
 						</div>
 					</c:if>
-					<form action="editComputer" method="POST">
+					<form action="edit-computer" method="POST">
 						<input type="hidden" value="0" />
 						<fieldset>
 							<div class="form-group">

@@ -78,10 +78,8 @@ public class InputCliUtils {
 					return null;
 				}
 
-				if (Utils.getDateFromString(strDate) == null) {
-					System.out.printf(
-							"%s does not respect the format yyyy-mm-dd !%n",
-							strDate);
+				if (!Utils.isDate(strDate)) {
+					System.out.printf("%s does not respect the format yyyy-mm-dd !%n", strDate);
 					wrongInput = true;
 				}
 
@@ -105,8 +103,7 @@ public class InputCliUtils {
 	 *         the function will return null
 	 * 
 	 */
-	public static int getUserInput(int maxVal, String description,
-			boolean isNeeded) {
+	public static int getUserInput(int maxVal, String description, boolean isNeeded) {
 		System.out.println(description);
 		return getUserInput(maxVal, isNeeded);
 	}
@@ -146,9 +143,7 @@ public class InputCliUtils {
 		if (maxVal == -1) {
 			System.out.println("wrong input please choose a number");
 		} else {
-			System.out
-					.println("wrong input please choose a number beetween 0 and "
-							+ (maxVal - 1));
+			System.out.println("wrong input please choose a number beetween 0 and " + (maxVal - 1));
 		}
 	}
 

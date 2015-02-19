@@ -166,7 +166,8 @@ public class ComputerDaoImpl implements ComputerDao {
 
 			rs = preparedStatement.executeQuery();
 
-			page.setComputerList(ComputerDtoMapper.ComputerToDto(ComputerRowMapper.INSTANCE.getList(rs)));
+			page.setComputerList(ComputerDtoMapper.ComputerToDto(ComputerRowMapper.INSTANCE
+					.getList(rs)));
 			rs.close();
 
 		} catch (SQLException e) {
