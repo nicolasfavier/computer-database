@@ -9,9 +9,14 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
-					<c:if test="${errorMessage != null}">
+					<c:if test="${validationErrors != null}">
 						<div class="alert alert-danger">
-							Error: <p>${errorMessage}</p><br />
+							<h2>Error:</h2>
+							<ul>
+								<c:forEach items="${validationErrors}" var="error">
+									<li><c:out value="${error}" /></li>
+								</c:forEach>
+							</ul>
 						</div>
 					</c:if>
 					<form action="addComputer" method="POST">
@@ -49,9 +54,8 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add"
-								class="btn btn-primary validation"> or <a
-								href="dashboard" class="btn btn-default">Cancel</a>
+							<input type="submit" value="Add" class="btn btn-primary validation">
+							or <a href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>

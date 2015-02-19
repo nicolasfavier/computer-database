@@ -18,8 +18,7 @@ public final class Utils {
 	public static Timestamp getTimestamp(LocalDate ld) {
 		if (ld == null)
 			return null;
-		Instant instantIntroduced = ld.atStartOfDay()
-				.atZone(ZoneId.systemDefault()).toInstant();
+		Instant instantIntroduced = ld.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
 		return Timestamp.from(instantIntroduced);
 	}
 
@@ -72,20 +71,12 @@ public final class Utils {
 
 		LocalDate date = null;
 
-		if (inputString == null)
-			return date;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		date = LocalDate.parse(inputString, formatter);
 
-		Pattern p = Pattern.compile(DATE_REGEX);
-		Matcher m = p.matcher(inputString);
-
-		if (m.find()) {
-			DateTimeFormatter formatter = DateTimeFormatter
-					.ofPattern("yyyy-MM-dd");
-			date = LocalDate.parse(inputString, formatter);
-		}
 		return date;
 	}
-	
+
 	/**
 	 * 
 	 * @param inputString
@@ -101,8 +92,7 @@ public final class Utils {
 		Matcher m = p.matcher(inputString);
 
 		if (m.find()) {
-			DateTimeFormatter formatter = DateTimeFormatter
-					.ofPattern("yyyy-MM-dd");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			return true;
 		}
 		return false;

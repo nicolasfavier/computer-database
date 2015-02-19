@@ -10,9 +10,14 @@
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">${computer.id}</div>
 					<h1>Edit Computer</h1>
-					<c:if test="${errorMessage != null}">
+					<c:if test="${validationErrors != null}">
 						<div class="alert alert-danger">
-							Error: <p>${errorMessage}</p><br />
+							<h2>Error:</h2>
+							<ul>
+								<c:forEach items="${validationErrors}" var="error">
+									<li><c:out value="${error}" /></li>
+								</c:forEach>
+							</ul>
 						</div>
 					</c:if>
 					<form action="editComputer" method="POST">

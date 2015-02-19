@@ -1,11 +1,17 @@
 package com.nicolas.dto;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.nicolas.models.Company;
+import com.nicolas.validator.Date;
 
 public class ComputerDto {
 	private int id;
+	@NotBlank
 	private String name;
+	@Date
 	private String introduced;
+	@Date
 	private String discontinued;
 	private Company company;
 
