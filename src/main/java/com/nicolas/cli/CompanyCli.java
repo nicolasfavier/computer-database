@@ -9,6 +9,7 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 
 public class CompanyCli {
 	private static final String MENU_COMPANY_INDEX = "enter the computer index:";
+	private static final String MENU_COMPANY_DELETE_HEADER = "############ Company Delete ############";
 	private static CompanyServiceImpl companyServiceImpl = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
 	
 	private CompanyCli(){
@@ -23,6 +24,14 @@ public class CompanyCli {
 		for(Company c : companies){
 			System.out.println(c.toString());
 		}
+	}
+		
+	public static void deleteCompany() {
+		System.out.println(MENU_COMPANY_DELETE_HEADER);
+		int index = selectValidCompanyIndex();
+		companyServiceImpl.DeleteCompany(index);
+		System.out.println("deleted with success");
+
 	}
 	
 	/**

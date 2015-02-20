@@ -94,7 +94,6 @@ public final class Utils {
 		Matcher m = p.matcher(inputString);
 
 		if (m.find()) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			return true;
 		}
 		return false;

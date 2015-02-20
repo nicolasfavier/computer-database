@@ -1,5 +1,6 @@
 package com.nicolas.dao.interfaces;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.nicolas.models.Company;
@@ -17,4 +18,12 @@ public interface CompanyDao {
 	 * @return a list of companies or an empty List if there is no companies
 	 */
 	public List<Company> getAll();
+	
+	/**
+	 * delete a company by his id
+	 * @param companyId the ID of the company to delete
+	 * @param computerIds
+	 */
+	public void deleteId(int companyId, Connection connection );
+
 }

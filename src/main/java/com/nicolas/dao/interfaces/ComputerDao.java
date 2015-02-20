@@ -1,5 +1,6 @@
 package com.nicolas.dao.interfaces;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.nicolas.models.Computer;
@@ -77,5 +78,13 @@ public interface ComputerDao {
 	 * @return int the number of computers in the database
 	 */
 	public int getCount(String name);
+	
+	/**
+	 * @param companyId
+	 *
+	 * All computer with this companyId will be delete
+	 */
+	public void deleteByCompanyId(int companyId, Connection connection );
+
 
 }

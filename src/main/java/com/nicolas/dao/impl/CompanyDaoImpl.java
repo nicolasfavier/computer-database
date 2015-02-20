@@ -11,11 +11,12 @@ import javax.management.RuntimeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.nicolas.connection.DbConnection;
+import com.nicolas.connection.ConnectionManager;
 import com.nicolas.dao.DaoUtils;
 import com.nicolas.dao.interfaces.CompanyDao;
 import com.nicolas.dao.mapper.CompanyRowMapper;
 import com.nicolas.models.Company;
+import com.nicolas.runtimeException.PersistenceException;
 
 public class CompanyDaoImpl implements CompanyDao {
     static Logger LOGGER = LoggerFactory.getLogger(CompanyDaoImpl.class);
@@ -28,7 +29,8 @@ public class CompanyDaoImpl implements CompanyDao {
 			+ DB_COMPANY_TABLE + " WHERE id=?";
 	private final static String GET_ALL_COMPANY = "SELECT * FROM "
 			+ DB_COMPANY_TABLE + ";";
-
+	private final static String DELETE_COMPANY_SQL = "DELETE FROM " + DB_COMPANY_TABLE + " WHERE "+ DB_COLUMN_ID + " = ?";
+			
 	public CompanyDaoImpl() {
 	}
 
@@ -36,7 +38,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	public Company getByID(int companyId) {
 		PreparedStatement preparedStatement = null;
 		java.sql.ResultSet rs = null;
-		Connection connection = DbConnection.INSTANCE.getConnection();
+		Connection connection = ConnectionManager.getConnection(true);
 		Company company = null;
 
 		try {
@@ -55,7 +57,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
-			DbConnection.INSTANCE.closeConnection(connection);
+			ConnectionManager.closeConnection(connection, true);
 		}
 		return company;
 	}
@@ -64,7 +66,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	public List<Company> getAll() {
 		PreparedStatement preparedStatement = null;
 		List<Company> CompanyList = new ArrayList<Company>();
-		Connection connection = DbConnection.INSTANCE.getConnection();
+		Connection connection = ConnectionManager.getConnection(true);
 		java.sql.ResultSet rs = null;
 
 		try {
@@ -79,8 +81,23 @@ public class CompanyDaoImpl implements CompanyDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
-			DbConnection.INSTANCE.closeConnection(connection);
+			ConnectionManager.closeConnection(connection, true);
 		}
 		return CompanyList;
+	}
+	
+	@Override
+	public void deleteId(int companyId, Connection connection ) {
+		java.sql.PreparedStatement preparedStatement = null;
+
+		try {
+			preparedStatement = connection.prepareStatement(DELETE_COMPANY_SQL);
+			preparedStatement.setInt(1, companyId );
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			LOGGER.error(e.toString());
+			throw new PersistenceException(e);
+		}
 	}
 }

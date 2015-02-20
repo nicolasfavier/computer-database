@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,12 +17,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DashboardTest {
-	private WebDriver driver;
-	private String baseUrl;
+	private static WebDriver driver;
+	private static String baseUrl;
 	private StringBuffer verificationErrors = new StringBuffer();
 
 	@BeforeClass
-	public void openDriver() throws Exception {
+	public static void openDriver() throws Exception {
 		// init driver
 		driver = new FirefoxDriver();
 		baseUrl = "http://localhost:8080/computer-database/dashboard";
@@ -36,19 +37,18 @@ public class DashboardTest {
 
 	@After
 	public void tearDown() throws Exception {
-
-		driver.quit();
-
 		String verificationErrorString = verificationErrors.toString();
 
 		if (!"".equals(verificationErrorString)) {
-
 			fail(verificationErrorString);
-
 		}
-
 	}
 
+	@AfterClass
+	public static void closeDriver() throws Exception {
+		driver.quit();
+	}
+	
 	@Test
 	public void testSearchEmpty() throws Exception {
 

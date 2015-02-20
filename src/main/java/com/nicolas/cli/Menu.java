@@ -1,5 +1,6 @@
 package com.nicolas.cli;
 
+
 public class Menu {
 
 	private static final String MENU_HEADER = ""
@@ -11,7 +12,7 @@ public class Menu {
 		SHOW_COMPUTER("List computers"), SHOW_PBYP_COMPUTER(
 				"List computers page by page"), SHOW_COMPANIES("List companies"), SHOW_COMPUTER_DETAILS(
 				"Show computer details"), CREATE_COMPUTER("Create a computer"), UPDATE_COMPUTER(
-				"Update a computer"), DELETE_COMPUTER("Delete a computer"), QUIT(
+				"Update a computer"), DELETE_COMPUTER("Delete a computer"), DELETE_COMPANY("Delete a company"), QUIT(
 				"Quit");
 
 		private String description = "";
@@ -81,6 +82,10 @@ public class Menu {
 			ComputerCli.deleteComputer();
 			break;
 
+		case DELETE_COMPANY:
+			CompanyCli.deleteCompany();
+			break;
+			
 		case QUIT:
 			quit();
 			break;

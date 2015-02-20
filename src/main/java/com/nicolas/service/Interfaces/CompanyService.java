@@ -17,4 +17,10 @@ public interface CompanyService {
 	 * @return a list of companies or an empty List if there is no companies
 	 */
 	public List<Company> getAll();
+	
+	/**
+	 * delete the company of the given Id, all computers using this company will be delete too
+	 * @param companyId to delete
+	 */
+	public void DeleteCompany(int companyId);
 }
