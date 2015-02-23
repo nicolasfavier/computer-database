@@ -8,6 +8,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 
+ * utils to handle dates and int format
+ *
+ */
 public final class Utils {
 	private Utils() {
 	}

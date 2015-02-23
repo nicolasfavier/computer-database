@@ -11,6 +11,11 @@ import javax.validation.ValidatorFactory;
 
 import com.nicolas.dto.ComputerDto;
 
+/**
+ * 
+ * run the validators on DTOs and return errors in a List of string
+ *
+ */
 public class ComputerDtoValidator {
 	private static Validator validator;
 

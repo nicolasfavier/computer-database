@@ -6,6 +6,11 @@ import java.util.stream.Collectors;
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
 
+/**
+ * 
+ * Mapper to pass from Computer to computerDto and the other way
+ *
+ */
 public final class ComputerDtoMapper {
 
 	private ComputerDtoMapper() {

@@ -21,6 +21,11 @@ import com.nicolas.models.Page;
 import com.nicolas.runtimeException.PersistenceException;
 import com.nicolas.utils.Utils;
 
+/**
+ * 
+ * implementation of ComputerDao to get,add,delete computers
+ *
+ */
 public class ComputerDaoImpl implements ComputerDao {
 	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 

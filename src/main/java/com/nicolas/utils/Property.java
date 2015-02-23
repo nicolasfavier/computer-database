@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * 
+ * get all properties present in the db.properties file
+ *
+ */
 public enum Property {
 	INSTANCE;
 

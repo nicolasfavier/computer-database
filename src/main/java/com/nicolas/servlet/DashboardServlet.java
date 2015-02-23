@@ -15,7 +15,8 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 
 /**
- * load all computers on get and delete them on post call
+ * Servlet implementation show computers when the uri: /dashboard is
+ * called
  */
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
@@ -57,25 +58,4 @@ public class DashboardServlet extends HttpServlet {
 				"/views/dashboard.jsp");
 		dispatch.forward(request, response);
 	}
-
-	/**
-	 * To delete computers
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String idsToDelete = request.getParameter("selection");
-
-		if (idsToDelete != null) {
-			String[] array = idsToDelete.split(",");
-			// TODO send an unique command for delete
-			for (String idString : array) {
-				int id = Utils.getIntFromString(idString);
-				this.computerService.delete(id);
-			}
-		}
-
-		request.setAttribute("message", "Computer(s) deleted with success");
-		doGet(request, response);
-	}
-
 }

@@ -2,8 +2,6 @@ package com.nicolas.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,13 +25,6 @@ public class DeleteComputerServlet extends HttpServlet {
 	}
 
 	/**
-	 * load all computers and send them back to the view
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	}
-
-	/**
 	 * To delete computers
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -50,11 +41,8 @@ public class DeleteComputerServlet extends HttpServlet {
 		}
 
 		request.setAttribute("message", "Computer(s) deleted with success");
-		doGet(request, response);
-		
-		ServletContext sc = getServletContext();
-		RequestDispatcher rd = sc.getRequestDispatcher("/dashboard");
-		rd.forward(request, response);
+	
+		response.sendRedirect(request.getContextPath() + "/dashboard");
 	}
 
 }

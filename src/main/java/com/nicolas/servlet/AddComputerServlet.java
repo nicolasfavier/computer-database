@@ -22,7 +22,7 @@ import com.nicolas.validator.ComputerDtoValidator;
 
 /**
  * Servlet implementation show and add computers when the uri: /add-computer is
- * call
+ * called
  */
 @WebServlet("/add-computer")
 public class AddComputerServlet extends HttpServlet {

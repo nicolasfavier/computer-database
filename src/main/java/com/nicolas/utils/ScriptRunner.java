@@ -4,6 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * 
+ * execute a script to drop and recreate the database for tests
+ *
+ */
 public class ScriptRunner {
 
 	public static void runScript() {

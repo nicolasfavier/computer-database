@@ -19,7 +19,10 @@ public enum ComputerRowMapper implements RowMappable<Computer> {
 	INSTANCE;
 	private ComputerRowMapper() {
 	}
-
+	
+	/**
+	 * get a list of computers from a result set
+	 */
 	public List<Computer> getList(ResultSet rs) throws SQLException {
 		List<Computer> computerList = new ArrayList<Computer>();
 		while (rs.next()) {
@@ -29,6 +32,9 @@ public enum ComputerRowMapper implements RowMappable<Computer> {
 		return computerList;
 	}
 
+	/**
+	 * get a Computer from a result set
+	 */
 	public Computer getObject(ResultSet rs) throws SQLException {
 		Computer computer = null;
 		Company company = null;

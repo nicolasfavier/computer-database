@@ -5,6 +5,11 @@ import java.util.List;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 
+/**
+ * 
+ *API to handle the business layer for Computers
+ *
+ */
 public interface ComputerService {
 		/**
 		* Permit to add a computer in the database.

@@ -12,13 +12,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.nicolas.connection.ConnectionManager;
 import com.nicolas.dao.impl.CompanyDaoImpl;
-import com.nicolas.dao.impl.DaoManagerImpl;
+import com.nicolas.dao.impl.DaoManager;
 import com.nicolas.models.Company;
 import com.nicolas.utils.ScriptRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CompanyDaoTest {
-	private CompanyDaoImpl companyDao = DaoManagerImpl.INSTANCE
+	private CompanyDaoImpl companyDao = DaoManager.INSTANCE
 			.getCompanyDaoImpl();
 
 	@Before

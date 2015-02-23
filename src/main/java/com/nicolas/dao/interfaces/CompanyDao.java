@@ -5,6 +5,11 @@ import java.util.List;
 
 import com.nicolas.models.Company;
 
+/**
+ * 
+ * API to handle  database request for companies
+ *
+ */
 public interface CompanyDao {
 	/**
 	 * get a company by ID

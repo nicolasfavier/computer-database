@@ -7,6 +7,11 @@ import com.nicolas.models.Company;
 import com.nicolas.service.Impl.CompanyServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
 
+/**
+ * 
+ * handle companies through command lines
+ *
+ */
 public class CompanyCli {
 	private static final String MENU_COMPANY_INDEX = "enter the computer index:";
 	private static final String MENU_COMPANY_DELETE_HEADER = "############ Company Delete ############";

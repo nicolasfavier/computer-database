@@ -6,6 +6,11 @@ import java.util.List;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 
+/**
+ * 
+ * API to handle  database request for computers
+ *
+ */
 public interface ComputerDao {
 	/**
 	 * Permit to add a computer in the database.

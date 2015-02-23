@@ -19,6 +19,9 @@ public enum CompanyRowMapper implements RowMappable<Company> {
 	private CompanyRowMapper() {
 	}
 
+	/**
+	 * get a list of companies from a result set
+	 */
 	public List<Company> getList(ResultSet rs) throws SQLException {
 		List<Company> companyList = new ArrayList<Company>();
 		while (rs.next()) {
@@ -28,6 +31,9 @@ public enum CompanyRowMapper implements RowMappable<Company> {
 		return companyList;
 	}
 
+	/**
+	 * get a company from a result set
+	 */
 	public Company getObject(ResultSet rs) throws SQLException {
 		Company company = null;
 		company = new Company(rs.getInt(CompanyDaoImpl.DB_COLUMN_ID),

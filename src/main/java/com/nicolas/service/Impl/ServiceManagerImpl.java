@@ -1,6 +1,10 @@
 package com.nicolas.service.Impl;
 
-
+/**
+ * 
+ * Create and return Services Implementations
+ *
+ */
 public enum ServiceManagerImpl {
 	INSTANCE;
 	

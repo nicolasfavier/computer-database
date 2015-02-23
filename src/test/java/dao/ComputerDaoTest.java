@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.nicolas.connection.ConnectionManager;
-import com.nicolas.dao.impl.DaoManagerImpl;
+import com.nicolas.dao.impl.DaoManager;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
@@ -22,7 +22,7 @@ import com.nicolas.utils.ScriptRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerDaoTest {
-	private ComputerDao computerDao = DaoManagerImpl.INSTANCE.getComputerDaoImpl();
+	private ComputerDao computerDao = DaoManager.INSTANCE.getComputerDaoImpl();
 
 	@Mock
 	private Company cmp;

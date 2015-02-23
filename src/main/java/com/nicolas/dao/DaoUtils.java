@@ -4,6 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 
+ * close resultes set and preparedStatement
+ *
+ */
 public final class DaoUtils {
 	private DaoUtils() {
 	}

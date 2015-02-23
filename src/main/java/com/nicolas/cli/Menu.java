@@ -1,6 +1,10 @@
 package com.nicolas.cli;
 
-
+/**
+ * 
+ * Display a menu of  various actions on computers and companies
+ *
+ */
 public class Menu {
 
 	private static final String MENU_HEADER = ""

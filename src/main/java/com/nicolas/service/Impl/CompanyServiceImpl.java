@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.nicolas.connection.ConnectionManager;
 import com.nicolas.dao.impl.ComputerDaoImpl;
-import com.nicolas.dao.impl.DaoManagerImpl;
+import com.nicolas.dao.impl.DaoManager;
 import com.nicolas.dao.interfaces.CompanyDao;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
@@ -18,8 +18,8 @@ import com.nicolas.service.Interfaces.CompanyService;
 public class CompanyServiceImpl implements CompanyService {
 	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
-	private CompanyDao companyDao = DaoManagerImpl.INSTANCE.getCompanyDaoImpl();
-	private ComputerDao computerDao = DaoManagerImpl.INSTANCE.getComputerDaoImpl();
+	private CompanyDao companyDao = DaoManager.INSTANCE.getCompanyDaoImpl();
+	private ComputerDao computerDao = DaoManager.INSTANCE.getComputerDaoImpl();
 
 	public CompanyServiceImpl() {
 	}
@@ -39,6 +39,10 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyDao.getAll();
 	}
 
+	/**
+	 * Delete a company, all computers with this id are deleted and then 
+	 * the company is deleted. the operation is placed in a transaction
+	 */
 	@Override
 	public void DeleteCompany(int companyId) {
 		Connection connection = ConnectionManager.getConnection(false);

@@ -18,6 +18,11 @@ import com.nicolas.dao.mapper.CompanyRowMapper;
 import com.nicolas.models.Company;
 import com.nicolas.runtimeException.PersistenceException;
 
+/**
+ * 
+ * implementation of CompanyDao to get,add,delete companies
+ *
+ */
 public class CompanyDaoImpl implements CompanyDao {
     static Logger LOGGER = LoggerFactory.getLogger(CompanyDaoImpl.class);
 

@@ -2,7 +2,7 @@ package com.nicolas.service.Impl;
 
 import java.util.List;
 
-import com.nicolas.dao.impl.DaoManagerImpl;
+import com.nicolas.dao.impl.DaoManager;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
@@ -10,7 +10,7 @@ import com.nicolas.service.Interfaces.ComputerService;
 
 public class ComputerServiceImpl implements ComputerService {
 
-	private ComputerDao computerDao = DaoManagerImpl.INSTANCE.getComputerDaoImpl();
+	private ComputerDao computerDao = DaoManager.INSTANCE.getComputerDaoImpl();
 
 	public ComputerServiceImpl() {
 	}

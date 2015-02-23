@@ -12,6 +12,11 @@ import com.jolbox.bonecp.BoneCPConfig;
 import com.nicolas.runtimeException.PersistenceException;
 import com.nicolas.utils.Property;
 
+/**
+ * 
+ * Create and handle connection 
+ *
+ */
 public class ConnectionManager {
 	public static final String DB_USER = Property.INSTANCE.getDbUser();
 	public static final String DB_PWD = Property.INSTANCE.getDbPassword();
@@ -129,7 +134,7 @@ public class ConnectionManager {
 	}
 
 	/**
-	 * Use to rollback a transactio if an exception is throw
+	 * Use to rollback a transaction if an exception is throw
 	 * 
 	 * @param connection
 	 */

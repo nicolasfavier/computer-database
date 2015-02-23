@@ -1,7 +1,11 @@
 package com.nicolas.dao.impl;
 
-
-public enum DaoManagerImpl {
+/**
+ * 
+ * Create and return DAO Implementations
+ *
+ */
+public enum DaoManager {
 		INSTANCE;
 		
 		private static CompanyDaoImpl companyDaoImpl;
@@ -12,7 +16,7 @@ public enum DaoManagerImpl {
 			computerDaoImpl = new ComputerDaoImpl();	
 		}
 		
-		private DaoManagerImpl(){}
+		private DaoManager(){}
 		
 		public CompanyDaoImpl getCompanyDaoImpl(){
 			return companyDaoImpl;

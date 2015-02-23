@@ -5,6 +5,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.nicolas.models.Company;
 import com.nicolas.validator.Date;
 
+/**
+ * light object for the view
+ * Date are store with string (smaller that object date)
+ *
+ */
 public class ComputerDto {
 	private int id;
 	@NotBlank

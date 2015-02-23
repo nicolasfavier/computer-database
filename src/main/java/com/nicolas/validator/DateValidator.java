@@ -5,6 +5,11 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.nicolas.utils.Utils;
 
+/**
+ * 
+ * define the condition a date must fulfill 
+ *
+ */
 public class DateValidator implements ConstraintValidator<Date, String> {
 
 	@Override

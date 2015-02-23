@@ -7,7 +7,6 @@ import com.nicolas.utils.Utils;
 
 /**
  * 
- * @author nicolas
  *
  *         this class offer methods to get inputs from user and validate their
  *         values
