@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.models.Page;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
@@ -21,6 +25,7 @@ import com.nicolas.utils.Utils;
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	private ComputerServiceImpl computerService;
 
 	public DashboardServlet() {
@@ -54,8 +59,9 @@ public class DashboardServlet extends HttpServlet {
 		Page page = this.computerService.getPage(p, search);
 		request.setAttribute("page", page);
 
-		RequestDispatcher dispatch = getServletContext().getRequestDispatcher(
-				"/views/dashboard.jsp");
+		LOGGER.info("The page has been prepared, redirecting to the view");
+
+		RequestDispatcher dispatch = getServletContext().getRequestDispatcher("/views/dashboard.jsp");
 		dispatch.forward(request, response);
 	}
 }

@@ -14,7 +14,7 @@ import com.nicolas.validator.ComputerDtoValidator;
 
 /**
  * 
- * handle computers through command lines
+ * Command Line Interface for computers
  *
  */
 public class ComputerCli {

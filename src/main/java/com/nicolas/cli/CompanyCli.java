@@ -9,7 +9,7 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 
 /**
  * 
- * handle companies through command lines
+ * Command Line Interface for companies
  *
  */
 public class CompanyCli {

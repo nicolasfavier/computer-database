@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
@@ -18,6 +22,7 @@ import com.nicolas.utils.Utils;
 @WebServlet("/delete")
 public class DeleteComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	private ComputerServiceImpl computerService;
 
 	public DeleteComputerServlet() {
@@ -29,7 +34,7 @@ public class DeleteComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String idsToDelete = request.getParameter("selection");
+		final String idsToDelete = request.getParameter("selection");
 
 		if (idsToDelete != null) {
 			String[] array = idsToDelete.split(",");
@@ -40,8 +45,9 @@ public class DeleteComputerServlet extends HttpServlet {
 			}
 		}
 
+		LOGGER.info("Computer(s) have been delete, redirecting to the view ");
+
 		request.setAttribute("message", "Computer(s) deleted with success");
-	
 		response.sendRedirect(request.getContextPath() + "/dashboard");
 	}
 

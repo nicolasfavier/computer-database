@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
@@ -27,6 +31,7 @@ import com.nicolas.validator.ComputerDtoValidator;
 @WebServlet("/add-computer")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	private ComputerServiceImpl computerService;
 	private CompanyServiceImpl companyService;
 
@@ -36,7 +41,7 @@ public class AddComputerServlet extends HttpServlet {
 	}
 
 	/**
-	 * get all the company and resent them to the view
+	 * used to get all the companies and resent them to the view
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -47,13 +52,15 @@ public class AddComputerServlet extends HttpServlet {
 		List<Company> companies = this.companyService.getAll();
 		request.setAttribute("companies", companies);
 
+		LOGGER.info("get the view for add Computer");
 		dispatch = getServletContext().getRequestDispatcher(redirectView);
 		dispatch.forward(request, response);
 	}
 
 	/**
-	 * add a computer if success call the doGet if not redirect to a 505error
-	 * page
+	 * add a computer 
+	 * 		if success call the doGet 
+	 * 		if not redirect to a 505 error page
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -72,8 +79,10 @@ public class AddComputerServlet extends HttpServlet {
 
 		if (validationErrors.size() == 0) {
 			this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto));
+			LOGGER.info("Computer added with success, redirecting to the Dashboard");
 			response.sendRedirect(request.getContextPath() + "/dashboard");
 		} else {
+			LOGGER.info("Wrong input, redirecting to the view");
 			request.setAttribute("validationErrors", validationErrors);
 			doGet(request, response);
 		}
