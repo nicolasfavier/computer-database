@@ -59,10 +59,10 @@ public class AddComputerServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		// get data about the computer to add
-		String computerName = request.getParameter("computerName");
-		String introduced = request.getParameter("introduced");
-		String discontinued = request.getParameter("discontinued");
-		int companyId = Utils.getIntFromString(request.getParameter("companyId"));
+		final String computerName = request.getParameter("computerName");
+		final String introduced = request.getParameter("introduced");
+		final String discontinued = request.getParameter("discontinued");
+		final int companyId = Utils.getIntFromString(request.getParameter("companyId"));
 
 		ComputerDto computerDto = new ComputerDto(0, computerName, introduced, discontinued,
 				companyId);
