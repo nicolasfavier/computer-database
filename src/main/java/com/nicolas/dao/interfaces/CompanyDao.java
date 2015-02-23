@@ -20,7 +20,7 @@ public interface CompanyDao {
 	public List<Company> getAll();
 	
 	/**
-	 * delete a company by his id
+	 * delete a company by id
 	 * @param companyId the ID of the company to delete
 	 * @param computerIds
 	 */

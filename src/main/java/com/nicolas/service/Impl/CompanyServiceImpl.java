@@ -7,9 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.nicolas.connection.ConnectionManager;
-import com.nicolas.dao.impl.CompanyDaoImpl;
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dao.impl.DaoManagerImpl;
+import com.nicolas.dao.interfaces.CompanyDao;
+import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
 import com.nicolas.runtimeException.PersistenceException;
 import com.nicolas.service.Interfaces.CompanyService;
@@ -17,24 +18,25 @@ import com.nicolas.service.Interfaces.CompanyService;
 public class CompanyServiceImpl implements CompanyService {
 	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
-	private CompanyDaoImpl companyDaoImpl = DaoManagerImpl.INSTANCE.getCompanyDaoImpl();
-	private ComputerDaoImpl computerDaoImpl = DaoManagerImpl.INSTANCE.getComputerDaoImpl();
+	private CompanyDao companyDao = DaoManagerImpl.INSTANCE.getCompanyDaoImpl();
+	private ComputerDao computerDao = DaoManagerImpl.INSTANCE.getComputerDaoImpl();
 
 	public CompanyServiceImpl() {
 	}
 
-	public CompanyServiceImpl(CompanyDaoImpl companyDaoImpl) {
-		this.companyDaoImpl = companyDaoImpl;
+	public CompanyServiceImpl(CompanyDao companyDao, ComputerDao computerDao) {
+		this.companyDao = companyDao;
+		this.computerDao = computerDao;
 	}
 
 	@Override
 	public Company getByID(int companyId) {
-		return companyDaoImpl.getByID(companyId);
+		return companyDao.getByID(companyId);
 	}
 
 	@Override
 	public List<Company> getAll() {
-		return companyDaoImpl.getAll();
+		return companyDao.getAll();
 	}
 
 	@Override
@@ -42,8 +44,8 @@ public class CompanyServiceImpl implements CompanyService {
 		Connection connection = ConnectionManager.getConnection(false);
 
 		try {
-			computerDaoImpl.deleteByCompanyId(companyId, connection);
-			companyDaoImpl.deleteId(companyId, connection);
+			computerDao.deleteByCompanyId(companyId, connection);
+			companyDao.deleteId(companyId, connection);
 		} catch (PersistenceException e) {
 			ConnectionManager.rollback(connection);
 		} finally {

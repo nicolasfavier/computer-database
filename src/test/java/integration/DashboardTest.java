@@ -72,23 +72,7 @@ public class DashboardTest {
 		searchbox.sendKeys("Macintosh LC");
 		searchsubmit.click();
 
-		verifyComputerList(5);
-	}
-
-	@Test
-	public void testSearchWrongWord() throws Exception {
-
-		WebElement searchbox = driver.findElement(By.id("searchbox"));
-		WebElement searchsubmit = driver.findElement(By.id("searchsubmit"));
-
-		searchbox.clear();
-		searchbox.sendKeys("Macintosh LCvsvdsvdsvdsv");
-		searchsubmit.click();
-
-		WebElement listComputer = driver.findElement(By.id("results"));
-		// List<WebElement> computers = listComputer.findElements(By.ByXPath())
-		// TODO see why findelements by id so long when empty
-		assertEquals(0, 0);
+		verifyComputerList(2);
 	}
 
 	@Test
