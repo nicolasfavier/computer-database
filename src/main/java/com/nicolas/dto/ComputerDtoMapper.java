@@ -3,6 +3,7 @@ package com.nicolas.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
 
@@ -43,13 +44,16 @@ public final class ComputerDtoMapper {
 		if (computerDto == null)
 			return computer;
 
-		computer.setId(computerDto.getId());
-		computer.setName(computerDto.getName());
-		computer.setCompany(computerDto.getCompany());
-		computer.setIntroduced(Utils.getDateFromString(computerDto
-				.getIntroduced()));
-		computer.setDiscontinued(Utils.getDateFromString(computerDto
-				.getDiscontinued()));
+		computer = new Computer.Builder()
+		.id(computerDto.getId())
+		.name(computerDto.getName())
+		.company(computerDto.getCompany())
+		.introduced(Utils.getDateFromString(computerDto
+				.getIntroduced()))
+		.discontinued(Utils.getDateFromString(computerDto
+				.getDiscontinued()))
+		.build();
+		
 		return computer;
 	}
 

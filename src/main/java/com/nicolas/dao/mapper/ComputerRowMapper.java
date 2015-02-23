@@ -9,17 +9,18 @@ import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
+
 /**
  * 
  * @author nicolas
  *
- *map a row from the db to a computer
+ *         map a row from the db to a computer
  */
 public enum ComputerRowMapper implements RowMappable<Computer> {
 	INSTANCE;
 	private ComputerRowMapper() {
 	}
-	
+
 	/**
 	 * get a list of computers from a result set
 	 */
@@ -38,19 +39,21 @@ public enum ComputerRowMapper implements RowMappable<Computer> {
 	public Computer getObject(ResultSet rs) throws SQLException {
 		Computer computer = null;
 		Company company = null;
-		
-		//if the company is not null we have to map it too
+
+		// if the company is not null we have to map it too
 		if (rs.getInt(ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID) != 0) {
-			company = new Company(
-					rs.getInt(ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID),
+			company = new Company(rs.getInt(ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID),
 					rs.getString(ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_NAME));
 		}
-		computer = new Computer(rs.getInt(ComputerDaoImpl.DB_COLUMN_ID),
-				rs.getString(ComputerDaoImpl.DB_COLUMN_NAME), Utils.getLocalDate(rs
-						.getTimestamp(ComputerDaoImpl.DB_COLUMN_INTRODUCED)),
-				Utils.getLocalDate(rs
-						.getTimestamp(ComputerDaoImpl.DB_COLUMN_DISCONTINUED)),
-				company);
+		computer = new Computer.Builder()
+				.id(rs.getInt(ComputerDaoImpl.DB_COLUMN_ID))
+				.name(rs.getString(ComputerDaoImpl.DB_COLUMN_NAME))
+				.company(company)
+				.introduced(
+						Utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_INTRODUCED)))
+				.discontinued(
+						Utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_DISCONTINUED)))
+				.build();
 
 		return computer;
 	}

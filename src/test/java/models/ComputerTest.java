@@ -1,6 +1,7 @@
 package models;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -25,7 +26,8 @@ public class ComputerTest {
 		LocalDate date = LocalDate.of(2015, Month.JANUARY, 1);
 
 		Computer c = new Computer();
-		Computer c1 = new Computer(id, name, date, date, cmp);
+		Computer c1 = new Computer.Builder().id(id).name(name).introduced(date)
+				.discontinued(date).company(cmp).build();
 
 		assertNotNull(c);
 		assertNotNull(c1);
@@ -37,7 +39,8 @@ public class ComputerTest {
 		String name = "test";
 		LocalDate date = LocalDate.of(2015, Month.JANUARY, 1);
 
-		Computer c1 = new Computer(id, name, date, date, cmp);
+		Computer c1 = new Computer.Builder().id(id).name(name).introduced(date)
+				.discontinued(date).company(cmp).build();
 
 		assertEquals(id, c1.getId());
 		assertNotNull(c1.getCompany());
@@ -55,7 +58,8 @@ public class ComputerTest {
 		LocalDate dateI = LocalDate.of(2018, Month.MARCH, 6);
 		LocalDate dateD = LocalDate.of(2019, Month.FEBRUARY, 9);
 
-		Computer c1 = new Computer(id, name, dateI, dateD, cmp);
+		Computer c1 = new Computer.Builder().id(id).name(name).introduced(dateI)
+				.discontinued(dateD).company(cmp).build();
 
 		assertEquals(id, c1.getId());
 		assertNotNull(c1.getCompany());

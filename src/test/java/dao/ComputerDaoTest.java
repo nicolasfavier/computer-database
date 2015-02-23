@@ -53,7 +53,8 @@ public class ComputerDaoTest {
 		LocalDate in = LocalDate.of(1983, 12, 01);
 		LocalDate dis = LocalDate.of(1984, 04, 01);
 		Company refCompany = new Company(1, "Apple Inc.");
-		Computer refComputer = new Computer(17, "Apple III Plus", in, dis, refCompany);
+		Computer refComputer = new Computer.Builder().id(17).name("Apple III Plus").introduced(in)
+				.discontinued(dis).company(refCompany).build();
 
 		c = computerDao.getByID(17);
 		Assert.assertEquals(refComputer, c);
@@ -63,7 +64,8 @@ public class ComputerDaoTest {
 	public void testGetByIDNullDate() {
 		Computer c = null;
 		Company refCompany = new Company(2, "Thinking Machines");
-		Computer refComputer = new Computer(2, "CM-2a", null, null, refCompany);
+		Computer refComputer = new Computer.Builder().id(2).name("CM-2a").company(refCompany)
+				.build();
 
 		c = computerDao.getByID(2);
 		Assert.assertEquals(refComputer, c);
@@ -87,7 +89,8 @@ public class ComputerDaoTest {
 		LocalDate in = LocalDate.of(1983, 12, 01);
 		LocalDate dis = LocalDate.of(1984, 04, 01);
 		Company refCompany = new Company(1, "Apple Inc.");
-		Computer refComputer = new Computer(22, "Apple III Plus", in, dis, refCompany);
+		Computer refComputer = new Computer.Builder().id(22).name("Apple III Plus").introduced(in)
+				.discontinued(dis).company(refCompany).build();
 
 		computerDao.add(refComputer);
 		Computer c = computerDao.getByID(22);
@@ -99,7 +102,8 @@ public class ComputerDaoTest {
 		LocalDate in = LocalDate.of(1983, 12, 01);
 		LocalDate dis = LocalDate.of(1984, 04, 01);
 		Company refCompany = new Company(1, "Apple Inc.");
-		Computer refComputer = new Computer(12, "Apple III Plus", in, dis, refCompany);
+		Computer refComputer = new Computer.Builder().id(12).name("Apple III Plus").introduced(in)
+				.discontinued(dis).company(refCompany).build();
 
 		computerDao.update(refComputer);
 		Computer c = computerDao.getByID(12);

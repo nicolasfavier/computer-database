@@ -32,7 +32,9 @@ public class ComputerServiceTest {
 
 	@Before
 	public void setUp() {
-		computer = new Computer(2, "test", null, null, new Company(2, "super company"));
+		computer = new Computer.Builder().id(2).name("test")
+				.company(new Company(2, "super company")).build();
+
 		page = new Page();
 
 		computers = new ArrayList<>();

@@ -12,26 +12,7 @@ public class Computer {
 	public Computer() {
 	}
 
-	public Computer(int id, String name, LocalDate introduced,
-			LocalDate discontinued, Company company) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.company = company;
-	}
 
-	public Computer(int id, String name, LocalDate introduced,
-			LocalDate discontinued, int	companyId) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.company = new Company(companyId);
-	}
-	
 	public int getId() {
 		return id;
 	}
@@ -90,11 +71,9 @@ public class Computer {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((company == null) ? 0 : company.hashCode());
-		result = prime * result
-				+ ((discontinued == null) ? 0 : discontinued.hashCode());
+		result = prime * result + ((discontinued == null) ? 0 : discontinued.hashCode());
 		result = prime * result + id;
-		result = prime * result
-				+ ((introduced == null) ? 0 : introduced.hashCode());
+		result = prime * result + ((introduced == null) ? 0 : introduced.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -131,5 +110,106 @@ public class Computer {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	/**
+	 * Builder class for a Computer object
+	 *
+	 */
+	public static class Builder {
+		private Computer computer;
+
+		public Builder() {
+
+			computer = new Computer();
+		}
+
+		/**
+		 * Sets the id attribute of the underlying
+		 * Computer object.
+		 *
+		 * @param id
+		 *            The id that should be set
+		 * @return A reference to the current instance of Builder
+		 */
+		public Builder id(int id) {
+			computer.setId(id);
+			return this;
+		}
+
+		/**
+		 * Sets the name attribute of the underlying
+		 * Computer object.
+		 *
+		 * @param name
+		 *            The name that should be set
+		 * @return A reference to the current instance of Builder
+		 */
+		public Builder name(String name) {
+			computer.setName(name);
+			return this;
+		}
+
+		/**
+		 * Sets the introduced attribute of the underlying
+		 * Computer object.
+		 *
+		 * @param introduced
+		 *            The introduction date that should be set
+		 * @return A reference to the current instance of Builder
+		 */
+		public Builder introduced(LocalDate introduced) {
+			computer.setIntroduced(introduced);
+			return this;
+		}
+
+		/**
+		 * Sets the discontinued attribute of the underlying
+		 * Computer object.
+		 *
+		 * @param discontinued
+		 *            The date on which the computer was discontinued
+		 * @return A reference to the current instance of Builder
+		 */
+		public Builder discontinued(LocalDate discontinued) {
+			computer.setDiscontinued(discontinued);
+			return this;
+		}
+
+		/**
+		 * Sets the company attribute of the underlying
+		 * Computer object.
+		 *
+		 * @param company
+		 *            The company that should be set
+		 * @return A reference to the current instance of Builder
+		 */
+		public Builder company(Company company) {
+			computer.setCompany(company);
+			return this;
+		}
+
+		/**
+		 * Sets the company attribute of the underlying
+		 * Computer object.
+		 *
+		 * @param company
+		 *            The company that should be set
+		 * @return A reference to the current instance of Builder
+		 */
+		public Builder company(int companyId) {
+			computer.setCompany(new Company(companyId));
+			return this;
+		}
+		
+		/**
+		 * Creates an instance of Computer. Each attribute of
+		 * Computer have a matching method in the Builder class
+		 *
+		 * @return An instance of computer
+		 */
+		public Computer build() {
+			return computer;
+		}
 	}
 }
