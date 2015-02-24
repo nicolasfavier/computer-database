@@ -86,7 +86,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void add(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 
 		try {
 
@@ -111,7 +111,6 @@ public class ComputerDaoImpl implements ComputerDao {
 			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
-			ConnectionManager.closeConnection(connection, true);
 		}
 	}
 
@@ -122,7 +121,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	public Computer getByID(int index) {
 		Computer computer = null;
 		java.sql.PreparedStatement preparedStatement = null;
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 		ResultSet rs = null;
 
 		try {
@@ -142,7 +141,6 @@ public class ComputerDaoImpl implements ComputerDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
-			ConnectionManager.closeConnection(connection, true);
 		}
 
 		return computer;
@@ -154,7 +152,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public List<Computer> getAll() {
 		List<Computer> computerList = new ArrayList<Computer>();
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 		java.sql.PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 
@@ -168,7 +166,6 @@ public class ComputerDaoImpl implements ComputerDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
-			ConnectionManager.closeConnection(connection, true);
 		}
 
 		return computerList;
@@ -180,7 +177,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Page getPage(Page page, String name) {
 		java.sql.PreparedStatement preparedStatement = null;
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 		ResultSet rs = null;
 
 		try {
@@ -194,7 +191,6 @@ public class ComputerDaoImpl implements ComputerDao {
 
 			page.setComputerList(ComputerDtoMapper.ComputerToDto(ComputerRowMapper.INSTANCE
 					.getList(rs)));
-			rs.close();
 
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
@@ -202,7 +198,6 @@ public class ComputerDaoImpl implements ComputerDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
-			ConnectionManager.closeConnection(connection, true);
 		}
 
 		return page;
@@ -213,7 +208,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	public int getCount(String name) {
 		java.sql.PreparedStatement preparedStatement = null;
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 		ResultSet rs = null;
 		int count = 0;
 
@@ -229,17 +224,13 @@ public class ComputerDaoImpl implements ComputerDao {
 				System.out.println("error: could not get the record counts");
 			}
 
-			rs.close();
-
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
-			ConnectionManager.closeConnection(connection, true);
 		}
-
 		return count;
 	}
 
@@ -249,7 +240,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void update(Computer computer){
 		java.sql.PreparedStatement preparedStatement = null;
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 
 		try {
 			preparedStatement = connection.prepareStatement(UPDATE_COMPUTER_SQL);
@@ -273,7 +264,6 @@ public class ComputerDaoImpl implements ComputerDao {
 			LOGGER.error(e.toString());
 			throw new RuntimeErrorException(new Error());
 		} finally {
-			ConnectionManager.closeConnection(connection, true);
 			DaoUtils.closePreparedStatement(preparedStatement);
 		}
 	}
@@ -284,7 +274,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void delete(int index) {
 		java.sql.PreparedStatement preparedStatement = null;
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 
 		try {
 			preparedStatement = connection.prepareStatement(DELETE_COMPUTER_SQL);
@@ -295,7 +285,6 @@ public class ComputerDaoImpl implements ComputerDao {
 			LOGGER.error(e.toString());
 			throw new RuntimeErrorException(new Error());
 		} finally {
-			ConnectionManager.closeConnection(connection, true);
 			DaoUtils.closePreparedStatement(preparedStatement);
 		}
 	}
@@ -306,7 +295,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void deleteIds(String computerIds) {
 		java.sql.PreparedStatement preparedStatement = null;
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 
 		try {
 			preparedStatement = connection.prepareStatement(DELETE_COMPUTERS_SQL);
@@ -317,7 +306,6 @@ public class ComputerDaoImpl implements ComputerDao {
 			LOGGER.error(e.toString());
 			throw new RuntimeErrorException(new Error());
 		} finally {
-			ConnectionManager.closeConnection(connection, true);
 			DaoUtils.closePreparedStatement(preparedStatement);
 			}
 	}
@@ -326,11 +314,11 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.nicolas.dao.interfaces.ComputerDao#deleteByCompanyId(int, java.sql.Connection)
 	 */
 	@Override
-	public void deleteByCompanyId(int companyId, Connection connection ) {
+	public void deleteByCompanyId(int companyId) {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
-			preparedStatement = connection.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_SQL);
+			preparedStatement = ConnectionManager.getConnection().prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_SQL);
 			preparedStatement.setInt(1, companyId);
 			preparedStatement.executeUpdate();
 

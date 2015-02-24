@@ -46,7 +46,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	public Company getByID(int companyId) {
 		PreparedStatement preparedStatement = null;
 		java.sql.ResultSet rs = null;
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 		Company company = null;
 
 		try {
@@ -65,7 +65,6 @@ public class CompanyDaoImpl implements CompanyDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
-			ConnectionManager.closeConnection(connection, true);
 		}
 		return company;
 	}
@@ -77,7 +76,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	public List<Company> getAll() {
 		PreparedStatement preparedStatement = null;
 		List<Company> CompanyList = new ArrayList<Company>();
-		Connection connection = ConnectionManager.getConnection(true);
+		Connection connection = ConnectionManager.getConnection();
 		java.sql.ResultSet rs = null;
 
 		try {
@@ -92,7 +91,6 @@ public class CompanyDaoImpl implements CompanyDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
-			ConnectionManager.closeConnection(connection, true);
 		}
 		return CompanyList;
 	}
@@ -101,11 +99,11 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * @see com.nicolas.dao.interfaces.CompanyDao#deleteId(int, java.sql.Connection)
 	 */
 	@Override
-	public void deleteId(int companyId, Connection connection ) {
+	public void deleteId(int companyId) {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
-			preparedStatement = connection.prepareStatement(DELETE_COMPANY_SQL);
+			preparedStatement = ConnectionManager.getConnection().prepareStatement(DELETE_COMPANY_SQL);
 			preparedStatement.setInt(1, companyId );
 			preparedStatement.executeUpdate();
 

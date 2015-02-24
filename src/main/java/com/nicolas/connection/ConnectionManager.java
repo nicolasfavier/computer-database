@@ -14,53 +14,59 @@ import com.nicolas.utils.Property;
 
 /**
  * 
- * Create and handle connection 
+ * Create and handle connection
  *
  */
 public class ConnectionManager {
 	public static final String DB_USER = Property.INSTANCE.getDbUser();
 	public static final String DB_PWD = Property.INSTANCE.getDbPassword();
 	public static final String DB_NAME = Property.INSTANCE.getDbName();
-
+	
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
+	
 	private static final String DB_HOST = "localhost";
 	private static final String DB_PORT = "3306";
 	private static final String DB_ARGUMENT = "?zeroDateTimeBehavior=convertToNull";
 	private static final String DB_PATH = DB_NAME + DB_ARGUMENT;
-
-	private static int maxConnectionsPerPartition = Property.INSTANCE
-			.getMaxConnectionsPerPartition();
-	private static int minConnectionsPerPartition = Property.INSTANCE
-			.getMinConnectionsPerPartition();
+	
+	private static int maxConnectionsPerPartition = Property.INSTANCE.getMaxConnectionsPerPartition();
+	private static int minConnectionsPerPartition = Property.INSTANCE.getMinConnectionsPerPartition();
 	private static int partitionCount = Property.INSTANCE.getPartitionCount();
 	
 	private static BoneCP connectionPool = null;
 
+	private static ThreadLocal<Connection> connection = new ThreadLocal<Connection>();
 
 	/**
-	 *  connection pool configuration
+	 * connection pool configuration
 	 */
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			BoneCPConfig config = new BoneCPConfig();
-			
+
 			config.setJdbcUrl("jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_PATH);
 			config.setUsername(DB_USER);
 			config.setPassword(DB_PWD);
-			
+
 			// 2*10 = 20 connection will be available
 			config.setMinConnectionsPerPartition(minConnectionsPerPartition);
 			config.setMaxConnectionsPerPartition(maxConnectionsPerPartition);
 			config.setPartitionCount(partitionCount);
-			
+
 			connectionPool = new BoneCP(config);
-			
 			logger.info("Total connections = " + connectionPool.getTotalCreatedConnections());
+
 		} catch (Exception e) {
+
 			logger.error(e.getMessage());
 			throw new PersistenceException(e);
+
 		}
+	}
+
+	public static Connection getConnection() {
+		return connection.get();
 	}
 
 	/**
@@ -87,16 +93,17 @@ public class ConnectionManager {
 	 * 
 	 * @return connection
 	 */
-	public static Connection getConnection(boolean isAutoCommit) {
-		Connection connection = null;
+	public static void openConnection(boolean isAutoCommit) {
 		try {
-			connection = connectionPool.getConnection();
-			connection.setAutoCommit(isAutoCommit);
+			if (connection.get() == null) {
+				connection.set(connectionPool.getConnection());
+			}
+			connection.get().setAutoCommit(isAutoCommit);
+
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new PersistenceException(e);
 		}
-		return connection;
 	}
 
 	/**
@@ -120,12 +127,14 @@ public class ConnectionManager {
 	 *
 	 * @param Connection
 	 */
-	public static void closeConnection(Connection connection, boolean isAutoCommit) {
+	public static void closeConnection(boolean isAutoCommit) {
 		try {
-			if (connection != null) {
+			if (connection.get() != null) {
 				if (!isAutoCommit)
-					connection.commit();
-				connection.close();
+					connection.get().commit();
+
+				connection.get().close();
+				connection.set(null);
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
@@ -138,10 +147,11 @@ public class ConnectionManager {
 	 * 
 	 * @param connection
 	 */
-	public static void rollback(Connection connection) {
+	public static void rollback() {
 		try {
-			if (connection != null)
-				connection.rollback();
+			if (connection.get() != null) {
+				connection.get().rollback();
+			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
 			throw new PersistenceException(e);

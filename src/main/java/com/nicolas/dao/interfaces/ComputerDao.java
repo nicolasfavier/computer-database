@@ -89,7 +89,7 @@ public interface ComputerDao {
 	 *
 	 * All computer with this companyId will be delete
 	 */
-	public void deleteByCompanyId(int companyId, Connection connection );
+	public void deleteByCompanyId(int companyId);
 
 
 }

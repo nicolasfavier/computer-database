@@ -1,6 +1,5 @@
 package com.nicolas.dao.interfaces;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.nicolas.models.Company;
@@ -29,6 +28,6 @@ public interface CompanyDao {
 	 * @param companyId the ID of the company to delete
 	 * @param computerIds
 	 */
-	public void deleteId(int companyId, Connection connection );
+	public void deleteId(int companyId);
 
 }

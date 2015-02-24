@@ -15,15 +15,16 @@ public final class DaoUtils {
 
 	public static void closeResultSet(ResultSet rs) {
 		try {
-			rs.close();
+			if(rs != null)
+				rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void closePreparedStatement(
-			PreparedStatement preparedStatement) {
+	public static void closePreparedStatement(PreparedStatement preparedStatement) {
 		try {
+			if(preparedStatement != null)
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

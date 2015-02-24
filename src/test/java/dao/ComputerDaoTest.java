@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +32,14 @@ public class ComputerDaoTest {
 	public void init() {
 		// reset database
 		ScriptRunner.runScript();
+		ConnectionManager.openConnection(true);
 	}
 
+	@After
+	public void closedConnection(){
+		ConnectionManager.closeConnection(true);
+	}
+	
 	@Test
 	public void testGetNegativeID() {
 		Computer c = null;
@@ -126,11 +133,10 @@ public class ComputerDaoTest {
 
 	@Test
 	public void testDeleteByCompanyId() {
-		Connection connection = ConnectionManager.getConnection(true);
 		int count = computerDao.getCount("");
 		Assert.assertEquals(21, count);
 
-		computerDao.deleteByCompanyId(1, connection);
+		computerDao.deleteByCompanyId(1);
 		count = computerDao.getCount("");
 		Assert.assertEquals(15, count);
 	}

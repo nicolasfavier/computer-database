@@ -39,7 +39,10 @@ public class CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public Company getByID(int companyId) {
-		return companyDao.getByID(companyId);
+		ConnectionManager.openConnection(true);
+		Company  comp = companyDao.getByID(companyId);
+		ConnectionManager.closeConnection(true);
+		return comp;
 	}
 
 	/* (non-Javadoc)
@@ -47,7 +50,10 @@ public class CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public List<Company> getAll() {
-		return companyDao.getAll();
+		ConnectionManager.openConnection(true);
+		List<Company>  comps = companyDao.getAll();
+		ConnectionManager.closeConnection(true);
+		return comps;
 	}
 
 
@@ -56,16 +62,16 @@ public class CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public void DeleteCompany(int companyId) {
-		Connection connection = ConnectionManager.getConnection(false);
+		ConnectionManager.openConnection(false);
 
 		try {
-			computerDao.deleteByCompanyId(companyId, connection);
-			companyDao.deleteId(companyId, connection);
+			computerDao.deleteByCompanyId(companyId);
+			companyDao.deleteId(companyId);
 		} catch (PersistenceException e) {
-			ConnectionManager.rollback(connection);
+			ConnectionManager.rollback();
 			throw new ServiceException(e);
 		} finally {
-			ConnectionManager.closeConnection(connection, true);
+			ConnectionManager.closeConnection( true);
 		}
 	}
 }
