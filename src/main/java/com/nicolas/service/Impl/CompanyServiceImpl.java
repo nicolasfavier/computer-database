@@ -13,6 +13,7 @@ import com.nicolas.dao.interfaces.CompanyDao;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
 import com.nicolas.runtimeException.PersistenceException;
+import com.nicolas.runtimeException.ServiceException;
 import com.nicolas.service.Interfaces.CompanyService;
 
 /**
@@ -62,6 +63,7 @@ public class CompanyServiceImpl implements CompanyService {
 			companyDao.deleteId(companyId, connection);
 		} catch (PersistenceException e) {
 			ConnectionManager.rollback(connection);
+			throw new ServiceException(e);
 		} finally {
 			ConnectionManager.closeConnection(connection, true);
 		}
