@@ -39,6 +39,9 @@ public class CompanyDaoImpl implements CompanyDao {
 	public CompanyDaoImpl() {
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.CompanyDao#getByID(int)
+	 */
 	@Override
 	public Company getByID(int companyId) {
 		PreparedStatement preparedStatement = null;
@@ -67,6 +70,9 @@ public class CompanyDaoImpl implements CompanyDao {
 		return company;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.CompanyDao#getAll()
+	 */
 	@Override
 	public List<Company> getAll() {
 		PreparedStatement preparedStatement = null;
@@ -91,6 +97,9 @@ public class CompanyDaoImpl implements CompanyDao {
 		return CompanyList;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.CompanyDao#deleteId(int, java.sql.Connection)
+	 */
 	@Override
 	public void deleteId(int companyId, Connection connection ) {
 		java.sql.PreparedStatement preparedStatement = null;

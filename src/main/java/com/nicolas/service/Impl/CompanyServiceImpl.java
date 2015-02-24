@@ -15,6 +15,10 @@ import com.nicolas.models.Company;
 import com.nicolas.runtimeException.PersistenceException;
 import com.nicolas.service.Interfaces.CompanyService;
 
+/**
+ * implementation of Company service
+ *
+ */
 public class CompanyServiceImpl implements CompanyService {
 	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
@@ -29,19 +33,25 @@ public class CompanyServiceImpl implements CompanyService {
 		this.computerDao = computerDao;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.service.Interfaces.CompanyService#getByID(int)
+	 */
 	@Override
 	public Company getByID(int companyId) {
 		return companyDao.getByID(companyId);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.service.Interfaces.CompanyService#getAll()
+	 */
 	@Override
 	public List<Company> getAll() {
 		return companyDao.getAll();
 	}
 
-	/**
-	 * Delete a company, all computers with this id are deleted and then 
-	 * the company is deleted. the operation is placed in a transaction
+
+	/* (non-Javadoc)
+	 * @see com.nicolas.service.Interfaces.CompanyService#DeleteCompany(int)
 	 */
 	@Override
 	public void DeleteCompany(int companyId) {

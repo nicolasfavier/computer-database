@@ -79,6 +79,10 @@ public class ComputerDaoImpl implements ComputerDao {
 	public ComputerDaoImpl() {
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#add(com.nicolas.models.Computer)
+	 */
 	@Override
 	public void add(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
@@ -111,6 +115,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#getByID(int)
+	 */
 	@Override
 	public Computer getByID(int index) {
 		Computer computer = null;
@@ -141,6 +148,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		return computer;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#getAll()
+	 */
 	@Override
 	public List<Computer> getAll() {
 		List<Computer> computerList = new ArrayList<Computer>();
@@ -164,6 +174,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		return computerList;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#getPage(com.nicolas.models.Page, java.lang.String)
+	 */
 	@Override
 	public Page getPage(Page page, String name) {
 		java.sql.PreparedStatement preparedStatement = null;
@@ -195,6 +208,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		return page;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#getCount(java.lang.String)
+	 */
 	public int getCount(String name) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = ConnectionManager.getConnection(true);
@@ -227,6 +243,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		return count;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#update(com.nicolas.models.Computer)
+	 */
 	@Override
 	public void update(Computer computer){
 		java.sql.PreparedStatement preparedStatement = null;
@@ -259,6 +278,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#delete(int)
+	 */
 	@Override
 	public void delete(int index) {
 		java.sql.PreparedStatement preparedStatement = null;
@@ -278,6 +300,9 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#deleteIds(java.lang.String)
+	 */
 	@Override
 	public void deleteIds(String computerIds) {
 		java.sql.PreparedStatement preparedStatement = null;
@@ -297,6 +322,9 @@ public class ComputerDaoImpl implements ComputerDao {
 			}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.nicolas.dao.interfaces.ComputerDao#deleteByCompanyId(int, java.sql.Connection)
+	 */
 	@Override
 	public void deleteByCompanyId(int companyId, Connection connection ) {
 		java.sql.PreparedStatement preparedStatement = null;
