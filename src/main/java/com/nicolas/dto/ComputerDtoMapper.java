@@ -3,7 +3,6 @@ package com.nicolas.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
 
@@ -57,6 +56,7 @@ public final class ComputerDtoMapper {
 		return computer;
 	}
 
+	//use stream to go faster on loop
 	public static List<ComputerDto> ComputerToDto(List<Computer> computers) {
 	     return computers.stream().map(c->ComputerToDto(c)).collect(Collectors.toList());
 	}

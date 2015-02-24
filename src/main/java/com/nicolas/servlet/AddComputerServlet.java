@@ -22,7 +22,7 @@ import com.nicolas.service.Impl.CompanyServiceImpl;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
-import com.nicolas.validator.ComputerDtoValidator;
+import com.nicolas.validator.DtoValidator;
 
 /**
  * Servlet implementation show and add computers when the uri: /add-computer is
@@ -75,7 +75,7 @@ public class AddComputerServlet extends HttpServlet {
 				companyId);
 
 		List<String> validationErrors = new ArrayList<>();
-		validationErrors = ComputerDtoValidator.validate(computerDto);
+		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
 			this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto));

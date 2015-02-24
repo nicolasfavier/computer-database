@@ -10,7 +10,7 @@ import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
-import com.nicolas.validator.ComputerDtoValidator;
+import com.nicolas.validator.DtoValidator;
 
 /**
  * 
@@ -87,7 +87,7 @@ public class ComputerCli {
 				tmpCompany);
 		
 		List<String> validationErrors = new ArrayList<>();
-		validationErrors = ComputerDtoValidator.validate(computerDto);
+		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
 			computerServiceImpl.add(ComputerDtoMapper.ComputerFromDto(computerDto));
@@ -127,7 +127,7 @@ public class ComputerCli {
 		}
 
 		List<String> validationErrors = new ArrayList<>();
-		validationErrors = ComputerDtoValidator.validate(computerDto);
+		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
 			computerServiceImpl.update(ComputerDtoMapper.ComputerFromDto(computerDto));

@@ -23,7 +23,7 @@ import com.nicolas.service.Impl.CompanyServiceImpl;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
-import com.nicolas.validator.ComputerDtoValidator;
+import com.nicolas.validator.DtoValidator;
 
 /**
  * update a computer
@@ -85,7 +85,7 @@ public class EditComputerServlet extends HttpServlet {
 				companyId);
 
 		List<String> validationErrors = new ArrayList<>();
-		validationErrors = ComputerDtoValidator.validate(computerDto);
+		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
 			this.computerService.update(ComputerDtoMapper.ComputerFromDto(computerDto));

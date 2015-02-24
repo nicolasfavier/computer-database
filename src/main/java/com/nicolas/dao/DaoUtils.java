@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * 
- * close resultes set and preparedStatement
+ * close results set and preparedStatement
  *
  */
 public final class DaoUtils {

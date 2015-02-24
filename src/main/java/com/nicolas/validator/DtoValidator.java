@@ -6,29 +6,23 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
-import com.nicolas.dto.ComputerDto;
 
 /**
  * 
  * run the validators on DTOs and return errors in a List of string
  *
  */
-public class ComputerDtoValidator {
-	private static Validator validator;
+public class DtoValidator  {
 
-	public final static List<String> validate(ComputerDto computerDto) {
+	public final static <T> List<String> validate(T objectDTO) {
 		List<String> validationErrors = new ArrayList<>();
 
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-		validator = factory.getValidator();
 
-		Set<ConstraintViolation<ComputerDto>> constraintViolations = validator
-				.validate(computerDto);
+		Set<ConstraintViolation<T>> constraintViolations =  factory.getValidator().validate(objectDTO);
 
-		for (ConstraintViolation<ComputerDto> constraintViolation : constraintViolations) {
+		for (ConstraintViolation<T> constraintViolation : constraintViolations) {
 			String error = constraintViolation.getMessage() + " : '"
 					+ constraintViolation.getInvalidValue() + "' is not valid for "
 					+ constraintViolation.getPropertyPath();
