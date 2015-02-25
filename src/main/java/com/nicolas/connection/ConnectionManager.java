@@ -21,18 +21,20 @@ public class ConnectionManager {
 	public static final String DB_USER = Property.INSTANCE.getDbUser();
 	public static final String DB_PWD = Property.INSTANCE.getDbPassword();
 	public static final String DB_NAME = Property.INSTANCE.getDbName();
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
-	
+
 	private static final String DB_HOST = "localhost";
 	private static final String DB_PORT = "3306";
 	private static final String DB_ARGUMENT = "?zeroDateTimeBehavior=convertToNull";
 	private static final String DB_PATH = DB_NAME + DB_ARGUMENT;
-	
-	private static int maxConnectionsPerPartition = Property.INSTANCE.getMaxConnectionsPerPartition();
-	private static int minConnectionsPerPartition = Property.INSTANCE.getMinConnectionsPerPartition();
+
+	private static int maxConnectionsPerPartition = Property.INSTANCE
+			.getMaxConnectionsPerPartition();
+	private static int minConnectionsPerPartition = Property.INSTANCE
+			.getMinConnectionsPerPartition();
 	private static int partitionCount = Property.INSTANCE.getPartitionCount();
-	
+
 	private static BoneCP connectionPool = null;
 
 	private static ThreadLocal<Connection> connection = new ThreadLocal<Connection>();
@@ -65,10 +67,6 @@ public class ConnectionManager {
 		}
 	}
 
-	public static Connection getConnection() {
-		return connection.get();
-	}
-
 	/**
 	 * This method must be called only once when the application stops. Don't
 	 * need to call it every time when you get a connection from the Connection
@@ -93,13 +91,41 @@ public class ConnectionManager {
 	 * 
 	 * @return connection
 	 */
-	public static void openConnection(boolean isAutoCommit) {
+	public static Connection getConnection() {
 		try {
 			if (connection.get() == null) {
 				connection.set(connectionPool.getConnection());
+				logger.info("new connection created");
 			}
-			connection.get().setAutoCommit(isAutoCommit);
+			else{
+				logger.info("connection was already created");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new PersistenceException(e);
+		}
+		return connection.get();
+	}
 
+	public static void initTransactionConnection() {
+		try {
+			connection.set(connectionPool.getConnection());
+			connection.get().setAutoCommit(false);
+			logger.info("new transaction connection created");
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new PersistenceException(e);
+		}
+	}
+
+	public static void closeTransactionConnection() {
+		try {
+			if (connection.get() != null) {
+				connection.get().commit();
+				connection.get().close();
+				connection.set(null);
+				logger.info("connection transaction closed");
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new PersistenceException(e);
@@ -127,14 +153,14 @@ public class ConnectionManager {
 	 *
 	 * @param Connection
 	 */
-	public static void closeConnection(boolean isAutoCommit) {
+	public static void closeConnection() {
 		try {
 			if (connection.get() != null) {
-				if (!isAutoCommit)
-					connection.get().commit();
-
-				connection.get().close();
-				connection.set(null);
+				if (connection.get().getAutoCommit()) {
+					connection.get().close();
+					connection.set(null);
+					logger.info("connection closed");
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
@@ -151,6 +177,7 @@ public class ConnectionManager {
 		try {
 			if (connection.get() != null) {
 				connection.get().rollback();
+				logger.info("rollback");
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage());

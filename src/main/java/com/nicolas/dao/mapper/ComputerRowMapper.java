@@ -2,8 +2,6 @@ package com.nicolas.dao.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.models.Company;
@@ -19,18 +17,6 @@ import com.nicolas.utils.Utils;
 public enum ComputerRowMapper implements RowMappable<Computer> {
 	INSTANCE;
 	private ComputerRowMapper() {
-	}
-
-	/**
-	 * get a list of computers from a result set
-	 */
-	public List<Computer> getList(ResultSet rs) throws SQLException {
-		List<Computer> computerList = new ArrayList<Computer>();
-		while (rs.next()) {
-			Computer computer = getObject(rs);
-			computerList.add(computer);
-		}
-		return computerList;
 	}
 
 	/**

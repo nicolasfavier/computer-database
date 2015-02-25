@@ -2,8 +2,6 @@ package com.nicolas.dao.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.nicolas.dao.impl.CompanyDaoImpl;
 import com.nicolas.models.Company;
@@ -19,18 +17,7 @@ public enum CompanyRowMapper implements RowMappable<Company> {
 	private CompanyRowMapper() {
 	}
 
-	/**
-	 * get a list of companies from a result set
-	 */
-	public List<Company> getList(ResultSet rs) throws SQLException {
-		List<Company> companyList = new ArrayList<Company>();
-		while (rs.next()) {
-			Company company = getObject(rs);
-			companyList.add(company);
-		}
-		return companyList;
-	}
-
+    
 	/**
 	 * get a company from a result set
 	 */

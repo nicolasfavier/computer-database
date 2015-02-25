@@ -1,6 +1,5 @@
 package com.nicolas.service.Impl;
 
-import java.sql.Connection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -34,36 +33,36 @@ public class CompanyServiceImpl implements CompanyService {
 		this.computerDao = computerDao;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.service.Interfaces.CompanyService#getByID(int)
 	 */
 	@Override
 	public Company getByID(int companyId) {
-		ConnectionManager.openConnection(true);
-		Company  comp = companyDao.getByID(companyId);
-		ConnectionManager.closeConnection(true);
+		Company comp = companyDao.getByID(companyId);
 		return comp;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.service.Interfaces.CompanyService#getAll()
 	 */
 	@Override
 	public List<Company> getAll() {
-		ConnectionManager.openConnection(true);
-		List<Company>  comps = companyDao.getAll();
-		ConnectionManager.closeConnection(true);
+		List<Company> comps = companyDao.getAll();
 		return comps;
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.service.Interfaces.CompanyService#DeleteCompany(int)
 	 */
 	@Override
 	public void DeleteCompany(int companyId) {
-		ConnectionManager.openConnection(false);
-
+		ConnectionManager.initTransactionConnection();
 		try {
 			computerDao.deleteByCompanyId(companyId);
 			companyDao.deleteId(companyId);
@@ -71,7 +70,7 @@ public class CompanyServiceImpl implements CompanyService {
 			ConnectionManager.rollback();
 			throw new ServiceException(e);
 		} finally {
-			ConnectionManager.closeConnection( true);
+			ConnectionManager.closeTransactionConnection();
 		}
 	}
 }

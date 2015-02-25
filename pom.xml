@@ -26,12 +26,13 @@
 		<maven-javadoc-plugin-version>2.10.1</maven-javadoc-plugin-version>
 		<selenium-maven-plugin-version>1.0.1</selenium-maven-plugin-version>
 		<maven-surefire-plugin-version>2.5</maven-surefire-plugin-version>
+		<spring-contex-versiont>4.1.5.RELEASE</spring-contex-versiont>
 	</properties>
 
 	<dependencies>
-	
+
 		<!-- runtime librairy -->
-		
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -46,7 +47,7 @@
 		</dependency>
 
 		<!-- provided librairy -->
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -60,8 +61,16 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring-contex-versiont}</version>
+			<scope>runtime</scope>
+		</dependency>
+
 		<!-- test librairy -->
-		
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
@@ -82,7 +91,7 @@
 		</dependency>
 
 		<!-- view librairy and compile librairy -->
-		
+
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>

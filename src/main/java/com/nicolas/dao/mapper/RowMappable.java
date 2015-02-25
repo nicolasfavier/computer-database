@@ -2,6 +2,7 @@ package com.nicolas.dao.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * 
@@ -16,7 +17,14 @@ public interface RowMappable<T> {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<T> getList(ResultSet rs) throws SQLException;
+	public default List<T> getList(ResultSet r) throws SQLException {
+		List<T> objectList = new ArrayList<T>();
+		while (r.next()) {
+		T t = getObject(r);
+		objectList.add(t);
+		}
+		return objectList;
+		}
 	
 	/**
 	 * get an object from a result set

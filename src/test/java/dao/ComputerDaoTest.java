@@ -1,11 +1,9 @@
 package dao;
 
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.nicolas.connection.ConnectionManager;
 import com.nicolas.dao.impl.DaoManager;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
@@ -32,13 +29,9 @@ public class ComputerDaoTest {
 	public void init() {
 		// reset database
 		ScriptRunner.runScript();
-		ConnectionManager.openConnection(true);
 	}
 
-	@After
-	public void closedConnection(){
-		ConnectionManager.closeConnection(true);
-	}
+
 	
 	@Test
 	public void testGetNegativeID() {

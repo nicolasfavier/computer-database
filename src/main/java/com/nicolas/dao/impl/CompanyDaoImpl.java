@@ -65,6 +65,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 		return company;
 	}
@@ -91,6 +92,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 		return CompanyList;
 	}
@@ -110,6 +112,9 @@ public class CompanyDaoImpl implements CompanyDao {
 		} catch (SQLException e) {
 			LOGGER.error(e.toString());
 			throw new PersistenceException(e);
+		}finally {
+			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 	}
 }

@@ -55,7 +55,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ DB_TABLE + "." + DB_COLUMN_ID + " =?";
 
 	private final static String GET_PAGES_SQL = SELECT_ALL_COMPUTERS_SQL + " WHERE " + DB_TABLE
-			+ "." + DB_COLUMN_NAME + " LIKE ? OR "+DB_TABLE_COMPANY+"."+DB_COLUMN_NAME+" LIKE ? ORDER BY " + DB_COLUMN_ID + " LIMIT ?,? ";
+			+ "." + DB_COLUMN_NAME + " LIKE ? OR " + DB_TABLE_COMPANY + "." + DB_COLUMN_NAME
+			+ " LIKE ? ORDER BY " + DB_COLUMN_ID + " LIMIT ?,? ";
 
 	private final static String UPDATE_COMPUTER_SQL = "UPDATE `" + DB_TABLE + "` SET `"
 			+ DB_COLUMN_NAME + "`=?,`" + DB_COLUMN_INTRODUCED + "`=?,`" + DB_COLUMN_DISCONTINUED
@@ -65,23 +66,26 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ DB_COLUMN_ID + " =?";
 
 	private final static String DELETE_COMPUTERS_SQL = "DELETE FROM " + DB_TABLE + " WHERE "
-			+ DB_COLUMN_ID +" IN ?";
-	
-	private final static String DELETE_COMPUTERS_BY_COMPANY_ID_SQL = "DELETE FROM " + DB_TABLE + " WHERE "
-			+ DB_COMPUTER_COLUMN_COMPANY_ID + " = ?";
+			+ DB_COLUMN_ID + " IN ?";
 
-	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as " + DB_COLUMN_COUNT + " FROM " +ComputerDaoImpl.DB_TABLE
-			+ " LEFT JOIN " + CompanyDaoImpl.DB_COMPANY_TABLE + " ON " + ComputerDaoImpl.DB_TABLE
-			+ "." + ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID + "="
-			+ CompanyDaoImpl.DB_COMPANY_TABLE + "." + CompanyDaoImpl.DB_COLUMN_ID 
-			+ " WHERE " +DB_TABLE+"."+ DB_COLUMN_NAME + " LIKE  ? OR "+DB_TABLE_COMPANY+"."+DB_COLUMN_NAME+" LIKE ?";
+	private final static String DELETE_COMPUTERS_BY_COMPANY_ID_SQL = "DELETE FROM " + DB_TABLE
+			+ " WHERE " + DB_COMPUTER_COLUMN_COMPANY_ID + " = ?";
+
+	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as " + DB_COLUMN_COUNT + " FROM "
+			+ ComputerDaoImpl.DB_TABLE + " LEFT JOIN " + CompanyDaoImpl.DB_COMPANY_TABLE + " ON "
+			+ ComputerDaoImpl.DB_TABLE + "." + ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID + "="
+			+ CompanyDaoImpl.DB_COMPANY_TABLE + "." + CompanyDaoImpl.DB_COLUMN_ID + " WHERE "
+			+ DB_TABLE + "." + DB_COLUMN_NAME + " LIKE  ? OR " + DB_TABLE_COMPANY + "."
+			+ DB_COLUMN_NAME + " LIKE ?";
 
 	public ComputerDaoImpl() {
 	}
 
-	
-	/* (non-Javadoc)
-	 * @see com.nicolas.dao.interfaces.ComputerDao#add(com.nicolas.models.Computer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.nicolas.dao.interfaces.ComputerDao#add(com.nicolas.models.Computer)
 	 */
 	@Override
 	public void add(Computer computer) {
@@ -90,8 +94,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		try {
 
-			preparedStatement = connection.prepareStatement(
-					ADD_COMPUTER_SQL);
+			preparedStatement = connection.prepareStatement(ADD_COMPUTER_SQL);
 
 			preparedStatement.setString(1, computer.getName());
 
@@ -111,10 +114,13 @@ public class ComputerDaoImpl implements ComputerDao {
 			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.dao.interfaces.ComputerDao#getByID(int)
 	 */
 	@Override
@@ -141,12 +147,15 @@ public class ComputerDaoImpl implements ComputerDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 
 		return computer;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.dao.interfaces.ComputerDao#getAll()
 	 */
 	@Override
@@ -166,13 +175,18 @@ public class ComputerDaoImpl implements ComputerDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 
 		return computerList;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.nicolas.dao.interfaces.ComputerDao#getPage(com.nicolas.models.Page, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.nicolas.dao.interfaces.ComputerDao#getPage(com.nicolas.models.Page,
+	 * java.lang.String)
 	 */
 	@Override
 	public Page getPage(Page page, String name) {
@@ -198,12 +212,15 @@ public class ComputerDaoImpl implements ComputerDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 
 		return page;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.dao.interfaces.ComputerDao#getCount(java.lang.String)
 	 */
 	public int getCount(String name) {
@@ -230,15 +247,20 @@ public class ComputerDaoImpl implements ComputerDao {
 		} finally {
 			DaoUtils.closeResultSet(rs);
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 		return count;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.nicolas.dao.interfaces.ComputerDao#update(com.nicolas.models.Computer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.nicolas.dao.interfaces.ComputerDao#update(com.nicolas.models.Computer
+	 * )
 	 */
 	@Override
-	public void update(Computer computer){
+	public void update(Computer computer) {
 		java.sql.PreparedStatement preparedStatement = null;
 		Connection connection = ConnectionManager.getConnection();
 
@@ -265,10 +287,13 @@ public class ComputerDaoImpl implements ComputerDao {
 			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.dao.interfaces.ComputerDao#delete(int)
 	 */
 	@Override
@@ -286,10 +311,13 @@ public class ComputerDaoImpl implements ComputerDao {
 			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.dao.interfaces.ComputerDao#deleteIds(java.lang.String)
 	 */
 	@Override
@@ -307,18 +335,23 @@ public class ComputerDaoImpl implements ComputerDao {
 			throw new RuntimeErrorException(new Error());
 		} finally {
 			DaoUtils.closePreparedStatement(preparedStatement);
-			}
+			ConnectionManager.closeConnection();
+		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.nicolas.dao.interfaces.ComputerDao#deleteByCompanyId(int, java.sql.Connection)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.nicolas.dao.interfaces.ComputerDao#deleteByCompanyId(int,
+	 * java.sql.Connection)
 	 */
 	@Override
 	public void deleteByCompanyId(int companyId) {
 		java.sql.PreparedStatement preparedStatement = null;
 
 		try {
-			preparedStatement = ConnectionManager.getConnection().prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_SQL);
+			preparedStatement = ConnectionManager.getConnection().prepareStatement(
+					DELETE_COMPUTERS_BY_COMPANY_ID_SQL);
 			preparedStatement.setInt(1, companyId);
 			preparedStatement.executeUpdate();
 
@@ -326,7 +359,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			LOGGER.error(e.toString());
 			throw new PersistenceException(e);
 		} finally {
-				DaoUtils.closePreparedStatement(preparedStatement);
-				}
+			DaoUtils.closePreparedStatement(preparedStatement);
+			ConnectionManager.closeConnection();
+		}
 	}
 }
