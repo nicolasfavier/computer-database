@@ -95,10 +95,10 @@ public class ConnectionManager {
 		try {
 			if (connection.get() == null) {
 				connection.set(connectionPool.getConnection());
-				logger.info("new connection created");
+				logger.info("new connection created " + connection.get().hashCode());
 			}
 			else{
-				logger.info("connection was already created");
+				logger.info("connection was already created "+ connection.get().hashCode());
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -107,25 +107,14 @@ public class ConnectionManager {
 		return connection.get();
 	}
 
+	/**
+	 * init a connection with autocommit true
+	 */
 	public static void initTransactionConnection() {
 		try {
 			connection.set(connectionPool.getConnection());
 			connection.get().setAutoCommit(false);
-			logger.info("new transaction connection created");
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			throw new PersistenceException(e);
-		}
-	}
-
-	public static void closeTransactionConnection() {
-		try {
-			if (connection.get() != null) {
-				connection.get().commit();
-				connection.get().close();
-				connection.set(null);
-				logger.info("connection transaction closed");
-			}
+			logger.info("new transaction connection created "+ connection.get().hashCode());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new PersistenceException(e);
@@ -133,14 +122,16 @@ public class ConnectionManager {
 	}
 
 	/**
-	 * Close the rseultset in params if not null
-	 *
-	 * @param ResultSet
+	 * commit the transaction then close it
 	 */
-	public static void closeResultSet(ResultSet rSet) {
+	public static void closeTransactionConnection() {
 		try {
-			if (rSet != null)
-				rSet.close();
+			if (connection.get() != null) {
+				connection.get().commit();
+				connection.get().close();
+				connection.set(null);
+				logger.info("connection transaction closed ");
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new PersistenceException(e);
