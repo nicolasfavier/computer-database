@@ -3,6 +3,8 @@ package com.nicolas.cli;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.nicolas.models.Company;
 import com.nicolas.service.Impl.CompanyServiceImpl;
 import com.nicolas.service.Impl.ServiceManagerImpl;
@@ -15,7 +17,9 @@ import com.nicolas.service.Impl.ServiceManagerImpl;
 public class CompanyCli {
 	private static final String MENU_COMPANY_INDEX = "enter the computer index:";
 	private static final String MENU_COMPANY_DELETE_HEADER = "############ Company Delete ############";
-	private static CompanyServiceImpl companyServiceImpl = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
+	
+	@Autowired
+	private static CompanyServiceImpl companyServiceImpl; // = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
 	
 	private CompanyCli(){
 	}

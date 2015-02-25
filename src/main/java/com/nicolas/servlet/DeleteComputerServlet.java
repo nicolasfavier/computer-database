@@ -10,23 +10,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.service.Impl.ComputerServiceImpl;
-import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 
 /**
  * load all computers on get and delete them on post call
  */
 @WebServlet("/delete")
-public class DeleteComputerServlet extends HttpServlet {
+public class DeleteComputerServlet extends AbstractSpringHttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
+	
+	@Autowired
 	private ComputerServiceImpl computerService;
 
 	public DeleteComputerServlet() {
-		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
+//		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
 	}
 
 	/**

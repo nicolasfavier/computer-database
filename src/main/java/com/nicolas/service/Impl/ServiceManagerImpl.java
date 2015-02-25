@@ -1,28 +1,27 @@
 package com.nicolas.service.Impl;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+
 /**
  * 
  * Create and return Services Implementations
  *
  */
-public enum ServiceManagerImpl {
-	INSTANCE;
-	
-	private static CompanyServiceImpl companyServiceImpl;
-	private static ComputerServiceImpl computerServiceImpl;
-	
-	static{
-		companyServiceImpl = new CompanyServiceImpl();
-		computerServiceImpl = new ComputerServiceImpl();	
-	}
+
+@Component
+public class ServiceManagerImpl {
 	
 	private ServiceManagerImpl(){}
 	
-	public CompanyServiceImpl getCompanyServiceImpl(){
-		return companyServiceImpl;
+	@Bean
+	public CompanyServiceImpl companyServiceImpl(){
+		return new CompanyServiceImpl();
 	}
 	
-	public ComputerServiceImpl getComputerServiceImpl(){
-		return computerServiceImpl;
+	@Bean
+	public ComputerServiceImpl computerServiceImpl(){
+		return new ComputerServiceImpl();
 	}
 }

@@ -3,13 +3,14 @@ package com.nicolas.cli;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.service.Impl.ComputerServiceImpl;
-import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.validator.DtoValidator;
 
 /**
@@ -29,8 +30,8 @@ public class ComputerCli {
 	private static final String MENU_COMPUTER_DETAILS_INDEX = "enter the computer index for details :";
 	private static final String INVALID_INDEX = "This Index is not Valide";
 
-	private static ComputerServiceImpl computerServiceImpl = ServiceManagerImpl.INSTANCE
-			.getComputerServiceImpl();
+	@Autowired
+	private static ComputerServiceImpl computerServiceImpl; 
 
 	private ComputerCli() {
 	}

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dto.ComputerDto;
@@ -29,15 +30,19 @@ import com.nicolas.validator.DtoValidator;
  * called
  */
 @WebServlet("/add-computer")
-public class AddComputerServlet extends HttpServlet {
+public class AddComputerServlet extends AbstractSpringHttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
+	
+	@Autowired	
 	private ComputerServiceImpl computerService;
+	
+	@Autowired
 	private CompanyServiceImpl companyService;
 
 	public AddComputerServlet() {
-		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
-		this.companyService = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
+//		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
+//		this.companyService = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
 	}
 
 	/**

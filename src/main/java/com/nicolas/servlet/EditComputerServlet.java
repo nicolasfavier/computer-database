@@ -7,12 +7,12 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dto.ComputerDto;
@@ -21,7 +21,6 @@ import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.service.Impl.CompanyServiceImpl;
 import com.nicolas.service.Impl.ComputerServiceImpl;
-import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 import com.nicolas.validator.DtoValidator;
 
@@ -29,15 +28,19 @@ import com.nicolas.validator.DtoValidator;
  * update a computer
  */
 @WebServlet("/edit-computer")
-public class EditComputerServlet extends HttpServlet {
+public class EditComputerServlet extends AbstractSpringHttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
+	
+	@Autowired
 	private ComputerServiceImpl computerService;
+	
+	@Autowired
 	private CompanyServiceImpl companyService;
 
 	public EditComputerServlet() {
-		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
-		this.companyService = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
+//		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
+//		this.companyService = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
 	}
 
 	/**
