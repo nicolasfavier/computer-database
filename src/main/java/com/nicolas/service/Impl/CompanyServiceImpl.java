@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.nicolas.connection.ConnectionManager;
 import com.nicolas.dao.impl.ComputerDaoImpl;
-import com.nicolas.dao.impl.DaoManager;
 import com.nicolas.dao.interfaces.CompanyDao;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
@@ -19,11 +20,14 @@ import com.nicolas.service.Interfaces.CompanyService;
  * implementation of Company service
  *
  */
+@Service
 public class CompanyServiceImpl implements CompanyService {
 	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
-	private CompanyDao companyDao = DaoManager.INSTANCE.getCompanyDaoImpl();
-	private ComputerDao computerDao = DaoManager.INSTANCE.getComputerDaoImpl();
+	@Autowired
+	private CompanyDao companyDao;
+	@Autowired
+	private ComputerDao computerDao;
 
 	public CompanyServiceImpl() {
 	}
@@ -34,8 +38,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
+	 * (non-Javadoc)	 * 
 	 * @see com.nicolas.service.Interfaces.CompanyService#getByID(int)
 	 */
 	@Override

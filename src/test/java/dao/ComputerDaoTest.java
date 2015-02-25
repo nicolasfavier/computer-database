@@ -10,8 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.nicolas.dao.impl.DaoManager;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
@@ -20,7 +20,8 @@ import com.nicolas.utils.ScriptRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerDaoTest {
-	private ComputerDao computerDao = DaoManager.INSTANCE.getComputerDaoImpl();
+	@Autowired
+	private ComputerDao computerDao;
 
 	@Mock
 	private Company cmp;
@@ -31,8 +32,6 @@ public class ComputerDaoTest {
 		ScriptRunner.runScript();
 	}
 
-
-	
 	@Test
 	public void testGetNegativeID() {
 		Computer c = null;

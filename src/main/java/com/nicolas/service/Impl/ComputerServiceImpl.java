@@ -2,15 +2,19 @@ package com.nicolas.service.Impl;
 
 import java.util.List;
 
-import com.nicolas.dao.impl.DaoManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.service.Interfaces.ComputerService;
 
+@Service
 public class ComputerServiceImpl implements ComputerService {
 
-	private ComputerDao computerDao = DaoManager.INSTANCE.getComputerDaoImpl();
+	@Autowired
+	private ComputerDao computerDao;
 
 	public ComputerServiceImpl() {
 	}

@@ -10,6 +10,7 @@ import javax.management.RuntimeErrorException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.nicolas.connection.ConnectionManager;
 import com.nicolas.dao.DaoUtils;
@@ -26,6 +27,7 @@ import com.nicolas.utils.Utils;
  * implementation of ComputerDao to get,add,delete computers
  *
  */
+@Repository
 public class ComputerDaoImpl implements ComputerDao {
 	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 

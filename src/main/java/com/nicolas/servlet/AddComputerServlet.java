@@ -7,7 +7,6 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +20,6 @@ import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.service.Impl.CompanyServiceImpl;
 import com.nicolas.service.Impl.ComputerServiceImpl;
-import com.nicolas.service.Impl.ServiceManagerImpl;
 import com.nicolas.utils.Utils;
 import com.nicolas.validator.DtoValidator;
 
@@ -41,8 +39,6 @@ public class AddComputerServlet extends AbstractSpringHttpServlet {
 	private CompanyServiceImpl companyService;
 
 	public AddComputerServlet() {
-//		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
-//		this.companyService = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
 	}
 
 	/**

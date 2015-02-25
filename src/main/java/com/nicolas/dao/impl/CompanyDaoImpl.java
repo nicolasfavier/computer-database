@@ -10,6 +10,7 @@ import javax.management.RuntimeErrorException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.nicolas.connection.ConnectionManager;
 import com.nicolas.dao.DaoUtils;
@@ -23,6 +24,7 @@ import com.nicolas.runtimeException.PersistenceException;
  * implementation of CompanyDao to get,add,delete companies
  *
  */
+@Repository
 public class CompanyDaoImpl implements CompanyDao {
     static Logger LOGGER = LoggerFactory.getLogger(CompanyDaoImpl.class);
 

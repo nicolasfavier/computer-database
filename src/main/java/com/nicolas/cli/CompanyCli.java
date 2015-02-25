@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nicolas.models.Company;
 import com.nicolas.service.Impl.CompanyServiceImpl;
-import com.nicolas.service.Impl.ServiceManagerImpl;
 
 /**
  * 

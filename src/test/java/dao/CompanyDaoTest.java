@@ -8,16 +8,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nicolas.dao.impl.CompanyDaoImpl;
-import com.nicolas.dao.impl.DaoManager;
 import com.nicolas.models.Company;
 import com.nicolas.utils.ScriptRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CompanyDaoTest {
-	private CompanyDaoImpl companyDao = DaoManager.INSTANCE
-			.getCompanyDaoImpl();
+	@Autowired
+	private CompanyDaoImpl companyDao;
 	
 	@Before
 	public void init() {
