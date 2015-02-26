@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
@@ -19,6 +20,7 @@ import com.nicolas.models.Page;
 import com.nicolas.utils.ScriptRunner;
 
 @RunWith(MockitoJUnitRunner.class)
+@ContextConfiguration(locations = { "classpath:*/applicationContext.xml" })
 public class ComputerDaoTest {
 	@Autowired
 	private ComputerDao computerDao;

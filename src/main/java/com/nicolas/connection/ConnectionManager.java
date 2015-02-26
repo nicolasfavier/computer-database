@@ -3,8 +3,12 @@ package com.nicolas.connection;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
@@ -16,6 +20,7 @@ import com.nicolas.utils.Property;
  * Create and handle connection
  *
  */
+@Component
 public class ConnectionManager {
 	public static final String DB_USER = Property.INSTANCE.getDbUser();
 	public static final String DB_PWD = Property.INSTANCE.getDbPassword();
@@ -34,9 +39,12 @@ public class ConnectionManager {
 			.getMinConnectionsPerPartition();
 	private static int partitionCount = Property.INSTANCE.getPartitionCount();
 
+	//deprecated
 	private static BoneCP connectionPool = null;
 
 	private static ThreadLocal<Connection> connection = new ThreadLocal<Connection>();
+
+	private static DataSource dataSource;
 
 	/**
 	 * connection pool configuration
@@ -66,6 +74,11 @@ public class ConnectionManager {
 		}
 	}
 
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		ConnectionManager.dataSource = dataSource;
+	}
+
 	/**
 	 * This method must be called only once when the application stops. Don't
 	 * need to call it every time when you get a connection from the Connection
@@ -93,11 +106,10 @@ public class ConnectionManager {
 	public static Connection getConnection() {
 		try {
 			if (connection.get() == null) {
-				connection.set(connectionPool.getConnection());
+				connection.set(	dataSource.getConnection());
 				logger.info("new connection created " + connection.get().hashCode());
-			}
-			else{
-				logger.info("connection was already created "+ connection.get().hashCode());
+			} else {
+				logger.info("connection was already created " + connection.get().hashCode());
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -111,9 +123,9 @@ public class ConnectionManager {
 	 */
 	public static void initTransactionConnection() {
 		try {
-			connection.set(connectionPool.getConnection());
+			connection.set(	dataSource.getConnection());
 			connection.get().setAutoCommit(false);
-			logger.info("new transaction connection created "+ connection.get().hashCode());
+			logger.info("new transaction connection created " + connection.get().hashCode());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new PersistenceException(e);
