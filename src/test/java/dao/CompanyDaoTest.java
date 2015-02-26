@@ -1,5 +1,6 @@
 package dao;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,17 +8,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.nicolas.dao.impl.CompanyDaoImpl;
+import com.nicolas.dao.interfaces.CompanyDao;
 import com.nicolas.models.Company;
 import com.nicolas.utils.ScriptRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:config/applicationContextPersistenceTest.xml" })
 public class CompanyDaoTest {
+	
 	@Autowired
-	private CompanyDaoImpl companyDao;
+	private CompanyDao companyDao;
 	
 	@Before
 	public void init() {

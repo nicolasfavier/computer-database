@@ -29,7 +29,7 @@
 		<selenium-maven-plugin-version>1.0.1</selenium-maven-plugin-version>
 		<maven-surefire-plugin-version>2.5</maven-surefire-plugin-version>
 	</properties>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -46,7 +46,8 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+	
+	
 	<repositories>
 		<repository>
 			<id>version99</id>
@@ -54,9 +55,10 @@
 			<url>http://version99.qos.ch/</url>
 		</repository>
 	</repositories>
-
+	
+	
 	<!-- runtime librairy -->
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -75,9 +77,9 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${jcl-over-slf4j-version}</version>
 		</dependency>
-
+		
 		<!-- provided librairy -->
-
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -90,9 +92,9 @@
 			<version>${jsp-api-version}</version>
 			<scope>provided</scope>
 		</dependency>
-
+		
 		<!-- test librairy -->
-
+		
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
@@ -111,9 +113,9 @@
 			<version>${selenium-version}</version>
 			<scope>test</scope>
 		</dependency>
-
+		
 		<!-- view librairy and compile librairy -->
-
+		
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
@@ -134,24 +136,24 @@
 			<artifactId>bonecp</artifactId>
 			<version>${bonecp-version}</version>
 		</dependency>
-
+		
 		<!-- Spring -->
-
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
+			<artifactId>spring-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
 	</dependencies>
-
-
+	
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -163,7 +165,7 @@
 					<target>${java-target-version}</target>
 				</configuration>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -174,7 +176,7 @@
 					<nohelp>true</nohelp>
 				</configuration>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>selenium-maven-plugin</artifactId>
@@ -200,7 +202,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -230,7 +232,7 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	
 	<reporting>
 		<plugins>
 			<plugin>

@@ -9,9 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
@@ -19,9 +19,11 @@ import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.utils.ScriptRunner;
 
-@RunWith(MockitoJUnitRunner.class)
-@ContextConfiguration(locations = { "classpath:*/applicationContext.xml" })
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:config/applicationContextPersistenceTest.xml" })
 public class ComputerDaoTest {
+	
 	@Autowired
 	private ComputerDao computerDao;
 

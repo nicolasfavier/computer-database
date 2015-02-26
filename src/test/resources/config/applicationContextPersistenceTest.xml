@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:context="http://www.springframework.org/schema/context"
 xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/context
@@ -9,6 +9,8 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<context:component-scan base-package="com.nicolas"></context:component-scan>
+	
 	<!-- Properties loader for the persistence specific properties -->
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -17,12 +19,12 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 		</property>
 	</bean>
 	
-	<bean id="dataSource"	class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${dbDriver}" />
 		<property name="url" value="jdbc:mysql://localhost:3306/${dbName}?zeroDateTimeBehavior=convertToNull" />
 		<property name="username" value="${dbUser}" />
 		<property name="password" value="${dbPassword}" />
-		
 	</bean>
+
 </beans>
