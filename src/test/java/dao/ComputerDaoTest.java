@@ -18,6 +18,8 @@ import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
+import com.nicolas.runtimeException.PersistenceException;
+import com.nicolas.runtimeException.ServiceException;
 import com.nicolas.utils.ScriptRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,7 +43,7 @@ public class ComputerDaoTest {
 		try {
 			computerDao.getByID(-1);
 		} catch (Exception e) {
-			Assert.assertTrue(e instanceof EmptyResultDataAccessException);
+			Assert.assertTrue(e instanceof PersistenceException);
 		}
 	}
 
@@ -50,7 +52,7 @@ public class ComputerDaoTest {
 		try {
 			computerDao.getByID(99999);
 		} catch (Exception e) {
-			Assert.assertTrue(e instanceof EmptyResultDataAccessException);
+			Assert.assertTrue(e instanceof PersistenceException);
 		}
 	}
 
@@ -90,7 +92,7 @@ public class ComputerDaoTest {
 		try {
 			computerDao.getByID(17);
 		} catch (Exception e) {
-			Assert.assertTrue(e instanceof EmptyResultDataAccessException);
+			Assert.assertTrue(e instanceof PersistenceException);
 		}
 	}
 
