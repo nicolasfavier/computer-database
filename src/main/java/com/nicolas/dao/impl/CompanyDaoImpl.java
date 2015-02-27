@@ -1,5 +1,6 @@
 package com.nicolas.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.nicolas.dao.interfaces.CompanyDao;
 import com.nicolas.dao.mapper.CompanyRowMapperSpring;
 import com.nicolas.models.Company;
+import com.nicolas.runtimeException.PersistenceException;
 
 /**
  * 
@@ -36,7 +38,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	@Autowired
 	CompanyRowMapperSpring companyRowMapperSpring;
-	
+
 	public CompanyDaoImpl() {
 	}
 
@@ -47,8 +49,15 @@ public class CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public Company getByID(int companyId) {
-		return this.jdbcTemplate.queryForObject(GET_COMPANY_BY_ID, new Object[] { companyId },
-				companyRowMapperSpring);
+		Company c = null;
+		try {
+			c = this.jdbcTemplate.queryForObject(GET_COMPANY_BY_ID, new Object[] { companyId },
+					companyRowMapperSpring);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
+		return c;
 	}
 
 	/*
@@ -58,7 +67,14 @@ public class CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public List<Company> getAll() {
-		return this.jdbcTemplate.query(GET_ALL_COMPANY, companyRowMapperSpring);
+		List<Company> lc = new ArrayList<Company>();
+		try {
+			lc = this.jdbcTemplate.query(GET_ALL_COMPANY, companyRowMapperSpring);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
+		return lc;
 	}
 
 	/*
@@ -69,6 +85,11 @@ public class CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public void deleteId(int companyId) {
-		this.jdbcTemplate.update(DELETE_COMPANY_SQL, companyId);
+		try {
+			this.jdbcTemplate.update(DELETE_COMPANY_SQL, companyId);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
 	}
 }

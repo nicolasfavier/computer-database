@@ -1,5 +1,6 @@
 package com.nicolas.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Repository;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.dao.mapper.ComputerRowMapperSpring;
 import com.nicolas.dto.ComputerDtoMapper;
+import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
+import com.nicolas.runtimeException.PersistenceException;
 import com.nicolas.utils.Utils;
 
 /**
@@ -78,7 +81,6 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	@Autowired
 	ComputerRowMapperSpring computerRowMapperSpring;
-	
 
 	public ComputerDaoImpl() {
 	}
@@ -95,9 +97,16 @@ public class ComputerDaoImpl implements ComputerDao {
 		if (computer.getCompany() != null && computer.getCompany().getId() != 0)
 			companyId = computer.getCompany().getId();
 
-		this.jdbcTemplate.update(ADD_COMPUTER_SQL,
-				new Object[] { computer.getName(), Utils.getTimestamp(computer.getIntroduced()),
-						Utils.getTimestamp(computer.getDiscontinued()), companyId });
+		try {
+			this.jdbcTemplate.update(
+					ADD_COMPUTER_SQL,
+					new Object[] { computer.getName(),
+							Utils.getTimestamp(computer.getIntroduced()),
+							Utils.getTimestamp(computer.getDiscontinued()), companyId });
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
 	}
 
 	/*
@@ -107,8 +116,15 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public Computer getByID(int index) {
-		return this.jdbcTemplate.queryForObject(FIND_COMPUTER_BY_ID_SQL, new Object[] { index },
-				computerRowMapperSpring);
+		Computer c = null;
+		try {
+			c = this.jdbcTemplate.queryForObject(FIND_COMPUTER_BY_ID_SQL, new Object[] { index },
+					computerRowMapperSpring);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
+		return c;
 	}
 
 	/*
@@ -118,7 +134,14 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public List<Computer> getAll() {
-		return this.jdbcTemplate.query(SELECT_ALL_COMPUTERS_SQL, computerRowMapperSpring);
+		List<Computer> lc = new ArrayList<Computer>();
+		try {
+			lc = this.jdbcTemplate.query(SELECT_ALL_COMPUTERS_SQL, computerRowMapperSpring);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
+		return lc;
 	}
 
 	/*
@@ -136,9 +159,14 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		Object[] params = new Object[] { WrapName, WrapName, nbComputer, nbComputerPerPage };
 
-		List<Computer> computerList = this.jdbcTemplate.query(GET_PAGES_SQL, params,
-				computerRowMapperSpring);
-		page.setComputerList(ComputerDtoMapper.ComputerToDto(computerList));
+		try {
+			List<Computer> computerList = this.jdbcTemplate.query(GET_PAGES_SQL, params,
+					computerRowMapperSpring);
+			page.setComputerList(ComputerDtoMapper.ComputerToDto(computerList));
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
 
 		return page;
 	}
@@ -149,9 +177,17 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.nicolas.dao.interfaces.ComputerDao#getCount(java.lang.String)
 	 */
 	public int getCount(String name) {
+		int c = 0;
 		String wrapName = "%" + name + "%";
-		return this.jdbcTemplate.queryForObject(GET_COUNT_SQL, new Object[] { wrapName, wrapName },
-				Integer.class);
+
+		try {
+			c = this.jdbcTemplate.queryForObject(GET_COUNT_SQL,
+					new Object[] { wrapName, wrapName }, Integer.class);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
+		return c;
 	}
 
 	/*
@@ -172,7 +208,12 @@ public class ComputerDaoImpl implements ComputerDao {
 				Utils.getTimestamp(computer.getIntroduced()),
 				Utils.getTimestamp(computer.getDiscontinued()), companyId, computer.getId() };
 
-		this.jdbcTemplate.update(UPDATE_COMPUTER_SQL, params);
+		try {
+			this.jdbcTemplate.update(UPDATE_COMPUTER_SQL, params);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
 	}
 
 	/*
@@ -182,7 +223,12 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public void delete(int index) {
-		this.jdbcTemplate.update(DELETE_COMPUTER_SQL, index);
+		try {
+			this.jdbcTemplate.update(DELETE_COMPUTER_SQL, index);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
 	}
 
 	/*
@@ -193,7 +239,12 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void deleteIds(String computerIds) {
 		String ids = "(" + computerIds + ")";
-		this.jdbcTemplate.update(DELETE_COMPUTERS_SQL, ids);
+		try {
+			this.jdbcTemplate.update(DELETE_COMPUTERS_SQL, ids);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
 	}
 
 	/*
@@ -204,6 +255,11 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public void deleteByCompanyId(int companyId) {
-		this.jdbcTemplate.update(DELETE_COMPUTERS_BY_COMPANY_ID_SQL, companyId);
+		try {
+			this.jdbcTemplate.update(DELETE_COMPUTERS_BY_COMPANY_ID_SQL, companyId);
+		} catch (Exception e) {
+			LOGGER.error("[sql error] " + e);
+			throw new PersistenceException(e);
+		}
 	}
 }

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
-import com.nicolas.service.Impl.ComputerServiceImpl;
+import com.nicolas.service.Interfaces.ComputerService;
 import com.nicolas.utils.Utils;
 
 /**
@@ -24,7 +24,7 @@ public class DeleteComputerServlet extends AbstractSpringHttpServlet {
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	
 	@Autowired
-	private ComputerServiceImpl computerService;
+	private ComputerService computerService;
 
 	public DeleteComputerServlet() {
 //		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();

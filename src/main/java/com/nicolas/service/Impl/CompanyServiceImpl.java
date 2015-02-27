@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dao.interfaces.CompanyDao;
@@ -63,9 +64,14 @@ public class CompanyServiceImpl implements CompanyService {
 	 * @see com.nicolas.service.Interfaces.CompanyService#DeleteCompany(int)
 	 */
 	@Override
+	@Transactional(rollbackFor = ServiceException.class)
 	public void DeleteCompany(int companyId) {
+		try {
 			computerDao.deleteByCompanyId(companyId);
 			companyDao.deleteId(companyId);
-
+		} catch (PersistenceException e) {
+			LOGGER.error("[service] " + e);
+			throw new ServiceException(e);
+		}
 	}
 }

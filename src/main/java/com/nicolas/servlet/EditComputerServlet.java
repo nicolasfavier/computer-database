@@ -19,8 +19,8 @@ import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
-import com.nicolas.service.Impl.CompanyServiceImpl;
-import com.nicolas.service.Impl.ComputerServiceImpl;
+import com.nicolas.service.Interfaces.CompanyService;
+import com.nicolas.service.Interfaces.ComputerService;
 import com.nicolas.utils.Utils;
 import com.nicolas.validator.DtoValidator;
 
@@ -33,10 +33,10 @@ public class EditComputerServlet extends AbstractSpringHttpServlet {
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	
 	@Autowired
-	private ComputerServiceImpl computerService;
+	private ComputerService computerService;
 	
 	@Autowired
-	private CompanyServiceImpl companyService;
+	private CompanyService companyService;
 
 	public EditComputerServlet() {
 //		this.computerService = ServiceManagerImpl.INSTANCE.getComputerServiceImpl();
