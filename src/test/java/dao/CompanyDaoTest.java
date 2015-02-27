@@ -18,7 +18,7 @@ import com.nicolas.utils.ScriptRunner;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:config/applicationContextPersistenceTest.xml" })
+@ContextConfiguration(locations = { "classpath:config/application-context-persistence-test.xml" })
 public class CompanyDaoTest {
 	
 	@Autowired

@@ -13,7 +13,7 @@ import com.nicolas.utils.Utils;
 
 @Component
 public class ComputerRowMapperSpring implements RowMapper<Computer>{
-
+	
 	@Override
 	public Computer mapRow(ResultSet rs, int arg1) throws SQLException {
 		Computer computer = null;

@@ -1,10 +1,14 @@
 package com.nicolas.cli;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /**
  * 
  * Display a menu of  various actions on computers and companies
  *
  */
+@Component
 public class Menu {
 
 	private static final String MENU_HEADER = ""
@@ -29,8 +33,13 @@ public class Menu {
 			return description;
 		}
 	}
-
-	public static void run() {
+	
+	@Autowired
+	private ComputerCli computerCli;
+	@Autowired
+	private CompanyCli companyCli;
+	
+	public void run() {
 		while (true) {
 			display();
 			int choix = InputCliUtils.getUserInput(MenuEntries.values().length,
@@ -48,46 +57,46 @@ public class Menu {
 		}
 	}
 
-	private static void select(int choice) {
+	private void select(int choice) {
 		MenuEntries mEntrie = MenuEntries.values()[choice];
 
 		switch (mEntrie) {
 		case SHOW_COMPUTER:
 			System.out.println("All computers :");
-			ComputerCli.showComputers();
+			computerCli.showComputers();
 			System.out.println("");
 			break;
 
 		case SHOW_PBYP_COMPUTER:
 			System.out.println("Computers :");
-			ComputerCli.showComputersByPage();
+			computerCli.showComputersByPage();
 			System.out.println("");
 			break;
 
 		case SHOW_COMPANIES:
 			System.out.println("All companies :");
-			CompanyCli.showCompanies();
+			companyCli.showCompanies();
 			System.out.println("");
 			break;
 
 		case SHOW_COMPUTER_DETAILS:
-			ComputerCli.getComputerDetails();
+			computerCli.getComputerDetails();
 			break;
 
 		case CREATE_COMPUTER:
-			ComputerCli.createComputer();
+			computerCli.createComputer();
 			break;
 
 		case UPDATE_COMPUTER:
-			ComputerCli.updateComputer();
+			computerCli.updateComputer();
 			break;
 
 		case DELETE_COMPUTER:
-			ComputerCli.deleteComputer();
+			computerCli.deleteComputer();
 			break;
 
 		case DELETE_COMPANY:
-			CompanyCli.deleteCompany();
+			companyCli.deleteCompany();
 			break;
 			
 		case QUIT:

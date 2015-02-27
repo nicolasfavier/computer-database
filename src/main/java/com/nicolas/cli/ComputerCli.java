@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
@@ -18,6 +19,7 @@ import com.nicolas.validator.DtoValidator;
  * Command Line Interface for computers
  *
  */
+@Component
 public class ComputerCli {
 
 	private static final String MENU_COMPUTER_CREATION_HEADER = "############ Computer creation ############";
@@ -31,21 +33,23 @@ public class ComputerCli {
 	private static final String INVALID_INDEX = "This Index is not Valide";
 
 	@Autowired
-	private static ComputerServiceImpl computerServiceImpl; 
-
+	private ComputerServiceImpl computerServiceImpl;
+	@Autowired
+	private CompanyCli companyCli;
+	
 	private ComputerCli() {
 	}
 
 	/**
 	 * show all computers return by the database
 	 */
-	public static void showComputers() {
+	public void showComputers() {
 		List<ComputerDto> computerDtos = new ArrayList<ComputerDto>();
 		computerDtos = ComputerDtoMapper.ComputerToDto(computerServiceImpl.getAll());
 		showComputers(computerDtos);
 	}
 
-	private static void showComputers(List<ComputerDto> computerDtos) {
+	private void showComputers(List<ComputerDto> computerDtos) {
 		for (ComputerDto c : computerDtos) {
 			System.out.println(c.toString());
 		}
@@ -54,7 +58,7 @@ public class ComputerCli {
 	/**
 	 * show computers by blocks
 	 */
-	public static void showComputersByPage() {
+	public void showComputersByPage() {
 		boolean exit = false;
 		Page p = new Page();
 
@@ -70,7 +74,7 @@ public class ComputerCli {
 		} while (!exit);
 	}
 
-	public static void createComputer() {
+	public void createComputer() {
 		System.out.println(MENU_COMPUTER_CREATION_HEADER);
 
 		String name = InputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, true);
@@ -78,7 +82,7 @@ public class ComputerCli {
 				false);
 		String discontinuedDate = InputCliUtils.getDateFromUser(
 				MENU_COMPUTER_CREATION_DISCONTINUED, false);
-		int companyId = CompanyCli.selectValidCompanyIndex();
+		int companyId = companyCli.selectValidCompanyIndex();
 
 		Company tmpCompany = null;
 		if (companyId != -1)
@@ -102,7 +106,7 @@ public class ComputerCli {
 
 	}
 
-	public static void updateComputer() {
+	public void updateComputer() {
 		System.out.println(MENU_COMPUTER_UPDATE_HEADER);
 		ComputerDto computerDto = ComputerDtoMapper.ComputerToDto(selectValidComputerIndex());
 
@@ -120,7 +124,7 @@ public class ComputerCli {
 		if (discontinuedDate != null)
 			computerDto.setDiscontinued(discontinuedDate);
 
-		int companyId = CompanyCli.selectValidCompanyIndex();
+		int companyId = companyCli.selectValidCompanyIndex();
 		Company tmpCompany = null;
 		if (companyId != -1) {
 			tmpCompany = new Company(companyId, "");
@@ -141,7 +145,7 @@ public class ComputerCli {
 		}
 	}
 
-	public static void getComputerDetails() {
+	public void getComputerDetails() {
 		int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX, false);
 		Computer detail = computerServiceImpl.getByID(index);
 		if (detail == null) {
@@ -151,7 +155,7 @@ public class ComputerCli {
 		}
 	}
 
-	public static void deleteComputer() {
+	public void deleteComputer() {
 		System.out.println(MENU_COMPUTER_DELETE_HEADER);
 		int index = selectValidComputerIndex().getId();
 		computerServiceImpl.delete(index);
@@ -159,7 +163,7 @@ public class ComputerCli {
 
 	}
 
-	private static Computer selectValidComputerIndex() {
+	private Computer selectValidComputerIndex() {
 		Computer tmpComputer = null;
 		boolean error = false;
 		do {

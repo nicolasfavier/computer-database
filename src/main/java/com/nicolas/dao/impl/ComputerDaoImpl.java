@@ -2,8 +2,6 @@ package com.nicolas.dao.impl;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,15 +73,12 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ DB_TABLE + "." + DB_COLUMN_NAME + " LIKE  ? OR " + DB_TABLE_COMPANY + "."
 			+ DB_COLUMN_NAME + " LIKE ?";
 
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	ComputerRowMapperSpring computerRowMapperSpring;
 	
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
 
 	public ComputerDaoImpl() {
 	}

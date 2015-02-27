@@ -2,8 +2,6 @@ package com.nicolas.dao.impl;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +31,12 @@ public class CompanyDaoImpl implements CompanyDao {
 	private final static String DELETE_COMPANY_SQL = "DELETE FROM " + DB_COMPANY_TABLE + " WHERE "
 			+ DB_COLUMN_ID + " = ?";
 
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	CompanyRowMapperSpring companyRowMapperSpring;
 	
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
-
 	public CompanyDaoImpl() {
 	}
 
