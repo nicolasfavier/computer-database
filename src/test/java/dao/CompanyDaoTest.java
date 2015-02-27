@@ -29,20 +29,6 @@ public class CompanyDaoTest {
 		// reset database
 		ScriptRunner.runScript();
 	}
-	
-	@Test
-	public void testGetNegativeID() {
-		Company c = null;
-		c = companyDao.getByID(-1);
-		Assert.assertNull(c);
-	}
-
-	@Test
-	public void testGetBadID() {
-		Company c = null;
-		c = companyDao.getByID(9999);
-		Assert.assertNull(c);
-	}
 
 	@Test
 	public void testGetByID() {

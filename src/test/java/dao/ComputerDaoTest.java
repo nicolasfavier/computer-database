@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -19,11 +20,10 @@ import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.utils.ScriptRunner;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:config/application-context-persistence-test.xml" })
 public class ComputerDaoTest {
-	
+
 	@Autowired
 	private ComputerDao computerDao;
 
@@ -38,16 +38,20 @@ public class ComputerDaoTest {
 
 	@Test
 	public void testGetNegativeID() {
-		Computer c = null;
-		c = computerDao.getByID(-1);
-		Assert.assertNull(c);
+		try {
+			computerDao.getByID(-1);
+		} catch (Exception e) {
+			Assert.assertTrue(e instanceof EmptyResultDataAccessException);
+		}
 	}
 
 	@Test
 	public void testGetBadID() {
-		Computer c = null;
-		c = computerDao.getByID(99999);
-		Assert.assertNull(c);
+		try {
+			computerDao.getByID(99999);
+		} catch (Exception e) {
+			Assert.assertTrue(e instanceof EmptyResultDataAccessException);
+		}
 	}
 
 	@Test
@@ -83,8 +87,11 @@ public class ComputerDaoTest {
 	@Test
 	public void testdelete() {
 		computerDao.delete(17);
-		Computer c = computerDao.getByID(17);
-		Assert.assertNull(c);
+		try {
+			computerDao.getByID(17);
+		} catch (Exception e) {
+			Assert.assertTrue(e instanceof EmptyResultDataAccessException);
+		}
 	}
 
 	@Test
