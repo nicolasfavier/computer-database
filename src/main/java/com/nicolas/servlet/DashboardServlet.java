@@ -21,7 +21,7 @@ import com.nicolas.utils.Utils;
  * Servlet implementation show computers when the uri: /dashboard is
  * called
  */
-@WebServlet("/dashboard")
+@WebServlet("/dashboardold")
 public class DashboardServlet extends AbstractSpringHttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);

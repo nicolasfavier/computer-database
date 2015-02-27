@@ -27,7 +27,7 @@ import com.nicolas.validator.DtoValidator;
  * Servlet implementation show and add computers when the uri: /add-computer is
  * called
  */
-@WebServlet("/add-computer")
+@WebServlet("/add-computerold")
 public class AddComputerServlet extends AbstractSpringHttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);

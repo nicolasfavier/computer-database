@@ -18,7 +18,7 @@ import com.nicolas.utils.Utils;
 /**
  * load all computers on get and delete them on post call
  */
-@WebServlet("/delete")
+@WebServlet("/deleteold")
 public class DeleteComputerServlet extends AbstractSpringHttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);

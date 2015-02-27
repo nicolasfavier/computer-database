@@ -24,9 +24,9 @@
 						<input type="hidden" value="0" />
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <input required
+								<label for="name">Computer name</label> <input required
 									type="text" class="form-control" id="computerName"
-									name="computerName" placeholder="Computer name"
+									name="name" placeholder="Computer name"
 									value="${fn:escapeXml(computer.name)}">
 							</div>
 							<input type="hidden" id="computerId" name="id"

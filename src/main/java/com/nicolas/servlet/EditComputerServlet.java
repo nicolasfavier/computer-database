@@ -27,7 +27,7 @@ import com.nicolas.validator.DtoValidator;
 /**
  * update a computer
  */
-@WebServlet("/edit-computer")
+@WebServlet("/edit-computerold")
 public class EditComputerServlet extends AbstractSpringHttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
