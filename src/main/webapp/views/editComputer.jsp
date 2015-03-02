@@ -1,5 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 
 <jsp:include page="templates/headers.jsp" />
 <body>
@@ -20,49 +23,71 @@
 							</ul>
 						</div>
 					</c:if>
-					<form action="edit-computer" method="POST">
-						<input type="hidden" value="0" />
+					<form:form modelAttribute="computerDto" action="edit-computer"
+						method="POST">
 						<fieldset>
-							<div class="form-group">
-								<label for="name">Computer name</label> <input required
-									type="text" class="form-control" id="computerName"
-									name="name" placeholder="Computer name"
-									value="${fn:escapeXml(computer.name)}">
-							</div>
 							<input type="hidden" id="computerId" name="id"
 								value="${computer.id}">
 							<div class="form-group">
-								<label for="introduced">Introduced date</label> <input
-									type="datetime-local" class="form-control" id="introduced"
-									name="introduced" placeholder="Introduced date"
+								<label for="name"> <spring:message
+										code="computer_form.name_label" />
+								</label>
+								<spring:message code="computer_form.name_placeholder"
+									var="computer_name_placeholder" />
+								<input required type="text" class="form-control"
+									id="computerName" name="name"
+									placeholder="${ computer_name_placeholder }"
+									value="${fn:escapeXml(computer.name)}">
+								<form:errors path="name" cssClass="error"></form:errors>
+							</div>
+							<div class="form-group">
+								<label for="introduced"> <spring:message
+										code="computer_form.introduced_label" />
+								</label>
+								<spring:message code="computer_form.introduced_placeholder"
+									var="computer_introduced_placeholder" />
+								<input type="datetime-local" class="form-control date"
+									id="introduced" name="introduced"
+									placeholder="${ computer_introduced_placeholder }"
 									value="${fn:escapeXml(computer.introduced)}">
+								<form:errors path="introduced" cssClass="error"></form:errors>
 							</div>
+
+
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> <input
-									type="datetime-local" class="form-control" id="discontinued"
-									name="discontinued" placeholder="Ditestscontinued date"
+								<label for="discontinued"> <spring:message
+										code="computer_form.discontinued_label" />
+								</label>
+								<spring:message code="computer_form.discontinued_placeholder"
+									var="computer_discontinued_placeholder" />
+								<input type="datetime-local" class="form-control date"
+									id="discontinued" name="discontinued"
+									placeholder="${ computer_discontinued_placeholder }"
 									value="${fn:escapeXml(computer.discontinued)}">
+								<form:errors path="discontinued" cssClass="error"></form:errors>
 							</div>
+
 							<div class="form-group">
-								<label for="companyId">Company</label> <select
+								<label for="companyId"><spring:message
+										code="computer_form.company_label" /></label> <select
 									class="form-control" id="companyId" name="companyId">
-									<option
-										<c:if test="${company == null}">selected</c:if>
-										value="0"><c:out value="no company" /></option>
 									<c:forEach items="${companies}" var="company">
-										<option
-											<c:if test="${company.id == computer.id}">selected</c:if>
-											value="${company.id}"><c:out value="${company.name}" /></option>
+										<option value="${company.id}"><c:out
+												value="${company.name}" /></option>
 									</c:forEach>
 								</select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Edit"
-								class="btn btn-primary validation"> or <a
-								href="dashboard" class="btn btn-default">Cancel</a>
+							<spring:message code="computer_form.edit_button" var="edit_button" />
+
+							<input type="submit" value="${ edit_button }"
+								class="btn btn-primary validation">
+							<spring:message code="computer_form.or" />
+							<a href="dashboard" class="btn btn-default"><spring:message
+									code="computer_form.cancel_button" /></a>
 						</div>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</div>

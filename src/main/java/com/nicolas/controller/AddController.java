@@ -1,13 +1,15 @@
 package com.nicolas.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +20,6 @@ import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Interfaces.CompanyService;
-import com.nicolas.validator.DtoValidator;
 
 @Controller
 @RequestMapping("/add-computer")
@@ -37,26 +38,24 @@ public class AddController {
 		List<Company> companies = this.companyService.getAll();
 
 		model.addAttribute("companies", companies);
-
+        model.addAttribute("computerDto", new ComputerDto());
 		LOGGER.info("get the view for add Computer");
 		return "addComputer";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String doPost(@ModelAttribute ComputerDto computerDto, ModelMap model) {
+	public String doPost(@Valid @ModelAttribute ComputerDto computerDto, BindingResult result, ModelMap model) {
 
-		List<String> validationErrors = new ArrayList<>();
-		validationErrors = DtoValidator.validate(computerDto);
-
-		if (validationErrors.size() == 0) {
+		if(result.hasErrors()) {
+			LOGGER.info("Wrong input, redirecting to the view");
+			List<Company> companies = this.companyService.getAll();
+			model.addAttribute("companies", companies);
+			return "addComputer";
+		} else {
 			this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto));
 			LOGGER.info("Computer added with success, redirecting to the Dashboard");
+			model.addAttribute("message", "Successfully add");
 			return "redirect:dashboard";
-		} else {
-			LOGGER.info("Wrong input, redirecting to the view");
-			model.addAttribute("validationErrors", validationErrors);
-			// doGet(request, response);
-			return "";
 		}
 	}
 }

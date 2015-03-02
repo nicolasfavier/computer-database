@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.service.Impl.ComputerServiceImpl;
@@ -26,7 +26,7 @@ public class DeleteController {
 	private CompanyService companyService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String printHello(@ModelAttribute String idsToDelete, ModelMap model) {
+	public String printHello(@RequestParam(value = "selection") String idsToDelete, ModelMap model) {
 
 		String[] array = idsToDelete.split(",");
 		// TODO send an unique command for delete

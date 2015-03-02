@@ -28,6 +28,6 @@ input[type='checkbox'] {
     white-space: nowrap;
 }
 
-.errorMessage{
+.error{
 	color:red;
 }

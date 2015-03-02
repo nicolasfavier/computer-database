@@ -3,11 +3,14 @@ package com.nicolas.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,20 +55,17 @@ public class EditController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public String doPost(@ModelAttribute ComputerDto computerDto, ModelMap model) {
+	public String doPost(@Valid @ModelAttribute ComputerDto computerDto, BindingResult result, ModelMap model) {
 
-			List<String> validationErrors = new ArrayList<>();
-			validationErrors = DtoValidator.validate(computerDto);
-
-			if (validationErrors.size() == 0) {
+			if(result.hasErrors()) {
+				LOGGER.info("Wrong input, redirecting to the view");
+				List<Company> companies = this.companyService.getAll();
+				model.addAttribute("companies", companies);
+				return "editComputer";
+			} else {
 				this.computerService.update(ComputerDtoMapper.ComputerFromDto(computerDto));
 				LOGGER.info("Computer edit with success, redirecting to the Dashboard");
 				return "redirect:dashboard";
-			} else {
-				LOGGER.info("Wrong input, redirecting to the view");
-				model.addAttribute("validationErrors", validationErrors);
-				//doGet(request, response);
-				return "";
 			}
 	}
 }

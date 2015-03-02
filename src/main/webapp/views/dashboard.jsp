@@ -1,29 +1,42 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="myTags" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="myTags"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <jsp:include page="templates/headers.jsp" />
 <body>
 	<jsp:include page="templates/navbar.jsp" />
-	<div id="messages" ><c:out value="${message}"/></div>
+	<div id="messages">
+		<c:out value="${message}" />
+	</div>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${page.totalComputers}Computers found</h1>
+			<h1 id="homeTitle">
+				<spring:message code="dashboard.n_computers_msg"
+					arguments="${page.totalComputers}" />
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
-
+						<spring:message code="dashboard.search_placeholder"
+							var="search_placeholder" />
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name"
-							<c:if test="${search != null}">value="${search}"</c:if> /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" />
+							class="form-control" placeholder="${ search_placeholder }"
+							<c:if test="${search != null}">value="${search}"</c:if> />
+						<spring:message code="dashboard.search_filter_button"
+							var="search_filter_button" />
+						<input type="submit" id="searchsubmit"
+							value="${ search_filter_button }" class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="add-computer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer"
+						href="<c:url value="/add-computer" />"><spring:message
+							code="dashboard.add_computer_button" /></a> 
+					<a
+						class="btn btn-default" id="editComputer" href="#"
+						onclick="$.fn.toggleEditMode();"><spring:message
+							code="dashboard.edit_button" /></a>
 				</div>
 			</div>
 		</div>
@@ -47,12 +60,13 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
+						<th><spring:message code="dashboard.name_label" /></th>
+						<!-- Table header for introduced_label -->
+						<th><spring:message code="dashboard.introduced_label" /></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><spring:message code="dashboard.discontinued_label" /></th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><spring:message code="dashboard.company_label" /></th>
 
 					</tr>
 				</thead>
@@ -71,8 +85,13 @@
 					</c:forEach>
 				</tbody>
 			</table>
-
 		</div>
+		 <script type="text/javascript">
+			var strings = new Array();
+			strings['delete_confirm_msg'] = "<spring:message code='dashboard.delete_confirm_msg' javaScriptEscape='true' />";
+			strings['view_button'] = "<spring:message code='dashboard.view_button' javaScriptEscape='true' />";
+			strings['edit_button'] = "<spring:message code='dashboard.edit_button' javaScriptEscape='true' />";
+		</script>
 	</section>
 
 	<footer class="navbar-fixed-bottom">
