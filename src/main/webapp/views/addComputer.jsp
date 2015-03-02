@@ -27,8 +27,6 @@
 									name="name" placeholder="Computer name"
 									value="${fn:escapeXml(computer.name)}">
 							</div>
-							<input type="hidden" id="computerId" name="id"
-								value="${computer.id}">
 							<div class="form-group">
 								<label for="introduced">Introduced date <span
 									class="errorMessage"></span></label> <input type="datetime-local"
