@@ -12,8 +12,7 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">${computer.id}</div>
-					<spring:message
-										code="computer_form.edit_computer_title" />
+					<h1><spring:message	code="computer_form.edit_computer_title" /></h1>
 					<c:if test="${validationErrors != null}">
 						<div class="alert alert-danger">
 							<h2>Error:</h2>
@@ -92,6 +91,10 @@
 				</div>
 			</div>
 		</div>
+				 <script type="text/javascript">
+			var strings = new Array();
+			strings['DateRegex'] = "<spring:message code='binding.date.regex' javaScriptEscape='true' />";
+		</script>
 	</section>
 	<jsp:include page="/views/templates/footer.jsp" />
 </body>

@@ -1,10 +1,9 @@
 $(document).ready(function () {
 	var isIntroducedValid = true;
 	var isDiscontinuedValid = true;
-	var dateformat = "^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
 
 	$('#introduced').on('input', function() {    
-	       if (!$(this).val().match(dateformat) && $(this).val() != "") {
+	       if (!$(this).val().match(strings['DateRegex']) && $(this).val() != "") {
 	           $(this).css( "border", "2px solid red");
 	           isIntroducedValid = false;
 	       }
@@ -16,7 +15,7 @@ $(document).ready(function () {
 	});
 
 	$('#discontinued').on('input', function() {        
-	       if (!$(this).val().match(dateformat) && $(this).val() != "") {
+	       if (!$(this).val().match(strings['DateRegex']) && $(this).val() != "") {
 	           $(this).css( "border", "2px solid red");
 	           isIntroducedValid = false;
 	       }

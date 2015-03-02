@@ -54,5 +54,4 @@ http://www.springframework.org/schema/tx/spring-tx.xsd
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/fonts/**" location="/fonts/" />
 
-	<mvc:annotation-driven />
 </beans>
