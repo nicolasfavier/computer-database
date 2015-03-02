@@ -77,6 +77,12 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ DB_COLUMN_NAME + " LIKE ?";
 
 	@Autowired
+	private Utils utils;
+	
+	@Autowired
+	private ComputerDtoMapper computerDtoMapper;
+	
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
@@ -101,8 +107,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			this.jdbcTemplate.update(
 					ADD_COMPUTER_SQL,
 					new Object[] { computer.getName(),
-							Utils.getTimestamp(computer.getIntroduced()),
-							Utils.getTimestamp(computer.getDiscontinued()), companyId });
+							utils.getTimestamp(computer.getIntroduced()),
+							utils.getTimestamp(computer.getDiscontinued()), companyId });
 		} catch (Exception e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
@@ -162,7 +168,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			List<Computer> computerList = this.jdbcTemplate.query(GET_PAGES_SQL, params,
 					computerRowMapperSpring);
-			page.setComputerList(ComputerDtoMapper.ComputerToDto(computerList));
+			page.setComputerList(computerDtoMapper.ComputerToDto(computerList));
 		} catch (Exception e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
@@ -205,8 +211,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			companyId = computer.getCompany().getId();
 
 		Object[] params = new Object[] { computer.getName(),
-				Utils.getTimestamp(computer.getIntroduced()),
-				Utils.getTimestamp(computer.getDiscontinued()), companyId, computer.getId() };
+				utils.getTimestamp(computer.getIntroduced()),
+				utils.getTimestamp(computer.getDiscontinued()), companyId, computer.getId() };
 
 		try {
 			this.jdbcTemplate.update(UPDATE_COMPUTER_SQL, params);

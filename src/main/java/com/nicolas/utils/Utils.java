@@ -8,26 +8,35 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.nicolas.dto.DateSettings;
+
 /**
  * 
  * utils to handle dates and int format
  *
  */
+@Component
 public final class Utils {
 	private Utils() {
 	}
 
+	@Autowired
+	private DateSettings dateSettings;
+	
 	private static final String INT_REGEX = "^[0-9]*$";
 	private static final String DATE_REGEX = "^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
 
-	public static Timestamp getTimestamp(LocalDate ld) {
+	public Timestamp getTimestamp(LocalDate ld) {
 		if (ld == null)
 			return null;
 		Instant instantIntroduced = ld.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
 		return Timestamp.from(instantIntroduced);
 	}
 
-	public static LocalDate getLocalDate(Timestamp ts) {
+	public LocalDate getLocalDate(Timestamp ts) {
 		LocalDate ld = null;
 		if (ts != null)
 			ld = ts.toLocalDateTime().toLocalDate();
@@ -41,7 +50,7 @@ public final class Utils {
 	 * 
 	 *         validate a int using regex
 	 */
-	public static boolean checkInt(String inputString) {
+	public boolean checkInt(String inputString) {
 		Pattern p = Pattern.compile(INT_REGEX);
 		Matcher m = p.matcher(inputString);
 		return m.matches();
@@ -53,7 +62,7 @@ public final class Utils {
 	 * @return int
 	 * 
 	 */
-	public static int getIntFromString(String inputString) {
+	public int getIntFromString(String inputString) {
 		int res = 0;
 		if (inputString == null)
 			return res;
@@ -72,13 +81,13 @@ public final class Utils {
 	 * 
 	 *         validate a date using regex
 	 */
-	public static LocalDate getDateFromString(String inputString) {
+	public LocalDate getDateFromString(String inputString) {
 		LocalDate date = null;
 
-		if(inputString == null || inputString.isEmpty())
+		if (inputString == null || inputString.isEmpty())
 			return date;
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateSettings.getDatePattern());
 		date = LocalDate.parse(inputString, formatter);
 
 		return date;
@@ -91,11 +100,11 @@ public final class Utils {
 	 * 
 	 *         validate a date using regex
 	 */
-	public static boolean isDate(String inputString) {
+	public boolean isDate(String inputString) {
 		if (inputString == null || inputString.isEmpty())
 			return true;
 
-		Pattern p = Pattern.compile(DATE_REGEX);
+		Pattern p = Pattern.compile(dateSettings.getDateRegex());
 		Matcher m = p.matcher(inputString);
 
 		if (m.find()) {

@@ -1,7 +1,12 @@
 package com.nicolas.dto;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
@@ -11,25 +16,34 @@ import com.nicolas.utils.Utils;
  * Mapper to pass from Computer to computerDto and the other way
  *
  */
+@Component
 public final class ComputerDtoMapper {
 
 	private ComputerDtoMapper() {
 	}
 
-	public static ComputerDto ComputerToDto(Computer computer) {
+	@Autowired
+	private Utils utils;
+	@Autowired 
+	private DateSettings dateSettings;
+	
+	public  ComputerDto ComputerToDto(Computer computer) {
 		ComputerDto computerDto = new ComputerDto();
 
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());
 		computerDto.setCompany(computer.getCompany());
 
+		// Create an instance of SimpleDateFormat used for formatting 
+		DateTimeFormatter df = DateTimeFormatter.ofPattern(dateSettings.getDatePattern());
+		
 		String introduced = "";
 		if (computer.getIntroduced() != null)
-			introduced = computer.getIntroduced().toString();
+			introduced = df.format(computer.getIntroduced());
 
 		String discontinued = "";
 		if (computer.getDiscontinued() != null)
-			discontinued = computer.getDiscontinued().toString();
+			discontinued = df.format(computer.getDiscontinued());
 
 		computerDto.setIntroduced(introduced);
 		computerDto.setDiscontinued(discontinued);
@@ -37,7 +51,7 @@ public final class ComputerDtoMapper {
 		return computerDto;
 	}
 
-	public static Computer ComputerFromDto(ComputerDto computerDto) {
+	public Computer ComputerFromDto(ComputerDto computerDto) {
 		Computer computer = new Computer();
 
 		if (computerDto == null)
@@ -47,9 +61,9 @@ public final class ComputerDtoMapper {
 		.id(computerDto.getId())
 		.name(computerDto.getName())
 		.company(computerDto.getCompany())
-		.introduced(Utils.getDateFromString(computerDto
+		.introduced(utils.getDateFromString(computerDto
 				.getIntroduced()))
-		.discontinued(Utils.getDateFromString(computerDto
+		.discontinued(utils.getDateFromString(computerDto
 				.getDiscontinued()))
 		.build();
 		
@@ -57,11 +71,11 @@ public final class ComputerDtoMapper {
 	}
 
 	//use stream to go faster on loop
-	public static List<ComputerDto> ComputerToDto(List<Computer> computers) {
+	public  List<ComputerDto> ComputerToDto(List<Computer> computers) {
 	     return computers.stream().map(c->ComputerToDto(c)).collect(Collectors.toList());
 	}
 
-	public static List<Computer> ComputerFromDto(List<ComputerDto> computerDtos) {	
+	public  List<Computer> ComputerFromDto(List<ComputerDto> computerDtos) {	
 	     return computerDtos.stream().map(c->ComputerFromDto(c)).collect(Collectors.toList());
 	}
 }

@@ -1,30 +1,35 @@
 package com.nicolas.dto;
 
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.nicolas.models.Company;
 import com.nicolas.validator.Date;
 
 /**
- * light object for the view
- * Date are store with string (smaller that object date)
+ * light object for the view Date are store with string (smaller that object
+ * date)
  *
  */
+
 public class ComputerDto {
 	private int id;
-	@NotBlank
+
+	@NotBlank(message = "{computer_dto.name_not_blank}")
+	@Size(min = 1, max = 255, message = "{computer_dto.name_length}")
 	private String name;
-	@Date
+	
+	@Date(message = "{computer_dto.date_introduced_format}")
 	private String introduced;
-	@Date
+	@Date(message = "{computer_dto.date_discontinued_format}")
 	private String discontinued;
 	private Company company;
 
 	public ComputerDto() {
 	}
 
-	public ComputerDto(int id, String name, String introduced,
-			String discontinued, Company company) {
+	public ComputerDto(int id, String name, String introduced, String discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -32,9 +37,8 @@ public class ComputerDto {
 		this.discontinued = discontinued;
 		this.company = company;
 	}
-	
-	public ComputerDto(int id, String name, String introduced,
-			String discontinued, int companyId) {
+
+	public ComputerDto(int id, String name, String introduced, String discontinued, int companyId) {
 		super();
 		this.id = id;
 		this.name = name;

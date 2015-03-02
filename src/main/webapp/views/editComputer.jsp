@@ -12,7 +12,8 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">${computer.id}</div>
-					<h1>Edit Computer</h1>
+					<spring:message
+										code="computer_form.edit_computer_title" />
 					<c:if test="${validationErrors != null}">
 						<div class="alert alert-danger">
 							<h2>Error:</h2>
@@ -34,7 +35,7 @@
 								</label>
 								<spring:message code="computer_form.name_placeholder"
 									var="computer_name_placeholder" />
-								<input required type="text" class="form-control"
+								<input   type="text" class="form-control"
 									id="computerName" name="name"
 									placeholder="${ computer_name_placeholder }"
 									value="${fn:escapeXml(computer.name)}">

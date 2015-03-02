@@ -23,6 +23,9 @@ public class DeleteController {
 	private ComputerServiceImpl computerService;
 
 	@Autowired
+	private Utils utils;
+	
+	@Autowired
 	private CompanyService companyService;
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -31,7 +34,7 @@ public class DeleteController {
 		String[] array = idsToDelete.split(",");
 		// TODO send an unique command for delete
 		for (String idString : array) {
-			int id = Utils.getIntFromString(idString);
+			int id = utils.getIntFromString(idString);
 			this.computerService.delete(id);
 		}
 

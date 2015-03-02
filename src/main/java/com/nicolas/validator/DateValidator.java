@@ -3,6 +3,8 @@ package com.nicolas.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.nicolas.utils.Utils;
 
 /**
@@ -12,6 +14,9 @@ import com.nicolas.utils.Utils;
  */
 public class DateValidator implements ConstraintValidator<Date, String> {
 
+	@Autowired
+	private Utils utils;
+	
 	@Override
 	public void initialize(Date constraintAnnotation) {
 	}
@@ -24,7 +29,7 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 		if (value.isEmpty()) {
 			return true;
 		}
-		if(Utils.isDate(value))
+		if(utils.isDate(value))
 		{
 			return true;
 		}

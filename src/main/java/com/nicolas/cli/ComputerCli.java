@@ -36,6 +36,10 @@ public class ComputerCli {
 	private ComputerServiceImpl computerServiceImpl;
 	@Autowired
 	private CompanyCli companyCli;
+	@Autowired
+	private InputCliUtils inputCliUtils;
+	@Autowired
+	private ComputerDtoMapper computerDtoMapper;
 	
 	private ComputerCli() {
 	}
@@ -45,7 +49,7 @@ public class ComputerCli {
 	 */
 	public void showComputers() {
 		List<ComputerDto> computerDtos = new ArrayList<ComputerDto>();
-		computerDtos = ComputerDtoMapper.ComputerToDto(computerServiceImpl.getAll());
+		computerDtos = computerDtoMapper.ComputerToDto(computerServiceImpl.getAll());
 		showComputers(computerDtos);
 	}
 
@@ -65,7 +69,7 @@ public class ComputerCli {
 		do {
 			p = computerServiceImpl.getPage(p, "");
 			System.out.println(p.toString());
-			String input = InputCliUtils.getStringFromUser("enter for next page q for quit", false);
+			String input = inputCliUtils.getStringFromUser("enter for next page q for quit", false);
 			if (input.equals("q"))
 				exit = true;
 			if (p.getComputerList().size() < p.nbComputerPerPage)
@@ -77,10 +81,10 @@ public class ComputerCli {
 	public void createComputer() {
 		System.out.println(MENU_COMPUTER_CREATION_HEADER);
 
-		String name = InputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, true);
-		String introducedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_INTRODUCED,
+		String name = inputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, true);
+		String introducedDate = inputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_INTRODUCED,
 				false);
-		String discontinuedDate = InputCliUtils.getDateFromUser(
+		String discontinuedDate = inputCliUtils.getDateFromUser(
 				MENU_COMPUTER_CREATION_DISCONTINUED, false);
 		int companyId = companyCli.selectValidCompanyIndex();
 
@@ -95,7 +99,7 @@ public class ComputerCli {
 		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
-			computerServiceImpl.add(ComputerDtoMapper.ComputerFromDto(computerDto));
+			computerServiceImpl.add(computerDtoMapper.ComputerFromDto(computerDto));
 			System.out.println("create with success");
 		} else {
 			System.out.println("error");
@@ -108,18 +112,18 @@ public class ComputerCli {
 
 	public void updateComputer() {
 		System.out.println(MENU_COMPUTER_UPDATE_HEADER);
-		ComputerDto computerDto = ComputerDtoMapper.ComputerToDto(selectValidComputerIndex());
+		ComputerDto computerDto = computerDtoMapper.ComputerToDto(selectValidComputerIndex());
 
-		String name = InputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, false);
+		String name = inputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, false);
 		if (!name.isEmpty())
 			computerDto.setName(name);
 
-		String introducedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_INTRODUCED,
+		String introducedDate = inputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_INTRODUCED,
 				false);
 		if (introducedDate != null)
 			computerDto.setIntroduced(introducedDate);
 
-		String discontinuedDate = InputCliUtils.getDateFromUser(
+		String discontinuedDate = inputCliUtils.getDateFromUser(
 				MENU_COMPUTER_CREATION_DISCONTINUED, false);
 		if (discontinuedDate != null)
 			computerDto.setDiscontinued(discontinuedDate);
@@ -135,7 +139,7 @@ public class ComputerCli {
 		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
-			computerServiceImpl.update(ComputerDtoMapper.ComputerFromDto(computerDto));
+			computerServiceImpl.update(computerDtoMapper.ComputerFromDto(computerDto));
 			System.out.println("update with success");
 		} else {
 			System.out.println("error");
@@ -146,7 +150,7 @@ public class ComputerCli {
 	}
 
 	public void getComputerDetails() {
-		int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX, false);
+		int index = inputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX, false);
 		Computer detail = computerServiceImpl.getByID(index);
 		if (detail == null) {
 			System.out.println(INVALID_INDEX);
@@ -170,7 +174,7 @@ public class ComputerCli {
 			if (error)
 				System.out.println("The index does not exist");
 			error = false;
-			int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_UPDATE_INDEX, false);
+			int index = inputCliUtils.getUserInput(-1, MENU_COMPUTER_UPDATE_INDEX, false);
 			tmpComputer = computerServiceImpl.getByID(index);
 			if (tmpComputer == null)
 				error = true;

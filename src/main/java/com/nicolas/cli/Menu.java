@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Menu {
-
+	@Autowired
+	private InputCliUtils inputCliUtils;
+	
 	private static final String MENU_HEADER = ""
 			+ "********************************************************\n"
 			+ "*                        MENU                          *\n"
@@ -42,7 +44,7 @@ public class Menu {
 	public void run() {
 		while (true) {
 			display();
-			int choix = InputCliUtils.getUserInput(MenuEntries.values().length,
+			int choix = inputCliUtils.getUserInput(MenuEntries.values().length,
 					true);
 			select(choix);
 		}

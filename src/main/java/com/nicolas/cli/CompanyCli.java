@@ -21,7 +21,8 @@ public class CompanyCli {
 	
 	@Autowired
 	private  CompanyService companyService; // = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
-	
+	@Autowired
+	private InputCliUtils inputCliUtils;
 	
 	private CompanyCli(){
 	}
@@ -62,7 +63,7 @@ public class CompanyCli {
 			if(error)
 				System.out.println("The index does not exist");
 			error = false;
-			choice = InputCliUtils.getUserInput(-1, MENU_COMPANY_INDEX, false);
+			choice = inputCliUtils.getUserInput(-1, MENU_COMPANY_INDEX, false);
 			if(choice == -1)
 				return -1;
 			tmpCompany = companyService.getByID(choice);

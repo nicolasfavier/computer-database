@@ -20,6 +20,7 @@ import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Interfaces.CompanyService;
+import com.nicolas.utils.Utils;
 
 @Controller
 @RequestMapping("/add-computer")
@@ -29,6 +30,12 @@ public class AddController {
 	@Autowired
 	private ComputerServiceImpl computerService;
 
+	@Autowired
+	private ComputerDtoMapper computerDtoMapper;
+	
+	@Autowired
+	private Utils utils;
+	
 	@Autowired
 	private CompanyService companyService;
 
@@ -52,7 +59,7 @@ public class AddController {
 			model.addAttribute("companies", companies);
 			return "addComputer";
 		} else {
-			this.computerService.add(ComputerDtoMapper.ComputerFromDto(computerDto));
+			this.computerService.add(computerDtoMapper.ComputerFromDto(computerDto));
 			LOGGER.info("Computer added with success, redirecting to the Dashboard");
 			model.addAttribute("message", "Successfully add");
 			return "redirect:dashboard";

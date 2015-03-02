@@ -11,7 +11,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<context:component-scan base-package="com.nicolas" />
 
 	<context:annotation-config />
-
+ 
 	<!-- Properties loader for the persistence specific properties -->
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -31,13 +31,19 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	</bean>
 
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<tx:annotation-driven transaction-manager="txManager" /><!-- 
 		a PlatformTransactionManager is still required -->
-		
+
 	<bean id="txManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<!-- (this dependency is defined somewhere else) -->

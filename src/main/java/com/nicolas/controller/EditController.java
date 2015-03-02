@@ -1,6 +1,5 @@
 package com.nicolas.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -23,7 +22,6 @@ import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Interfaces.CompanyService;
-import com.nicolas.validator.DtoValidator;
 
 
 @Controller
@@ -33,6 +31,9 @@ public class EditController {
 
 	@Autowired
 	private ComputerServiceImpl computerService;
+
+	@Autowired
+	private ComputerDtoMapper computerDtoMapper;
 	
 	@Autowired
 	private CompanyService companyService;
@@ -45,7 +46,7 @@ public class EditController {
 			if (computer != null) {
 				List<Company> companies = this.companyService.getAll();
 
-				model.addAttribute("computer", ComputerDtoMapper.ComputerToDto(computer));
+				model.addAttribute("computer", computerDtoMapper.ComputerToDto(computer));
 				model.addAttribute("companies", companies);
 				
 				return "editComputer";
@@ -63,7 +64,7 @@ public class EditController {
 				model.addAttribute("companies", companies);
 				return "editComputer";
 			} else {
-				this.computerService.update(ComputerDtoMapper.ComputerFromDto(computerDto));
+				this.computerService.update(computerDtoMapper.ComputerFromDto(computerDto));
 				LOGGER.info("Computer edit with success, redirecting to the Dashboard");
 				return "redirect:dashboard";
 			}

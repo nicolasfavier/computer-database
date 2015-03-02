@@ -3,6 +3,7 @@ package com.nicolas.dao.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,9 @@ import com.nicolas.utils.Utils;
 
 @Component
 public class ComputerRowMapperSpring implements RowMapper<Computer>{
+	
+	@Autowired
+	private Utils utils;
 	
 	@Override
 	public Computer mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -29,9 +33,9 @@ public class ComputerRowMapperSpring implements RowMapper<Computer>{
 				.name(rs.getString(ComputerDaoImpl.DB_COLUMN_NAME))
 				.company(company)
 				.introduced(
-						Utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_INTRODUCED)))
+						utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_INTRODUCED)))
 				.discontinued(
-						Utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_DISCONTINUED)))
+						utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_DISCONTINUED)))
 				.build();
 
 		return computer;
