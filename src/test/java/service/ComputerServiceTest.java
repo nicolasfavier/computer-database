@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.dto.ComputerDtoMapper;
@@ -29,6 +30,9 @@ public class ComputerServiceTest {
 	private List<Computer> computers;
 	private Page page;
 	private static final int COUNT_TOTAL = 20;
+	
+	@Autowired
+	ComputerDtoMapper computerDtoMapper;
 
 	@Before
 	public void setUp() {
@@ -43,11 +47,11 @@ public class ComputerServiceTest {
 
 		page.setIndex(1);
 		page.setNbComputerPerPage(10);
-		page.setComputerList(ComputerDtoMapper.ComputerToDto(computers));
+		page.setComputerList(computerDtoMapper.ComputerToDto(computers));
 
 		when(computerDao.getAll()).thenReturn(computers);
 		when(computerDao.getByID(3)).thenReturn(computer);
-		when(computerDao.getPage(page, "test")).thenReturn(page);
+		when(computerDao.getPage(page)).thenReturn(page);
 		when(computerDao.getCount("test")).thenReturn(10);
 
 		cut = new ComputerServiceImpl(computerDao);
@@ -66,15 +70,6 @@ public class ComputerServiceTest {
 
 		computerReturn = cut.getByID(300);
 		Assert.assertNull(computerReturn);
-	}
-
-	@Test
-	public void TestGetPage() {
-
-		Page p = cut.getPage(page, "test");
-		Assert.assertEquals(p.getComputerList().size(), ComputerDtoMapper.ComputerToDto(computers)
-				.size());
-
 	}
 
 }

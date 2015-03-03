@@ -67,7 +67,7 @@ public class ComputerCli {
 		Page p = new Page();
 
 		do {
-			p = computerServiceImpl.getPage(p, "");
+			p = computerServiceImpl.getPage(p);
 			System.out.println(p.toString());
 			String input = inputCliUtils.getStringFromUser("enter for next page q for quit", false);
 			if (input.equals("q"))

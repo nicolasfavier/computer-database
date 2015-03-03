@@ -130,7 +130,7 @@ public class ComputerDaoTest {
 	@Test
 	public void testGetBoundedList() {
 		Page page = new Page();
-		page = computerDao.getPage(page, "");
+		page = computerDao.getPage(page);
 		Assert.assertEquals(10, page.getComputerList().size());
 	}
 
