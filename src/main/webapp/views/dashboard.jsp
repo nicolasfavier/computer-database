@@ -22,7 +22,7 @@
 							var="search_placeholder" />
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="${ search_placeholder }"
-							<c:if test="${search != null}">value="${search}"</c:if> />
+							<c:if test="${page.search != null}">value="${page.search}"</c:if> />
 						<spring:message code="dashboard.search_filter_button"
 							var="search_filter_button" />
 						<input type="submit" id="searchsubmit"
@@ -32,8 +32,7 @@
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
 						href="<c:url value="/add-computer" />"><spring:message
-							code="dashboard.add_computer_button" /></a> 
-					<a
+							code="dashboard.add_computer_button" /></a> <a
 						class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();"><spring:message
 							code="dashboard.edit_button" /></a>
@@ -60,13 +59,27 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th><spring:message code="dashboard.name_label" /></th>
+						<th><a
+							href="<myTags:link target="dashboard" page="${page}"  sortCriterion="NAME" />"><spring:message
+									code="dashboard.name_label" /></a></th>
+
 						<!-- Table header for introduced_label -->
-						<th><spring:message code="dashboard.introduced_label" /></th>
+
+						<th><a
+							href="<myTags:link target="dashboard"	sortCriterion="DATE_INTRODUCED" page="${page}" />"><spring:message
+									code="dashboard.introduced_label" /></a></th>
+
 						<!-- Table header for Discontinued Date -->
-						<th><spring:message code="dashboard.discontinued_label" /></th>
+
+						<th><a
+							href="<myTags:link target="dashboard" page="${page}"	sortCriterion="DATE_DISCONTINUED" />"><spring:message
+									code="dashboard.discontinued_label" /></a></th>
+
 						<!-- Table header for Company -->
-						<th><spring:message code="dashboard.company_label" /></th>
+
+						<th><a
+							href="<myTags:link target="dashboard" page="${page}" sortCriterion="COMPANY_NAME"/>"><spring:message
+									code="dashboard.company_label" /></a></th>
 
 					</tr>
 				</thead>
@@ -86,7 +99,7 @@
 				</tbody>
 			</table>
 		</div>
-		 <script type="text/javascript">
+		<script type="text/javascript">
 			var strings = new Array();
 			strings['delete_confirm_msg'] = "<spring:message code='dashboard.delete_confirm_msg' javaScriptEscape='true' />";
 			strings['view_button'] = "<spring:message code='dashboard.view_button' javaScriptEscape='true' />";
@@ -96,7 +109,7 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-			<myTags:page page="${page}" search="${search}"></myTags:page>
+			<myTags:page page="${page}"></myTags:page>
 		</div>
 	</footer>
 

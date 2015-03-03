@@ -2,9 +2,30 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ attribute name="target" required="true"%>
-<%@ attribute name="index" required="true"%>
-<%@ attribute name="nbPerPage" required="true"%>
-<%@ attribute name="search" required="true"%>
+<%@ attribute name="page" required="true" type="com.nicolas.models.Page"%>
+<%@ attribute name="index"  required="false"%>
+<%@ attribute name="nbComputerPerPage"%>
+<%@ attribute name="search" %>
+<%@ attribute name="sortCriterion"%>
+
+<c:if test="${empty search}" >
+ <c:set var="search" value="${page.search}" />
+</c:if>
+
+<c:if test="${empty index}" >
+ <c:set var="index" value="${page.index}" />
+</c:if>
+
+<c:if test="${empty nbComputerPerPage}" >
+ <c:set var="nbComputerPerPage" value="${page.nbComputerPerPage}" />
+</c:if>
+
+<c:if test="${empty sortCriterion}" >
+ <c:set var="sortCriterion" value="${page.sortCriterion}" />
+</c:if>
+
+<c:url value="${target}?index=${index}&nbComputerPerPage=${nbComputerPerPage}&search=${search}
+&sortCriterion=${sortCriterion}&sortOrder=${sortOrder}"/>
 
 
-<c:url value="${target}?page=${index}&nbPerPage=${nbPerPage}&search=${search}"/>
+

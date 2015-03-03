@@ -37,7 +37,7 @@ public interface ComputerDao {
 	 *            
 	 * @return a List<Computer> that is the page[index].
 	 */
-	public Page getPage(Page page, String name);
+	public Page getPage(Page page);
 
 	/**
 	 * Delete a computer in the database.

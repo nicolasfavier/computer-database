@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.dao.mapper.ComputerRowMapperSpring;
 import com.nicolas.dto.ComputerDtoMapper;
-import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
+import com.nicolas.models.Page.ComputerSortCriteria;
 import com.nicolas.runtimeException.PersistenceException;
 import com.nicolas.utils.Utils;
 
@@ -54,7 +54,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	private final static String GET_PAGES_SQL = SELECT_ALL_COMPUTERS_SQL + " WHERE " + DB_TABLE
 			+ "." + DB_COLUMN_NAME + " LIKE ? OR " + DB_TABLE_COMPANY + "." + DB_COLUMN_NAME
-			+ " LIKE ? ORDER BY " + DB_COLUMN_ID + " LIMIT ?,? ";
+			+ " LIKE ? ORDER BY ? LIMIT ?,? ";
 
 	private final static String UPDATE_COMPUTER_SQL = "UPDATE `" + DB_TABLE + "` SET `"
 			+ DB_COLUMN_NAME + "`=?,`" + DB_COLUMN_INTRODUCED + "`=?,`" + DB_COLUMN_DISCONTINUED
@@ -78,15 +78,15 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	@Autowired
 	private Utils utils;
-	
+
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;
-	
+
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	ComputerRowMapperSpring computerRowMapperSpring;
+	private ComputerRowMapperSpring computerRowMapperSpring;
 
 	public ComputerDaoImpl() {
 	}
@@ -158,16 +158,23 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * java.lang.String)
 	 */
 	@Override
-	public Page getPage(Page page, String name) {
-		String WrapName = "%" + name + "%";
+	public Page getPage(Page page) {
+		String WrapName = "%" + page.getSearch() + "%";
+		String orderBy = "";
 		int nbComputer = page.getIndex() * page.getNbComputerPerPage();
 		int nbComputerPerPage = page.getNbComputerPerPage();
 
+		orderBy = generateOrderPart(page.getSortCriterion());
+
 		Object[] params = new Object[] { WrapName, WrapName, nbComputer, nbComputerPerPage };
 
+		String querry = "SELECT computer.*, company.name AS companyName FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.name LIKE ?  OR  company.name LIKE ? ORDER BY "
+				+ orderBy + " LIMIT ?,?";
+
 		try {
-			List<Computer> computerList = this.jdbcTemplate.query(GET_PAGES_SQL, params,
+			List<Computer> computerList = this.jdbcTemplate.query(querry, params,
 					computerRowMapperSpring);
+
 			page.setComputerList(computerDtoMapper.ComputerToDto(computerList));
 		} catch (Exception e) {
 			LOGGER.error("[sql error] " + e);
@@ -175,6 +182,34 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 
 		return page;
+	}
+
+	private String generateOrderPart(ComputerSortCriteria sortCriterion) {
+		// Thread synchronization isn't an issue in this scope
+		// So using a StringBuilder is safe
+		StringBuilder stringBuilder = new StringBuilder();
+		switch (sortCriterion) {
+		case ID:
+			stringBuilder.append("computer.id");
+			break;
+		case NAME:
+			stringBuilder.append("computer.name");
+			break;
+		case DATE_DISCONTINUED:
+			stringBuilder.append("computer.discontinued");
+			break;
+		case DATE_INTRODUCED:
+			stringBuilder.append("computer.introduced");
+			break;
+		case COMPANY_NAME:
+			stringBuilder.append("company.name");
+			break;
+		default:
+			stringBuilder.append(".id");
+		}
+		stringBuilder.append(" asc");
+
+		return stringBuilder.toString();
 	}
 
 	/*
