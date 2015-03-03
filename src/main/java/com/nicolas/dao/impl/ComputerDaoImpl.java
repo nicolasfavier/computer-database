@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -52,9 +53,6 @@ public class ComputerDaoImpl implements ComputerDao {
 	private final static String FIND_COMPUTER_BY_ID_SQL = SELECT_ALL_COMPUTERS_SQL + " WHERE "
 			+ DB_TABLE + "." + DB_COLUMN_ID + " =?";
 
-	private final static String GET_PAGES_SQL = SELECT_ALL_COMPUTERS_SQL + " WHERE " + DB_TABLE
-			+ "." + DB_COLUMN_NAME + " LIKE ? OR " + DB_TABLE_COMPANY + "." + DB_COLUMN_NAME
-			+ " LIKE ? ORDER BY ? LIMIT ?,? ";
 
 	private final static String UPDATE_COMPUTER_SQL = "UPDATE `" + DB_TABLE + "` SET `"
 			+ DB_COLUMN_NAME + "`=?,`" + DB_COLUMN_INTRODUCED + "`=?,`" + DB_COLUMN_DISCONTINUED
@@ -109,7 +107,7 @@ public class ComputerDaoImpl implements ComputerDao {
 					new Object[] { computer.getName(),
 							utils.getTimestamp(computer.getIntroduced()),
 							utils.getTimestamp(computer.getDiscontinued()), companyId });
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -126,7 +124,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			c = this.jdbcTemplate.queryForObject(FIND_COMPUTER_BY_ID_SQL, new Object[] { index },
 					computerRowMapperSpring);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -143,7 +141,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		List<Computer> lc = new ArrayList<Computer>();
 		try {
 			lc = this.jdbcTemplate.query(SELECT_ALL_COMPUTERS_SQL, computerRowMapperSpring);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -176,7 +174,7 @@ public class ComputerDaoImpl implements ComputerDao {
 					computerRowMapperSpring);
 
 			page.setComputerList(computerDtoMapper.ComputerToDto(computerList));
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -224,7 +222,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			c = this.jdbcTemplate.queryForObject(GET_COUNT_SQL,
 					new Object[] { wrapName, wrapName }, Integer.class);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -251,7 +249,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		try {
 			this.jdbcTemplate.update(UPDATE_COMPUTER_SQL, params);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -266,7 +264,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	public void delete(int index) {
 		try {
 			this.jdbcTemplate.update(DELETE_COMPUTER_SQL, index);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -282,7 +280,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		String ids = "(" + computerIds + ")";
 		try {
 			this.jdbcTemplate.update(DELETE_COMPUTERS_SQL, ids);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -298,7 +296,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	public void deleteByCompanyId(int companyId) {
 		try {
 			this.jdbcTemplate.update(DELETE_COMPUTERS_BY_COMPANY_ID_SQL, companyId);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}

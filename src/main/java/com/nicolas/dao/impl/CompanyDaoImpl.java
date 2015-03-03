@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -53,7 +54,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		try {
 			c = this.jdbcTemplate.queryForObject(GET_COMPANY_BY_ID, new Object[] { companyId },
 					companyRowMapperSpring);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -70,7 +71,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		List<Company> lc = new ArrayList<Company>();
 		try {
 			lc = this.jdbcTemplate.query(GET_ALL_COMPANY, companyRowMapperSpring);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}
@@ -87,7 +88,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	public void deleteId(int companyId) {
 		try {
 			this.jdbcTemplate.update(DELETE_COMPANY_SQL, companyId);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
 		}

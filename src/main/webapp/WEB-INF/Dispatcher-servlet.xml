@@ -11,7 +11,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<context:component-scan base-package="com.nicolas" />
+	<context:component-scan base-package="com.nicolas.controller" />
 
 	<context:annotation-config />
 
@@ -39,7 +39,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/views/" />
+		<property name="prefix" value="WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 

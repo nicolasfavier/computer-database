@@ -3,7 +3,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-
 <jsp:include page="templates/headers.jsp" />
 <body>
 	<jsp:include page="templates/navbar.jsp" />
@@ -11,8 +10,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<div class="label label-default pull-right">${computer.id}</div>
-					<h1><spring:message	code="computer_form.edit_computer_title" /></h1>
+					<h1>
+						<spring:message code="computer_form.add_computer_title" />
+					</h1>
 					<c:if test="${validationErrors != null}">
 						<div class="alert alert-danger">
 							<h2>Error:</h2>
@@ -23,18 +23,16 @@
 							</ul>
 						</div>
 					</c:if>
-					<form:form modelAttribute="computerDto" action="edit-computer"
+					<form:form modelAttribute="computerDto" action="add-computer"
 						method="POST">
 						<fieldset>
-							<input type="hidden" id="computerId" name="id"
-								value="${computer.id}">
 							<div class="form-group">
 								<label for="name"> <spring:message
 										code="computer_form.name_label" />
 								</label>
 								<spring:message code="computer_form.name_placeholder"
 									var="computer_name_placeholder" />
-								<input   type="text" class="form-control"
+								<input required type="text" class="form-control"
 									id="computerName" name="name"
 									placeholder="${ computer_name_placeholder }"
 									value="${fn:escapeXml(computer.name)}">
@@ -79,9 +77,9 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<spring:message code="computer_form.edit_button" var="edit_button" />
+							<spring:message code="computer_form.add_button" var="add_message" />
 
-							<input type="submit" value="${ edit_button }"
+							<input type="submit" value="${ add_message }"
 								class="btn btn-primary validation">
 							<spring:message code="computer_form.or" />
 							<a href="dashboard" class="btn btn-default"><spring:message
@@ -91,11 +89,7 @@
 				</div>
 			</div>
 		</div>
-				 <script type="text/javascript">
-			var strings = new Array();
-			strings['DateRegex'] = "<spring:message code='binding.date.regex' javaScriptEscape='true' />";
-		</script>
 	</section>
-	<jsp:include page="/views/templates/footer.jsp" />
+	<jsp:include page="templates/footer.jsp" />
 </body>
 </html>

@@ -15,22 +15,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
-import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Interfaces.CompanyService;
+import com.nicolas.service.Interfaces.ComputerService;
 
 
 @Controller
 @RequestMapping("/edit-computer")
 public class EditController {
-	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(EditController.class);
 
 	@Autowired
-	private ComputerServiceImpl computerService;
+	private ComputerService computerService;
 
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;

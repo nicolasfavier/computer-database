@@ -113,6 +113,6 @@
 		</div>
 	</footer>
 
-	<jsp:include page="/views/templates/footer.jsp" />
+	<jsp:include page="templates/footer.jsp" />
 </body>
 </html>

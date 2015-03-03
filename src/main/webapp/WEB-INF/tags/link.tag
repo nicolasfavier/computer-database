@@ -3,7 +3,7 @@
 
 <%@ attribute name="target" required="true"%>
 <%@ attribute name="page" required="true" type="com.nicolas.models.Page"%>
-<%@ attribute name="index"  required="false"%>
+<%@ attribute name="index"  %>
 <%@ attribute name="nbComputerPerPage"%>
 <%@ attribute name="search" %>
 <%@ attribute name="sortCriterion"%>
@@ -25,7 +25,7 @@
 </c:if>
 
 <c:url value="${target}?index=${index}&nbComputerPerPage=${nbComputerPerPage}&search=${search}
-&sortCriterion=${sortCriterion}&sortOrder=${sortOrder}"/>
+&sortCriterion=${sortCriterion}"/>
 
 
 

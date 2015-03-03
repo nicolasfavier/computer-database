@@ -27,7 +27,6 @@ public final class Utils {
 	private DateSettings dateSettings;
 	
 	private static final String INT_REGEX = "^[0-9]*$";
-	private static final String DATE_REGEX = "^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
 
 	public Timestamp getTimestamp(LocalDate ld) {
 		if (ld == null)

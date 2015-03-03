@@ -7,13 +7,13 @@
 	<section id="main">
 		<div class="container">
 			<div class="alert alert-danger">
-				Error 404: Page not found.<br />
+				Error 403: Access denied! <br />
 				<!-- stacktrace -->
 			</div>
 		</div>
 	</section>
-
-	<jsp:include page="/views/templates/footer.jsp" />
+	
+	<jsp:include page="templates/footer.jsp" />
 
 </body>
 </html>

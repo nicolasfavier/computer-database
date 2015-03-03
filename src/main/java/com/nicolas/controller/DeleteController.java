@@ -9,18 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.nicolas.dao.impl.ComputerDaoImpl;
-import com.nicolas.service.Impl.ComputerServiceImpl;
 import com.nicolas.service.Interfaces.CompanyService;
+import com.nicolas.service.Interfaces.ComputerService;
 import com.nicolas.utils.Utils;
 
 @Controller
 @RequestMapping("/delete")
 public class DeleteController {
-	private static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(DeleteController.class);
 
 	@Autowired
-	private ComputerServiceImpl computerService;
+	private ComputerService computerService;
 
 	@Autowired
 	private Utils utils;
@@ -29,7 +28,7 @@ public class DeleteController {
 	private CompanyService companyService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String printHello(@RequestParam(value = "selection") String idsToDelete, ModelMap model) {
+	public String doPost(@RequestParam(value = "selection") String idsToDelete, ModelMap model) {
 
 		String[] array = idsToDelete.split(",");
 		// TODO send an unique command for delete

@@ -13,7 +13,6 @@ import com.nicolas.dao.interfaces.CompanyDao;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
 import com.nicolas.runtimeException.PersistenceException;
-import com.nicolas.runtimeException.ServiceException;
 import com.nicolas.service.Interfaces.CompanyService;
 
 /**
@@ -64,14 +63,14 @@ public class CompanyServiceImpl implements CompanyService {
 	 * @see com.nicolas.service.Interfaces.CompanyService#DeleteCompany(int)
 	 */
 	@Override
-	@Transactional(rollbackFor = ServiceException.class)
+	@Transactional(rollbackFor = PersistenceException.class)
 	public void DeleteCompany(int companyId) {
 		try {
 			computerDao.deleteByCompanyId(companyId);
 			companyDao.deleteId(companyId);
 		} catch (PersistenceException e) {
 			LOGGER.error("[service] " + e);
-			throw new ServiceException(e);
+			throw new PersistenceException(e);
 		}
 	}
 }
