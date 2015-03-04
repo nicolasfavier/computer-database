@@ -19,7 +19,6 @@ import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Company;
 import com.nicolas.service.Interfaces.CompanyService;
 import com.nicolas.service.Interfaces.ComputerService;
-import com.nicolas.utils.Utils;
 
 @Controller
 @RequestMapping("/add-computer")
@@ -31,9 +30,6 @@ public class AddController {
 
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;
-	
-	@Autowired
-	private Utils utils;
 	
 	@Autowired
 	private CompanyService companyService;

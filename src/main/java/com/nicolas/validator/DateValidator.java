@@ -1,9 +1,14 @@
 package com.nicolas.validator;
 
+import java.util.Locale;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 
 import com.nicolas.utils.Utils;
 
@@ -12,10 +17,11 @@ import com.nicolas.utils.Utils;
  * define the condition a date must fulfill 
  *
  */
+ @Component
 public class DateValidator implements ConstraintValidator<Date, String> {
 
 	@Autowired
-	private Utils utils;
+	private  MessageSource messageSource;
 	
 	@Override
 	public void initialize(Date constraintAnnotation) {
@@ -29,11 +35,16 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 		if (value.isEmpty()) {
 			return true;
 		}
-		if(utils.isDate(value))
+		if(Utils.isDate(value, getDateRegex()))
 		{
 			return true;
 		}
 		return false;
+	}
+	
+	private String getDateRegex() {
+		Locale userLocale = LocaleContextHolder.getLocale();
+		return messageSource.getMessage("binding.date.regex", null, userLocale);
 	}
 
 }

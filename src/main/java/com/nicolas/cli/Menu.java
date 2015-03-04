@@ -3,6 +3,8 @@ package com.nicolas.cli;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.nicolas.cli.helper.InputCliUtils;
+
 /**
  * 
  * Display a menu of  various actions on computers and companies
@@ -10,8 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Menu {
-	@Autowired
-	private InputCliUtils inputCliUtils;
 	
 	private static final String MENU_HEADER = ""
 			+ "********************************************************\n"
@@ -44,7 +44,7 @@ public class Menu {
 	public void run() {
 		while (true) {
 			display();
-			int choix = inputCliUtils.getUserInput(MenuEntries.values().length,
+			int choix = InputCliUtils.getUserInput(MenuEntries.values().length,
 					true);
 			select(choix);
 		}

@@ -74,8 +74,6 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ DB_TABLE + "." + DB_COLUMN_NAME + " LIKE  ? OR " + DB_TABLE_COMPANY + "."
 			+ DB_COLUMN_NAME + " LIKE ?";
 
-	@Autowired
-	private Utils utils;
 
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;
@@ -105,8 +103,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			this.jdbcTemplate.update(
 					ADD_COMPUTER_SQL,
 					new Object[] { computer.getName(),
-							utils.getTimestamp(computer.getIntroduced()),
-							utils.getTimestamp(computer.getDiscontinued()), companyId });
+							Utils.getTimestamp(computer.getIntroduced()),
+							Utils.getTimestamp(computer.getDiscontinued()), companyId });
 		} catch (DataAccessException e) {
 			LOGGER.error("[sql error] " + e);
 			throw new PersistenceException(e);
@@ -244,8 +242,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			companyId = computer.getCompany().getId();
 
 		Object[] params = new Object[] { computer.getName(),
-				utils.getTimestamp(computer.getIntroduced()),
-				utils.getTimestamp(computer.getDiscontinued()), companyId, computer.getId() };
+				Utils.getTimestamp(computer.getIntroduced()),
+				Utils.getTimestamp(computer.getDiscontinued()), companyId, computer.getId() };
 
 		try {
 			this.jdbcTemplate.update(UPDATE_COMPUTER_SQL, params);

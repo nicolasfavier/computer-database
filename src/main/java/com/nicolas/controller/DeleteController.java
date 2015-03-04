@@ -20,9 +20,6 @@ public class DeleteController {
 
 	@Autowired
 	private ComputerService computerService;
-
-	@Autowired
-	private Utils utils;
 	
 	@Autowired
 	private CompanyService companyService;
@@ -33,7 +30,7 @@ public class DeleteController {
 		String[] array = idsToDelete.split(",");
 		// TODO send an unique command for delete
 		for (String idString : array) {
-			int id = utils.getIntFromString(idString);
+			int id = Utils.getIntFromString(idString);
 			this.computerService.delete(id);
 		}
 

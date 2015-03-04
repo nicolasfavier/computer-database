@@ -1,10 +1,7 @@
-package com.nicolas.cli;
+package com.nicolas.cli.helper;
 
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.nicolas.utils.Utils;
 
@@ -13,14 +10,10 @@ import com.nicolas.utils.Utils;
  *
  * this class offer methods to get inputs from user and validate their values
  */
-@Component
 public class InputCliUtils {
 	private static Scanner scannerInstance = null;
 
-	@Autowired
-	private Utils utils;
-
-	private synchronized Scanner getScannerInstance() {
+	private static synchronized Scanner getScannerInstance() {
 		if (scannerInstance == null)
 			scannerInstance = new Scanner(System.in);
 
@@ -37,7 +30,7 @@ public class InputCliUtils {
 	 *         description if isNeeded is false, enter will skip the input and
 	 *         the function will return null
 	 */
-	public String getStringFromUser(String description, boolean isNeeded) {
+	public static String getStringFromUser(String description, boolean isNeeded) {
 		String res = null;
 		String tmp = null;
 		boolean valid = true;
@@ -70,7 +63,7 @@ public class InputCliUtils {
 	 *         description if isNeeded is false, enter will skip the input and
 	 *         the function will return null
 	 */
-	public String getDateFromUser(String description, boolean isNeeded) {
+	public static String getDateFromUser(String description, boolean isNeeded) {
 		System.out.println(description);
 		String strDate = "";
 		boolean wrongInput = false;
@@ -83,7 +76,7 @@ public class InputCliUtils {
 					return null;
 				}
 
-				if (!utils.isDate(strDate)) {
+				if (!Utils.isDate(strDate)) {
 					System.out.printf("%s does not respect the format yyyy-mm-dd !%n", strDate);
 					wrongInput = true;
 				}
@@ -108,12 +101,12 @@ public class InputCliUtils {
 	 *         the function will return null
 	 * 
 	 */
-	public int getUserInput(int maxVal, String description, boolean isNeeded) {
+	public static int getUserInput(int maxVal, String description, boolean isNeeded) {
 		System.out.println(description);
 		return getUserInput(maxVal, isNeeded);
 	}
 
-	public int getUserInput(int maxVal, boolean isNeeded) {
+	public static int getUserInput(int maxVal, boolean isNeeded) {
 		boolean wrongInput = false;
 		int userVal = 0;
 
@@ -126,7 +119,7 @@ public class InputCliUtils {
 				if (tmp.trim().isEmpty() && !isNeeded) {
 					return -1;
 				}
-				if (!utils.checkInt(tmp)) {
+				if (!Utils.checkInt(tmp)) {
 					wrongInput = true;
 					wrongEntrie(maxVal);
 				} else {
@@ -144,7 +137,7 @@ public class InputCliUtils {
 		return userVal;
 	}
 
-	private void wrongEntrie(int maxVal) {
+	private static void wrongEntrie(int maxVal) {
 		if (maxVal == -1) {
 			System.out.println("wrong input please choose a number");
 		} else {

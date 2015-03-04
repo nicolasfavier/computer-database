@@ -2,10 +2,12 @@ package com.nicolas.dto;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.nicolas.models.Computer;
@@ -18,14 +20,11 @@ import com.nicolas.utils.Utils;
  */
 @Component
 public final class ComputerDtoMapper {
+	@Autowired
+	private  MessageSource messageSource;
 
 	private ComputerDtoMapper() {
-	}
-
-	@Autowired
-	private Utils utils;
-	@Autowired 
-	private DateSettings dateSettings;
+	}	
 	
 	public  ComputerDto ComputerToDto(Computer computer) {
 		ComputerDto computerDto = new ComputerDto();
@@ -35,7 +34,7 @@ public final class ComputerDtoMapper {
 		computerDto.setCompany(computer.getCompany());
 
 		// Create an instance of SimpleDateFormat used for formatting 
-		DateTimeFormatter df = DateTimeFormatter.ofPattern(dateSettings.getDatePattern());
+		DateTimeFormatter df = DateTimeFormatter.ofPattern(getDatePattern());
 		
 		String introduced = "";
 		if (computer.getIntroduced() != null)
@@ -61,10 +60,10 @@ public final class ComputerDtoMapper {
 		.id(computerDto.getId())
 		.name(computerDto.getName())
 		.company(computerDto.getCompany())
-		.introduced(utils.getDateFromString(computerDto
-				.getIntroduced()))
-		.discontinued(utils.getDateFromString(computerDto
-				.getDiscontinued()))
+		.introduced(Utils.getDateFromString(computerDto
+				.getIntroduced(),getDatePattern()))
+		.discontinued(Utils.getDateFromString(computerDto
+				.getDiscontinued(),getDatePattern()))
 		.build();
 		
 		return computer;
@@ -77,5 +76,10 @@ public final class ComputerDtoMapper {
 
 	public  List<Computer> ComputerFromDto(List<ComputerDto> computerDtos) {	
 	     return computerDtos.stream().map(c->ComputerFromDto(c)).collect(Collectors.toList());
+	}
+	
+	private String getDatePattern() {
+		Locale userLocale = LocaleContextHolder.getLocale();
+		return messageSource.getMessage("binding.date.format", null, userLocale);
 	}
 }

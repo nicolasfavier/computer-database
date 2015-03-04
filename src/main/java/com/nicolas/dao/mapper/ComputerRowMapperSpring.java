@@ -15,9 +15,6 @@ import com.nicolas.utils.Utils;
 @Component
 public class ComputerRowMapperSpring implements RowMapper<Computer>{
 	
-	@Autowired
-	private Utils utils;
-	
 	@Override
 	public Computer mapRow(ResultSet rs, int arg1) throws SQLException {
 		Computer computer = null;
@@ -33,9 +30,9 @@ public class ComputerRowMapperSpring implements RowMapper<Computer>{
 				.name(rs.getString(ComputerDaoImpl.DB_COLUMN_NAME))
 				.company(company)
 				.introduced(
-						utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_INTRODUCED)))
+						Utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_INTRODUCED)))
 				.discontinued(
-						utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_DISCONTINUED)))
+						Utils.getLocalDate(rs.getTimestamp(ComputerDaoImpl.DB_COLUMN_DISCONTINUED)))
 				.build();
 
 		return computer;

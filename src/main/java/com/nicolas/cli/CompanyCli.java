@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.nicolas.cli.helper.InputCliUtils;
 import com.nicolas.models.Company;
 import com.nicolas.service.Interfaces.CompanyService;
 
@@ -21,8 +22,7 @@ public class CompanyCli {
 	
 	@Autowired
 	private  CompanyService companyService; // = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
-	@Autowired
-	private InputCliUtils inputCliUtils;
+
 	
 	private CompanyCli(){
 	}
@@ -63,7 +63,7 @@ public class CompanyCli {
 			if(error)
 				System.out.println("The index does not exist");
 			error = false;
-			choice = inputCliUtils.getUserInput(-1, MENU_COMPANY_INDEX, false);
+			choice = InputCliUtils.getUserInput(-1, MENU_COMPANY_INDEX, false);
 			if(choice == -1)
 				return -1;
 			tmpCompany = companyService.getByID(choice);
