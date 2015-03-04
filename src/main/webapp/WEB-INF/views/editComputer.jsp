@@ -12,7 +12,9 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">${computer.id}</div>
-					<h1><spring:message	code="computer_form.edit_computer_title" /></h1>
+					<h1>
+						<spring:message code="computer_form.edit_computer_title" />
+					</h1>
 					<c:if test="${validationErrors != null}">
 						<div class="alert alert-danger">
 							<h2>Error:</h2>
@@ -23,7 +25,7 @@
 							</ul>
 						</div>
 					</c:if>
-					<form:form modelAttribute="computerDto" action="edit-computer"
+					<form:form modelAttribute="computer" action="edit-computer"
 						method="POST">
 						<fieldset>
 							<input type="hidden" id="computerId" name="id"
@@ -34,9 +36,8 @@
 								</label>
 								<spring:message code="computer_form.name_placeholder"
 									var="computer_name_placeholder" />
-								<input   type="text" class="form-control"
-									id="computerName" name="name"
-									placeholder="${ computer_name_placeholder }"
+								<input type="text" class="form-control" id="computerName"
+									name="name" placeholder="${ computer_name_placeholder }"
 									value="${fn:escapeXml(computer.name)}">
 								<form:errors path="name" cssClass="error"></form:errors>
 							</div>
@@ -69,17 +70,39 @@
 
 							<div class="form-group">
 								<label for="companyId"><spring:message
-										code="computer_form.company_label" /></label> <select
-									class="form-control" id="companyId" name="companyId">
+										code="computer_form.company_label" /></label>
+								<form:select class="form-control" id="company.id"
+									name="company.id" path="company.id">
 									<c:forEach items="${companies}" var="company">
-										<option value="${company.id}"><c:out
-												value="${company.name}" /></option>
+										<c:choose>
+											<c:when test="${computer.company.id == 0}">
+												<option value="${company.id}" selected><c:out
+														value="${company.name}" /></option>
+											</c:when>
+											<c:when test="${company.id == computer.company.id}">
+												<option value="${company.id}" selected><c:out
+														value="${company.name}" /></option>
+											</c:when>
+											<c:otherwise>
+												<option value="${company.id}"><c:out
+														value="${company.name}" /></option>
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
-								</select>
+									<c:choose>
+										<c:when test="${computer.company.id == 0}">
+											<option value="0" selected>No company</option>
+										</c:when>
+										<c:otherwise>
+											<option value="0">No company</option>
+										</c:otherwise>
+									</c:choose>
+								</form:select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<spring:message code="computer_form.edit_button" var="edit_button" />
+							<spring:message code="computer_form.edit_button"
+								var="edit_button" />
 
 							<input type="submit" value="${ edit_button }"
 								class="btn btn-primary validation">
@@ -91,7 +114,7 @@
 				</div>
 			</div>
 		</div>
-				 <script type="text/javascript">
+		<script type="text/javascript">
 			var strings = new Array();
 			strings['DateRegex'] = "<spring:message code='binding.date.regex' javaScriptEscape='true' />";
 		</script>

@@ -67,13 +67,22 @@
 
 							<div class="form-group">
 								<label for="companyId"><spring:message
-										code="computer_form.company_label" /></label> <select
-									class="form-control" id="companyId" name="companyId">
+										code="computer_form.company_label" /></label>
+								<form:select class="form-control" id="company.id"
+									name="company.id" path="company.id">
 									<c:forEach items="${companies}" var="company">
 										<option value="${company.id}"><c:out
 												value="${company.name}" /></option>
 									</c:forEach>
-								</select>
+									<c:choose>
+										<c:when test="${computer.company.id == 0}">
+											<option value="${company.id}" selected>No company</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${company.id}">No company</option>
+										</c:otherwise>
+									</c:choose>
+								</form:select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
