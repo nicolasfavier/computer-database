@@ -2,6 +2,8 @@ package com.nicolas.dao.interfaces;
 
 import java.util.List;
 
+import org.hibernate.Session;
+
 import com.nicolas.models.Company;
 
 /**
@@ -28,6 +30,6 @@ public interface CompanyDao {
 	 * @param companyId the ID of the company to delete
 	 * @param computerIds
 	 */
-	public void deleteId(int companyId);
+	public void deleteId(int companyId, Session session);
 
 }

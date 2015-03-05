@@ -7,7 +7,7 @@ import com.nicolas.dto.ComputerDto;
 
 public class Page {
 	public int nbComputerPerPage = 10;
-	private int totalComputers = 0;
+	private long totalComputers = 0;
 	private List<ComputerDto> computerList;
 	private int index = 0;
 	private int totalPages;
@@ -77,11 +77,11 @@ public class Page {
 		this.nbComputerPerPage = nbComputerPerPage;
 	}
 
-	public int getTotalComputers() {
+	public long getTotalComputers() {
 		return totalComputers;
 	}
 
-	public void setTotalComputers(int totalComputers) {
+	public void setTotalComputers(long totalComputers) {
 		this.totalComputers = totalComputers;
 	}
 

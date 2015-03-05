@@ -2,12 +2,14 @@ package com.nicolas.dao.interfaces;
 
 import java.util.List;
 
+import org.hibernate.Session;
+
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 
 /**
  * 
- * API to handle  database request for computers
+ * API to handle database request for computers
  *
  */
 public interface ComputerDao {
@@ -34,7 +36,7 @@ public interface ComputerDao {
 	 * 
 	 * @param name
 	 *            to filter with
-	 *            
+	 * 
 	 * @return a List<Computer> that is the page[index].
 	 */
 	public Page getPage(Page page);
@@ -81,14 +83,13 @@ public interface ComputerDao {
 	 *            to filter with, "" to skip filtering
 	 * @return int the number of computers in the database
 	 */
-	public int getCount(String name);
-	
+	public long getCount(String name);
+
 	/**
 	 * @param companyId
 	 *
-	 * All computer with this companyId will be delete
+	 *            All computer with this companyId will be delete
 	 */
-	public void deleteByCompanyId(int companyId);
-
+	public void deleteByCompanyId(int companyId, Session session);
 
 }

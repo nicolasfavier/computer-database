@@ -3,17 +3,19 @@ package com.nicolas.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nicolas.dao.interfaces.CompanyDao;
-import com.nicolas.dao.mapper.CompanyRowMapperSpring;
 import com.nicolas.models.Company;
-import com.nicolas.runtimeException.PersistenceException;
 
 /**
  * 
@@ -24,21 +26,8 @@ import com.nicolas.runtimeException.PersistenceException;
 public class CompanyDaoImpl implements CompanyDao {
 	static Logger LOGGER = LoggerFactory.getLogger(CompanyDaoImpl.class);
 
-	public final static String DB_COMPANY_TABLE = "company";
-	public final static String DB_COLUMN_ID = "id";
-	public final static String DB_COLUMN_NAME = "name";
-
-	private final static String GET_COMPANY_BY_ID = "SELECT * FROM " + DB_COMPANY_TABLE
-			+ " WHERE id=?";
-	private final static String GET_ALL_COMPANY = "SELECT * FROM " + DB_COMPANY_TABLE + ";";
-	private final static String DELETE_COMPANY_SQL = "DELETE FROM " + DB_COMPANY_TABLE + " WHERE "
-			+ DB_COLUMN_ID + " = ?";
-
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
-
-	@Autowired
-	CompanyRowMapperSpring companyRowMapperSpring;
+	private SessionFactory sessionFactory;
 
 	public CompanyDaoImpl() {
 	}
@@ -49,15 +38,19 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * @see com.nicolas.dao.interfaces.CompanyDao#getByID(int)
 	 */
 	@Override
+	@Transactional
 	public Company getByID(int companyId) {
 		Company c = null;
-		try {
-			c = this.jdbcTemplate.queryForObject(GET_COMPANY_BY_ID, new Object[] { companyId },
-					companyRowMapperSpring);
-		} catch (DataAccessException e) {
-			LOGGER.error("[sql error] " + e);
-			throw new PersistenceException(e);
+		Session session = sessionFactory.getCurrentSession();
+
+		// Get All Employees
+		Query query = session.createQuery("from Company where id= :id");
+		query.setLong("id", companyId);
+		List<Company> Company = (List<Company>) query.list();
+		if (Company.size() > 0) {
+			c = Company.get(0);
 		}
+
 		return c;
 	}
 
@@ -67,14 +60,16 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * @see com.nicolas.dao.interfaces.CompanyDao#getAll()
 	 */
 	@Override
+	@Transactional
 	public List<Company> getAll() {
 		List<Company> lc = new ArrayList<Company>();
-		try {
-			lc = this.jdbcTemplate.query(GET_ALL_COMPANY, companyRowMapperSpring);
-		} catch (DataAccessException e) {
-			LOGGER.error("[sql error] " + e);
-			throw new PersistenceException(e);
-		}
+		Session session = sessionFactory.getCurrentSession();
+
+		// Get All Computers
+		Query query = session.createQuery("from Company");
+
+		lc = (List<Company>) query.list();
+
 		return lc;
 	}
 
@@ -85,12 +80,11 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * java.sql.Connection)
 	 */
 	@Override
-	public void deleteId(int companyId) {
-		try {
-			this.jdbcTemplate.update(DELETE_COMPANY_SQL, companyId);
-		} catch (DataAccessException e) {
-			LOGGER.error("[sql error] " + e);
-			throw new PersistenceException(e);
-		}
+	public void deleteId(int companyId, Session session) {
+		Query query = session.createQuery("delete Company where id= :id");
+		query.setLong("id", companyId);
+		query.executeUpdate();
+		throw new RuntimeException();
+
 	}
 }

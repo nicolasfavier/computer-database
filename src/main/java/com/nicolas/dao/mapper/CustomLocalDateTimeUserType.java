@@ -126,7 +126,7 @@ public class CustomLocalDateTimeUserType implements EnhancedUserType, Serializab
  
     @Override
     public Object fromXMLString(String string) {
-        return LocalDateTime.parse(string);
+        return LocalDate.parse(string);
     }
  
 }

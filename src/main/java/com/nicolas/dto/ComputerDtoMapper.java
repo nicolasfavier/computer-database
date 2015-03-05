@@ -28,7 +28,7 @@ public final class ComputerDtoMapper {
 	
 	public  ComputerDto ComputerToDto(Computer computer) {
 		ComputerDto computerDto = new ComputerDto();
-
+		
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());
 		computerDto.setCompany(computer.getCompany());
@@ -46,7 +46,7 @@ public final class ComputerDtoMapper {
 
 		computerDto.setIntroduced(introduced);
 		computerDto.setDiscontinued(discontinued);
-
+		
 		return computerDto;
 	}
 

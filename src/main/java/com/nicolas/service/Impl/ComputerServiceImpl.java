@@ -37,7 +37,7 @@ public class ComputerServiceImpl implements ComputerService {
 	@Override
 	public Page getPage(Page page) {
 
-		int totalComputers = computerDao.getCount(page.getSearch());
+		long totalComputers = computerDao.getCount(page.getSearch());
 		int totalPages = Math.round(totalComputers / page.getNbComputerPerPage());
 
 		page.setTotalPages(totalPages);

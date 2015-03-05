@@ -2,17 +2,18 @@ package com.nicolas.service.Impl;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.nicolas.dao.impl.ComputerDaoImpl;
 import com.nicolas.dao.interfaces.CompanyDao;
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.models.Company;
-import com.nicolas.runtimeException.PersistenceException;
 import com.nicolas.service.Interfaces.CompanyService;
 
 /**
@@ -27,6 +28,8 @@ public class CompanyServiceImpl implements CompanyService {
 	private CompanyDao companyDao;
 	@Autowired
 	private ComputerDao computerDao;
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	public CompanyServiceImpl() {
 	}
@@ -63,14 +66,32 @@ public class CompanyServiceImpl implements CompanyService {
 	 * @see com.nicolas.service.Interfaces.CompanyService#DeleteCompany(int)
 	 */
 	@Override
-	@Transactional(rollbackFor = PersistenceException.class)
 	public void DeleteCompany(int companyId) {
-		try {
-			computerDao.deleteByCompanyId(companyId);
-			companyDao.deleteId(companyId);
-		} catch (PersistenceException e) {
-			LOGGER.error("[service] " + e);
-			throw new PersistenceException(e);
-		}
+		Session session = null;
+    	Transaction tx = null;
+ 
+    	try{
+    		session = sessionFactory.openSession();
+    		tx = session.beginTransaction();
+    		tx.setTimeout(20);
+    		
+    		computerDao.deleteByCompanyId(companyId, session);
+    		companyDao.deleteId(companyId, session);
+ 
+    		tx.commit();
+ 
+ 
+    	}catch(RuntimeException e){
+    		try{
+    			tx.rollback();
+    		}catch(RuntimeException rbe){
+    			LOGGER.error("Couldn’t roll back transaction", rbe);
+    		}
+    		throw e;
+    	}finally{
+    		if(session!=null){
+    			session.close();
+    		}
+    	}
 	}
 }
