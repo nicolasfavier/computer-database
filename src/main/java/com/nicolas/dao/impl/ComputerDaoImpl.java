@@ -3,12 +3,17 @@ package com.nicolas.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionException;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nicolas.dao.interfaces.ComputerDao;
 import com.nicolas.dao.mapper.ComputerRowMapperSpring;
@@ -43,6 +48,8 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ DB_COLUMN_NAME + "," + DB_COLUMN_INTRODUCED + "," + DB_COLUMN_DISCONTINUED + ","
 			+ DB_COMPUTER_COLUMN_COMPANY_ID + ") VALUES" + "(?,?,?,?);";
 
+	//INSERT INTO `computer` (name,introduced,discontinued,company_id) VALUES(?,?,?,?);
+	
 	private final static String SELECT_ALL_COMPUTERS_SQL = "SELECT " + ComputerDaoImpl.DB_TABLE
 			+ ".*, " + CompanyDaoImpl.DB_COMPANY_TABLE + "." + CompanyDaoImpl.DB_COLUMN_NAME
 			+ " AS " + DB_COMPUTER_COLUMN_COMPANY_NAME + " FROM " + ComputerDaoImpl.DB_TABLE
@@ -50,10 +57,13 @@ public class ComputerDaoImpl implements ComputerDao {
 			+ "." + ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID + "="
 			+ CompanyDaoImpl.DB_COMPANY_TABLE + "." + CompanyDaoImpl.DB_COLUMN_ID;
 
+	//SELECT computer.*, company.name AS companyName FROM computer LEFT JOIN company ON computer.company_id=company.id
+			
 	private final static String FIND_COMPUTER_BY_ID_SQL = SELECT_ALL_COMPUTERS_SQL + " WHERE "
 			+ DB_TABLE + "." + DB_COLUMN_ID + " =?";
 
-
+	//SELECT computer.*, company.name AS companyName FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.id =?
+			
 	private final static String UPDATE_COMPUTER_SQL = "UPDATE `" + DB_TABLE + "` SET `"
 			+ DB_COLUMN_NAME + "`=?,`" + DB_COLUMN_INTRODUCED + "`=?,`" + DB_COLUMN_DISCONTINUED
 			+ "`=?,`" + DB_COMPUTER_COLUMN_COMPANY_ID + "`=? WHERE " + DB_COLUMN_ID + " = ?";
@@ -61,20 +71,26 @@ public class ComputerDaoImpl implements ComputerDao {
 	private final static String DELETE_COMPUTER_SQL = "DELETE FROM " + DB_TABLE + " WHERE "
 			+ DB_COLUMN_ID + " =?";
 
+	//UPDATE `computer` SET `name`=?,`introduced`=?,`discontinued`=?,`company_id`=? WHERE id = ?
+			
 	private final static String DELETE_COMPUTERS_SQL = "DELETE FROM " + DB_TABLE + " WHERE "
 			+ DB_COLUMN_ID + " IN ?";
 
+	//DELETE FROM computer WHERE id IN ?
+			
 	private final static String DELETE_COMPUTERS_BY_COMPANY_ID_SQL = "DELETE FROM " + DB_TABLE
 			+ " WHERE " + DB_COMPUTER_COLUMN_COMPANY_ID + " = ?";
 
+	//DELETE FROM computer WHERE company_id = ?
+	
 	private final static String GET_COUNT_SQL = "SELECT COUNT(*) as " + DB_COLUMN_COUNT + " FROM "
 			+ ComputerDaoImpl.DB_TABLE + " LEFT JOIN " + CompanyDaoImpl.DB_COMPANY_TABLE + " ON "
 			+ ComputerDaoImpl.DB_TABLE + "." + ComputerDaoImpl.DB_COMPUTER_COLUMN_COMPANY_ID + "="
 			+ CompanyDaoImpl.DB_COMPANY_TABLE + "." + CompanyDaoImpl.DB_COLUMN_ID + " WHERE "
 			+ DB_TABLE + "." + DB_COLUMN_NAME + " LIKE  ? OR " + DB_TABLE_COMPANY + "."
 			+ DB_COLUMN_NAME + " LIKE ?";
-
-
+//SELECT COUNT(*) as count FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.name LIKE  ? OR company.name LIKE ?
+	
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;
 
@@ -83,6 +99,9 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	@Autowired
 	private ComputerRowMapperSpring computerRowMapperSpring;
+
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	public ComputerDaoImpl() {
 	}
@@ -94,21 +113,16 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * com.nicolas.dao.interfaces.ComputerDao#add(com.nicolas.models.Computer)
 	 */
 	@Override
+	@Transactional
 	public void add(Computer computer) {
-		Integer companyId = null;
-		if (computer.getCompany() != null && computer.getCompany().getId() != 0)
-			companyId = computer.getCompany().getId();
+		// open hibernate resources
+		Session session = sessionFactory.openSession();
 
-		try {
-			this.jdbcTemplate.update(
-					ADD_COMPUTER_SQL,
-					new Object[] { computer.getName(),
-							Utils.getTimestamp(computer.getIntroduced()),
-							Utils.getTimestamp(computer.getDiscontinued()), companyId });
-		} catch (DataAccessException e) {
-			LOGGER.error("[sql error] " + e);
-			throw new PersistenceException(e);
-		}
+		session.save(computer);
+
+		// closing hibernate resources
+		sessionFactory.close();
+
 	}
 
 	/*
@@ -117,14 +131,32 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.nicolas.dao.interfaces.ComputerDao#getByID(int)
 	 */
 	@Override
+	@Transactional
 	public Computer getByID(int index) {
 		Computer c = null;
 		try {
-			c = this.jdbcTemplate.queryForObject(FIND_COMPUTER_BY_ID_SQL, new Object[] { index },
-					computerRowMapperSpring);
-		} catch (DataAccessException e) {
-			LOGGER.error("[sql error] " + e);
+			Session session = sessionFactory.openSession();
+
+			// Get All Employees
+			Query query = session.createQuery("from Computer where id= :id");
+			query.setLong("id", index);
+
+			List<Computer> ComputerList = (List<Computer>) query.list();
+			if (ComputerList.size() > 0) {
+				c = ComputerList.get(0);
+			}
+			else{
+				LOGGER.error("[sql] id not found");
+			}
+
+			// closing hibernate resources
+			sessionFactory.close();
+		} catch (SessionException e) {
+			LOGGER.error("[SessionException] " + e);
 			throw new PersistenceException(e);
+		}
+		finally{
+			sessionFactory.close();
 		}
 		return c;
 	}
@@ -135,13 +167,25 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.nicolas.dao.interfaces.ComputerDao#getAll()
 	 */
 	@Override
+	@Transactional
 	public List<Computer> getAll() {
 		List<Computer> lc = new ArrayList<Computer>();
 		try {
-			lc = this.jdbcTemplate.query(SELECT_ALL_COMPUTERS_SQL, computerRowMapperSpring);
-		} catch (DataAccessException e) {
-			LOGGER.error("[sql error] " + e);
+			Session session = sessionFactory.openSession();
+
+			// Get All Computers
+			Query query = session.createQuery("from Computer");
+
+			lc = (List<Computer>) query.list();
+
+			// closing hibernate resources
+			sessionFactory.close();
+		} catch (SessionException e) {
+			LOGGER.error("[SessionException] " + e);
 			throw new PersistenceException(e);
+		}
+		finally{
+			sessionFactory.close();
 		}
 		return lc;
 	}
@@ -154,28 +198,44 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * java.lang.String)
 	 */
 	@Override
+	@Transactional
 	public Page getPage(Page page) {
-		String WrapName = "%" + page.getSearch() + "%";
-		String orderBy = "";
-		int nbComputer = page.getIndex() * page.getNbComputerPerPage();
-		int nbComputerPerPage = page.getNbComputerPerPage();
+		
+	//	Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
+        
+		List<Computer> cmps = new ArrayList<Computer>();
+		
+		Query query = session.createQuery("from Computer cmp where cmp.name like '%:search%'");
+		query.setString("search", page.getSearch());
+		query.setFirstResult(page.getIndex() * page.nbComputerPerPage);
+		query.setMaxResults(page.nbComputerPerPage);
 
-		orderBy = generateOrderPart(page.getSortCriterion());
+		page.setComputerList(computerDtoMapper.ComputerToDto( query.list()));
+		
 
-		Object[] params = new Object[] { WrapName, WrapName, nbComputer, nbComputerPerPage };
-
-		String querry = "SELECT computer.*, company.name AS companyName FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.name LIKE ?  OR  company.name LIKE ? ORDER BY "
-				+ orderBy + " LIMIT ?,?";
-
-		try {
-			List<Computer> computerList = this.jdbcTemplate.query(querry, params,
-					computerRowMapperSpring);
-
-			page.setComputerList(computerDtoMapper.ComputerToDto(computerList));
-		} catch (DataAccessException e) {
-			LOGGER.error("[sql error] " + e);
-			throw new PersistenceException(e);
-		}
+		
+//		String WrapName = "%" + page.getSearch() + "%";
+//		String orderBy = "";
+//		int nbComputer = page.getIndex() * page.getNbComputerPerPage();
+//		int nbComputerPerPage = page.getNbComputerPerPage();
+//
+//		orderBy = generateOrderPart(page.getSortCriterion());
+//
+//		Object[] params = new Object[] { WrapName, WrapName, nbComputer, nbComputerPerPage };
+//
+//		String querry = "SELECT computer.*, company.name AS companyName FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.name LIKE ?  OR  company.name LIKE ? ORDER BY "
+//				+ orderBy + " LIMIT ?,?";
+//
+//		try {
+//			List<Computer> computerList = this.jdbcTemplate.query(querry, params,
+//					computerRowMapperSpring);
+//
+//			page.setComputerList(computerDtoMapper.ComputerToDto(computerList));
+//		} catch (DataAccessException e) {
+//			LOGGER.error("[sql error] " + e);
+//			throw new PersistenceException(e);
+//		}
 
 		return page;
 	}
