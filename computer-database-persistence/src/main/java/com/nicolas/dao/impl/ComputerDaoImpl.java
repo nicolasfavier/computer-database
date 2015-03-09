@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nicolas.dao.interfaces.ComputerDao;
-import com.nicolas.dto.ComputerDtoMapper;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
 import com.nicolas.models.Page.ComputerSortCriteria;
@@ -26,9 +25,6 @@ import com.nicolas.models.Page.ComputerSortCriteria;
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
 	static Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
-
-	@Autowired
-	private ComputerDtoMapper computerDtoMapper;
 
 	@Autowired
 	private SessionFactory sessionFactory;

@@ -15,10 +15,6 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>computer-database-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>computer-database-persistence</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
