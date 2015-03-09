@@ -11,6 +11,7 @@
 		<module>computer-database-core</module>
 		<module>computer-database-all</module>
 		<module>computer-database-persistence</module>
+		<module>computer-database-service</module>
 	</modules>
 
 	<properties>

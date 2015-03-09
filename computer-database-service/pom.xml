@@ -7,20 +7,17 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>computer-database-persistence</artifactId>
+	<artifactId>computer-database-service</artifactId>
 
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>computer-database-core</artifactId>
+			<artifactId>computer-database-persistence</artifactId>
 		</dependency>
-		
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector-version}</version>
-			<scope>runtime</scope>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>computer-database-core</artifactId>
 		</dependency>
 	</dependencies>
 

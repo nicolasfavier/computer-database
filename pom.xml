@@ -9,8 +9,11 @@
 
 	<modules>
 		<module>computer-database-core</module>
-		<module>computer-database-all</module>
+		<module>computer-database-webapp</module>
 		<module>computer-database-persistence</module>
+		<module>computer-database-service</module>
+		<module>computer-database-binding</module>
+		<module>computer-database-console</module>
 	</modules>
 
 	<properties>
@@ -40,6 +43,9 @@
 	<dependencyManagement>
 
 		<dependencies>
+
+			<!-- import other modules -->
+
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>computer-database-core</artifactId>
@@ -54,10 +60,28 @@
 
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>computer-database-all</artifactId>
+				<artifactId>computer-database-webapp</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>computer-database-service</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>computer-database-binding</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>computer-database-console</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
@@ -65,6 +89,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
 			<dependency>
 				<groupId>commons-logging</groupId><!-- Empty jar for create a bridge -->
 				<artifactId>commons-logging</artifactId>
@@ -72,6 +97,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	<repositories>
 		<repository>
 			<id>version99</id>
@@ -79,19 +105,16 @@
 			<url>http://version99.qos.ch/</url>
 		</repository>
 	</repositories>
-	<!-- runtime librairy -->
+
+
 	<dependencies>
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
 			<version>${xml-apis-version}</version>
 		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector-version}</version>
-			<scope>runtime</scope>
-		</dependency>
+
+		<!-- logs dependencies -->
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -104,20 +127,9 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${jcl-over-slf4j-version}</version>
 		</dependency>
-		<!-- provided librairy -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${servlet-api-version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>${jsp-api-version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- test librairy -->
+
+		<!-- Testing dependencies -->
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
@@ -136,32 +148,7 @@
 			<version>${selenium-version}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- view librairy and compile librairy -->
-		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>${taglibs-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${jstl-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate-validator-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>${javax-validation-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jolbox</groupId>
-			<artifactId>bonecp</artifactId>
-			<version>${bonecp-version}</version>
-		</dependency>
+
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -201,31 +188,7 @@
 					<nohelp>true</nohelp>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>selenium-maven-plugin</artifactId>
-				<version>${selenium-maven-plugin-version}</version>
-				<configuration>
-					<forcedBrowserMode>*firefox</forcedBrowserMode>
-					<background>true</background>
-				</configuration>
-				<executions>
-					<execution>
-						<id>start-selenium-server</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>start-server</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>stop-selenium-server</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop-server</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>

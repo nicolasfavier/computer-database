@@ -7,23 +7,17 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>computer-database-persistence</artifactId>
+	<artifactId>computer-database-core</artifactId>
 
 
 	<dependencies>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>computer-database-core</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector-version}</version>
-			<scope>runtime</scope>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate-core-version}</version>
 		</dependency>
 	</dependencies>
-
+	<!-- runtime librairy -->
 
 </project>
 
