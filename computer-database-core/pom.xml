@@ -6,9 +6,17 @@
 		<artifactId>computer-database</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>computer-database-core</artifactId>
 
+
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate-core-version}</version>
+		</dependency>
+	</dependencies>
 	<!-- runtime librairy -->
 
 </project>

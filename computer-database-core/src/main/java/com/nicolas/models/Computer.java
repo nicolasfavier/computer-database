@@ -3,6 +3,7 @@ package com.nicolas.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +30,7 @@ public class Computer implements Serializable{
 	private LocalDate introduced;
 	@Type(type = "com.nicolas.dao.mapper.CustomLocalDateTimeUserType")
 	private LocalDate discontinued;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Company company;
 
 	public Computer() {
