@@ -10,7 +10,7 @@ import com.nicolas.cli.helper.InputCliUtils;
  * Display a menu of  various actions on computers and companies
  *
  */
-//@Component
+@Component
 public class Menu {
 	
 	private static final String MENU_HEADER = ""

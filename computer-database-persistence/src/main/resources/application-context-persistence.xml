@@ -13,6 +13,14 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<import resource="classpath:/hibernate.xml" />
 
+	<!-- Properties loader for the persistence specific properties -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:/config/db.properties</value>
+		</property>
+	</bean>
+	
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 

@@ -11,11 +11,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Launcher {
 	public static void main(String[] args) {
 		
-		//AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("/application-context.xml");
+		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("/application-context-console.xml");
 		
-		//Menu menu = ctx.getBean(Menu.class);
-		//menu.run();
+		Menu menu = ctx.getBean(Menu.class);
+		menu.run();
 		
-		//ctx.close();
+		ctx.close();
 	}
 }

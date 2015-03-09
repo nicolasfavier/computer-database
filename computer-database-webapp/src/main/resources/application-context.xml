@@ -8,26 +8,9 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<context:component-scan base-package="com.nicolas.cli" />
-
 	<context:annotation-config />
 
 	<import resource="classpath:/application-context-service.xml" />
 	<import resource="classpath:/application-context-binding.xml" />
-
-	<!-- Properties loader for the persistence specific properties -->
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>classpath:/config/db.properties</value>
-		</property>
-	</bean>
-
-
-	<bean id="messageSource"
-		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="classpath:messages" />
-		<property name="defaultEncoding" value="UTF-8" />
-	</bean>
 
 </beans>
