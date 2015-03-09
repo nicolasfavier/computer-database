@@ -1,12 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.nico</groupId>
+	<groupId>computer-database</groupId>
 	<artifactId>computer-database</artifactId>
-	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>computer-database Maven Webapp</name>
-	<url>http://maven.apache.org</url>
+	<name>Computer Database</name>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>computer-database-core</module>
+		<module>computer-database-all</module>
+	</modules>
 
 	<properties>
 		<java-source-version>1.8</java-source-version>
@@ -32,10 +36,21 @@
 		<hibernate-core-version>4.3.8.Final</hibernate-core-version>
 		<xml-apis-version>1.4.01</xml-apis-version>
 	</properties>
-
 	<dependencyManagement>
 
 		<dependencies>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>computer-database-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>computer-database-all</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
@@ -50,8 +65,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-
 	<repositories>
 		<repository>
 			<id>version99</id>
@@ -59,18 +72,13 @@
 			<url>http://version99.qos.ch/</url>
 		</repository>
 	</repositories>
-
-
-
 	<!-- runtime librairy -->
-
 	<dependencies>
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
 			<version>${xml-apis-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -93,9 +101,7 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${jcl-over-slf4j-version}</version>
 		</dependency>
-
 		<!-- provided librairy -->
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -108,9 +114,7 @@
 			<version>${jsp-api-version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- test librairy -->
-
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
@@ -129,9 +133,7 @@
 			<version>${selenium-version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- view librairy and compile librairy -->
-
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
@@ -157,9 +159,7 @@
 			<artifactId>bonecp</artifactId>
 			<version>${bonecp-version}</version>
 		</dependency>
-
 		<!-- Spring -->
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -177,8 +177,6 @@
 			<artifactId>spring-orm</artifactId>
 		</dependency>
 	</dependencies>
-
-
 	<build>
 		<plugins>
 			<plugin>
@@ -190,7 +188,6 @@
 					<target>${java-target-version}</target>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -201,7 +198,6 @@
 					<nohelp>true</nohelp>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>selenium-maven-plugin</artifactId>
@@ -227,7 +223,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -257,7 +252,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<reporting>
 		<plugins>
 			<plugin>
