@@ -44,8 +44,14 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 	}
 	
 	private String getDateRegex() {
+		String str;
 		Locale userLocale = LocaleContextHolder.getLocale();
-		String str = messageSource.getMessage("binding.date.regex", null, userLocale);
+		if(messageSource != null){
+		 str = messageSource.getMessage("binding.date.regex", null, userLocale);
+		}
+		else{
+			str = "^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
+		}
 		return str;
 	}
 
