@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.nicolas.models.Page;
 
+
 @Component
 public class PageDtoMapper {
 	@Autowired

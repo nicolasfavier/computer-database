@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.nicolas.utils.Utils;
 
+
 /**
  * 
  * define the condition a date must fulfill 
@@ -30,7 +31,7 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		if (value == null) {
-			return false;
+			return true;
 		}
 		if (value.isEmpty()) {
 			return true;
@@ -44,7 +45,8 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 	
 	private String getDateRegex() {
 		Locale userLocale = LocaleContextHolder.getLocale();
-		return messageSource.getMessage("binding.date.regex", null, userLocale);
+		String str = messageSource.getMessage("binding.date.regex", null, userLocale);
+		return str;
 	}
 
 }
