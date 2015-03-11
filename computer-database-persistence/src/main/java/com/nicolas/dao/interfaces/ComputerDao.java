@@ -1,5 +1,6 @@
 package com.nicolas.dao.interfaces;
 
+
 import java.util.List;
 
 import org.hibernate.Session;
