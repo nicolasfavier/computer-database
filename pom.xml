@@ -14,6 +14,7 @@
 		<module>computer-database-service</module>
 		<module>computer-database-binding</module>
 		<module>computer-database-console</module>
+		<module>computer-database-webservices</module>
 	</modules>
 
 	<properties>
@@ -41,12 +42,12 @@
 		<xml-apis-version>1.4.01</xml-apis-version>
 		<javax.el-version>2.2.4</javax.el-version>
 		<spring-security-version>3.2.6.RELEASE</spring-security-version>
-		
+
 	</properties>
 	<dependencyManagement>
 
 		<dependencies>
-		
+
 
 			<!-- import other modules -->
 
@@ -87,6 +88,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>computer-database-webservices</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
 				<version>${spring-version}</version>
@@ -113,15 +120,16 @@
 
 
 	<dependencies>
-	
-		<!-- xml reader, or a bug will occurred while loading spring context from xml file  -->
-	
+
+		<!-- xml reader, or a bug will occurred while loading spring context from 
+			xml file -->
+
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
 			<version>${xml-apis-version}</version>
 		</dependency>
-		
+
 		<!-- logs dependencies -->
 
 		<dependency>
@@ -156,7 +164,7 @@
 			<version>${selenium-version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Spring security -->
 
 		<dependency>
@@ -179,10 +187,10 @@
 	</dependencies>
 	<build>
 		<plugins>
-		
+
 			<!--to fix the bug with java version -->
-			
-			<plugin> 
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin-version}</version>
