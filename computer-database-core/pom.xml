@@ -8,8 +8,7 @@
 	</parent>
 
 	<artifactId>computer-database-core</artifactId>
-
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -17,7 +16,6 @@
 			<version>${hibernate-core-version}</version>
 		</dependency>
 	</dependencies>
-	<!-- runtime librairy -->
 
 </project>
 

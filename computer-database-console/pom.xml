@@ -15,7 +15,8 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>computer-database-service</artifactId>
 		</dependency>
-				<dependency>
+		
+		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>computer-database-binding</artifactId>
 		</dependency>
