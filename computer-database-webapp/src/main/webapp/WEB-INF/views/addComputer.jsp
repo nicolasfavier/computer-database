@@ -76,10 +76,10 @@
 									</c:forEach>
 									<c:choose>
 										<c:when test="${computer.company.id == 0}">
-											<option value="${company.id}" selected>No company</option>
+											<option value="0" selected>No company</option>
 										</c:when>
 										<c:otherwise>
-											<option value="${company.id}">No company</option>
+											<option value="0">No company</option>
 										</c:otherwise>
 									</c:choose>
 								</form:select>

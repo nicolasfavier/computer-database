@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.utils.Utils;
 
@@ -21,21 +22,21 @@ import com.nicolas.utils.Utils;
 @Component
 public final class ComputerDtoMapper {
 	@Autowired
-	private  MessageSource messageSource;
+	private MessageSource messageSource;
 
 	private ComputerDtoMapper() {
-	}	
-	
-	public  ComputerDto ComputerToDto(Computer computer) {
+	}
+
+	public ComputerDto ComputerToDto(Computer computer) {
 		ComputerDto computerDto = new ComputerDto();
-		
+
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());
 		computerDto.setCompany(computer.getCompany());
 
-		// Create an instance of SimpleDateFormat used for formatting 
+		// Create an instance of SimpleDateFormat used for formatting
 		DateTimeFormatter df = DateTimeFormatter.ofPattern(getDatePattern());
-		
+
 		String introduced = "";
 		if (computer.getIntroduced() != null)
 			introduced = df.format(computer.getIntroduced());
@@ -46,20 +47,24 @@ public final class ComputerDtoMapper {
 
 		computerDto.setIntroduced(introduced);
 		computerDto.setDiscontinued(discontinued);
-		
+
 		return computerDto;
 	}
 
 	public Computer ComputerFromDto(ComputerDto computerDto) {
 		Computer computer = new Computer();
+		Company company = null;
 
 		if (computerDto == null)
 			return computer;
 
+		if(computerDto.getCompany().getId() != 0)
+			company = computerDto.getCompany();
+		
 		computer = new Computer.Builder()
 		.id(computerDto.getId())
 		.name(computerDto.getName())
-		.company(computerDto.getCompany())
+		.company(company)
 		.introduced(Utils.getDateFromString(computerDto
 				.getIntroduced(),getDatePattern()))
 		.discontinued(Utils.getDateFromString(computerDto
@@ -69,17 +74,20 @@ public final class ComputerDtoMapper {
 		return computer;
 	}
 
-	//use stream to go faster on loop
-	public  List<ComputerDto> ComputerToDto(List<Computer> computers) {
-	     return computers.stream().map(c->ComputerToDto(c)).collect(Collectors.toList());
+	// use stream to go faster on loop
+	public List<ComputerDto> ComputerToDto(List<Computer> computers) {
+		return computers.stream().map(c -> ComputerToDto(c))
+				.collect(Collectors.toList());
 	}
 
-	public  List<Computer> ComputerFromDto(List<ComputerDto> computerDtos) {	
-	     return computerDtos.stream().map(c->ComputerFromDto(c)).collect(Collectors.toList());
+	public List<Computer> ComputerFromDto(List<ComputerDto> computerDtos) {
+		return computerDtos.stream().map(c -> ComputerFromDto(c))
+				.collect(Collectors.toList());
 	}
-	
+
 	private String getDatePattern() {
 		Locale userLocale = LocaleContextHolder.getLocale();
-		return messageSource.getMessage("binding.date.format", null, userLocale);
+		return messageSource
+				.getMessage("binding.date.format", null, userLocale);
 	}
 }
