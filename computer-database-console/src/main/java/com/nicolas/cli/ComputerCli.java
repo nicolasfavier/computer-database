@@ -1,11 +1,21 @@
 package com.nicolas.cli;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nicolas.cli.helper.InputCliUtils;
 import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
@@ -39,17 +49,47 @@ public class ComputerCli {
 	private CompanyCli companyCli;
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;
-	
+	private Client client;
+
 	private ComputerCli() {
+		client = ClientBuilder.newClient();
 	}
 
 	/**
 	 * show all computers return by the database
 	 */
 	public void showComputers() {
-		List<ComputerDto> computerDtos = new ArrayList<ComputerDto>();
-		computerDtos = computerDtoMapper.ComputerToDto(computerService.getAll());
-		showComputers(computerDtos);
+		List<ComputerDto> comps = new ArrayList<ComputerDto>();
+		
+		String entity = client.target("http://localhost:8080/computer-database-webservice/api/")
+				.path("computers/all")
+				.request(MediaType.APPLICATION_JSON)
+				.get(String.class);
+		
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			comps = objectMapper.readValue(entity, new TypeReference<HashMap<String,String>>() {});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+//		String entity = client.target("http://localhost:8080/computer-database-webservice/api/")
+//				.path("computers")
+//				//.queryParam("greeting", "Hi World!")
+//				.request(MediaType.APPLICATION_JSON)
+//				.get(String.class);
+		
+		showComputers(comps);
+
+
 	}
 
 	private void showComputers(List<ComputerDto> computerDtos) {
@@ -68,7 +108,8 @@ public class ComputerCli {
 		do {
 			p = computerService.getPage(p);
 			System.out.println(p.toString());
-			String input = InputCliUtils.getStringFromUser("enter for next page q for quit", false);
+			String input = InputCliUtils.getStringFromUser(
+					"enter for next page q for quit", false);
 			if (input.equals("q"))
 				exit = true;
 			if (p.getComputerList().size() < p.nbComputerPerPage)
@@ -80,9 +121,10 @@ public class ComputerCli {
 	public void createComputer() {
 		System.out.println(MENU_COMPUTER_CREATION_HEADER);
 
-		String name = InputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, true);
-		String introducedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_INTRODUCED,
-				false);
+		String name = InputCliUtils.getStringFromUser(
+				MENU_COMPUTER_CREATION_NAME, true);
+		String introducedDate = InputCliUtils.getDateFromUser(
+				MENU_COMPUTER_CREATION_INTRODUCED, false);
 		String discontinuedDate = InputCliUtils.getDateFromUser(
 				MENU_COMPUTER_CREATION_DISCONTINUED, false);
 		int companyId = companyCli.selectValidCompanyIndex();
@@ -91,9 +133,9 @@ public class ComputerCli {
 		if (companyId != -1)
 			tmpCompany = new Company(companyId, "");
 
-		ComputerDto computerDto = new ComputerDto(0, name, introducedDate, discontinuedDate,
-				tmpCompany);
-		
+		ComputerDto computerDto = new ComputerDto(0, name, introducedDate,
+				discontinuedDate, tmpCompany);
+
 		List<String> validationErrors = new ArrayList<>();
 		validationErrors = DtoValidator.validate(computerDto);
 
@@ -102,7 +144,7 @@ public class ComputerCli {
 			System.out.println("create with success");
 		} else {
 			System.out.println("error");
-			for(String validationError : validationErrors){
+			for (String validationError : validationErrors) {
 				System.out.println(" - " + validationError);
 			}
 		}
@@ -111,14 +153,16 @@ public class ComputerCli {
 
 	public void updateComputer() {
 		System.out.println(MENU_COMPUTER_UPDATE_HEADER);
-		ComputerDto computerDto = computerDtoMapper.ComputerToDto(selectValidComputerIndex());
+		ComputerDto computerDto = computerDtoMapper
+				.ComputerToDto(selectValidComputerIndex());
 
-		String name = InputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, false);
+		String name = InputCliUtils.getStringFromUser(
+				MENU_COMPUTER_CREATION_NAME, false);
 		if (!name.isEmpty())
 			computerDto.setName(name);
 
-		String introducedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_INTRODUCED,
-				false);
+		String introducedDate = InputCliUtils.getDateFromUser(
+				MENU_COMPUTER_CREATION_INTRODUCED, false);
 		if (introducedDate != null)
 			computerDto.setIntroduced(introducedDate);
 
@@ -138,18 +182,20 @@ public class ComputerCli {
 		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
-			computerService.update(computerDtoMapper.ComputerFromDto(computerDto));
+			computerService.update(computerDtoMapper
+					.ComputerFromDto(computerDto));
 			System.out.println("update with success");
 		} else {
 			System.out.println("error");
-			for(String validationError : validationErrors){
+			for (String validationError : validationErrors) {
 				System.out.println(" - " + validationError);
 			}
 		}
 	}
 
 	public void getComputerDetails() {
-		int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX, false);
+		int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX,
+				false);
 		Computer detail = computerService.getByID(index);
 		if (detail == null) {
 			System.out.println(INVALID_INDEX);
@@ -173,7 +219,8 @@ public class ComputerCli {
 			if (error)
 				System.out.println("The index does not exist");
 			error = false;
-			int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_UPDATE_INDEX, false);
+			int index = InputCliUtils.getUserInput(-1,
+					MENU_COMPUTER_UPDATE_INDEX, false);
 			tmpComputer = computerService.getByID(index);
 			if (tmpComputer == null)
 				error = true;
