@@ -34,6 +34,9 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 	@Autowired
 	private PageDtoMapper pageDtoMapper;
 	
+	/* (non-Javadoc)
+	 * @see com.nicolas.webservices.ComputerWebservice#findById(int)
+	 */
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -41,6 +44,9 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 		return computerDtoMapper.ComputerToDto(computerService.getByID(id));
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.webservices.ComputerWebservice#findAll()
+	 */
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -48,6 +54,9 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 		return computerDtoMapper.ComputerToDto(computerService.getAll());
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.nicolas.webservices.ComputerWebservice#findPage(java.lang.String, com.nicolas.models.Page.ComputerSortCriteria, int, int)
+	 */
 	@GET
 	@Path("/page")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -68,12 +77,18 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 		
 	}
     	
+	/* (non-Javadoc)
+	 * @see com.nicolas.webservices.ComputerWebservice#addComputer(com.nicolas.models.Computer)
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addComputer(Computer computer) {
 		computerService.add(computer);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.webservices.ComputerWebservice#updateComputer(com.nicolas.models.Computer)
+	 */
 	@POST
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -81,6 +96,9 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 		computerService.update(computer);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.webservices.ComputerWebservice#deleteComputer(int)
+	 */
 	@DELETE
 	@Path("/{id}")
 	public void deleteComputer(@PathParam("id") int id) {

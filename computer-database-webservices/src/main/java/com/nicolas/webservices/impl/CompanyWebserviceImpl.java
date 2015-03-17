@@ -21,6 +21,9 @@ public class CompanyWebserviceImpl implements CompanyWebservice {
 	@Autowired
 	private CompanyService companyService;
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.webservices.CompanyWebservice#findAll()
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Company> findAll() {
@@ -28,6 +31,9 @@ public class CompanyWebserviceImpl implements CompanyWebservice {
 		return companies;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.nicolas.webservices.CompanyWebservice#deleteCompany(int)
+	 */
 	@DELETE
 	@Path("/{id}")
 	public void deleteCompany(@PathParam("id") int id) {
