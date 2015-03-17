@@ -4,7 +4,7 @@
 <header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="dashboard"> Application - Computer
+			<a class="navbar-brand" href="/computer-database-webapp/dashboard"> Application - Computer
 				Database </a>
 		</div>
 			<div id="navbar" class="navbar-collapse collapse">

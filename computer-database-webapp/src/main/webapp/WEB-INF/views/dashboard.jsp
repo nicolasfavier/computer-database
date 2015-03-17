@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="myTags"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <jsp:include page="templates/headers.jsp" />
 <body>
@@ -22,7 +22,7 @@
 							var="search_placeholder" />
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="${ search_placeholder }"
-							<c:if test="${page.search != null}">value="${page.search}"</c:if> />
+							<c:if test="${page.search != null}">value="${fn:escapeXml(page.search)}"</c:if> />
 						<spring:message code="dashboard.search_filter_button"
 							var="search_filter_button" />
 						<input type="submit" id="searchsubmit"
