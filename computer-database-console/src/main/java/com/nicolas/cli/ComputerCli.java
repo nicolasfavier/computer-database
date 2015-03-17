@@ -1,24 +1,22 @@
 package com.nicolas.cli;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nicolas.cli.helper.InputCliUtils;
 import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
+import com.nicolas.dto.PageDto;
 import com.nicolas.models.Company;
 import com.nicolas.models.Computer;
 import com.nicolas.models.Page;
@@ -49,46 +47,25 @@ public class ComputerCli {
 	private CompanyCli companyCli;
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;
+
+	private WebTarget computerTarget;
 	private Client client;
 
 	private ComputerCli() {
-		client = ClientBuilder.newClient();
+		client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
+		computerTarget = client.target("http://localhost:8080/computer-database-webservice/api/computers");
 	}
 
 	/**
 	 * show all computers return by the database
 	 */
 	public void showComputers() {
-		List<ComputerDto> comps = new ArrayList<ComputerDto>();
-		
-		String entity = client.target("http://localhost:8080/computer-database-webservice/api/")
-				.path("computers/all")
+		List<ComputerDto> computerList = computerTarget
+				.path("/all")
 				.request(MediaType.APPLICATION_JSON)
-				.get(String.class);
-		
+				.get(new GenericType<List<ComputerDto>>() {});
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-			comps = objectMapper.readValue(entity, new TypeReference<HashMap<String,String>>() {});
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-//		String entity = client.target("http://localhost:8080/computer-database-webservice/api/")
-//				.path("computers")
-//				//.queryParam("greeting", "Hi World!")
-//				.request(MediaType.APPLICATION_JSON)
-//				.get(String.class);
-		
-		showComputers(comps);
-
+		showComputers(computerList);
 
 	}
 
@@ -99,21 +76,27 @@ public class ComputerCli {
 	}
 
 	/**
-	 * show computers by blocks
+	 * show computers by Page, press enter for next page and q to quit
 	 */
 	public void showComputersByPage() {
 		boolean exit = false;
 		Page p = new Page();
-
+		PageDto pDto = new PageDto();
+		
 		do {
-			p = computerService.getPage(p);
+			pDto = computerTarget.path("/page")
+					.request(MediaType.APPLICATION_JSON)
+					.get(PageDto.class);
+			
 			System.out.println(p.toString());
-			String input = InputCliUtils.getStringFromUser(
-					"enter for next page q for quit", false);
+			String input = InputCliUtils.getStringFromUser("enter for next page q for quit", false);
+			
 			if (input.equals("q"))
 				exit = true;
+			
 			if (p.getComputerList().size() < p.nbComputerPerPage)
 				exit = true;
+			
 			p.setIndex(p.getIndex() + 1);
 		} while (!exit);
 	}

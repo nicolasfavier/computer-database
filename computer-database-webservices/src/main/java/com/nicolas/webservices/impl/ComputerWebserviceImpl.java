@@ -49,6 +49,7 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 	}
 	
 	@GET
+	@Path("/page")
 	@Produces(MediaType.APPLICATION_JSON)
 	public PageDto findPage(@DefaultValue("") @QueryParam("search") String search,
 			@DefaultValue("ID") @QueryParam("sortCriterion") ComputerSortCriteria sortCriterion,
