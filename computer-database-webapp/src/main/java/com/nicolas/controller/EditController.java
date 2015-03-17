@@ -24,6 +24,11 @@ import com.nicolas.service.Interfaces.ComputerService;
 
 
 
+/**
+ * @author nicolas
+ *
+ *	controller to edit an existing computer
+ */
 @Controller
 @RequestMapping("/edit-computer")
 public class EditController {

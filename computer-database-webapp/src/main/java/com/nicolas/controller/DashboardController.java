@@ -13,6 +13,11 @@ import com.nicolas.service.Interfaces.ComputerService;
 
 
 
+/**
+ * @author nicolas
+ *
+ *	controller to handle pagesDto
+ */
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardController {

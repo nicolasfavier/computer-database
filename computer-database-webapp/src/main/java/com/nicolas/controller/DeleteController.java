@@ -15,6 +15,11 @@ import com.nicolas.utils.Utils;
 
 
 
+/**
+ * @author nicolas
+ *
+ * controller to delete computer
+ */
 @Controller
 @RequestMapping("/delete")
 public class DeleteController {

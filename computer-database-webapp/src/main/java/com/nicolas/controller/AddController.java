@@ -22,6 +22,10 @@ import com.nicolas.service.Interfaces.ComputerService;
 
 
 
+/**
+ * @author nicolas
+ * controller to add or get ComputerDtos
+ */
 @Controller
 @RequestMapping("/add-computer")
 public class AddController {

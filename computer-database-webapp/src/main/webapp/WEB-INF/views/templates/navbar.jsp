@@ -7,7 +7,6 @@
 			<a class="navbar-brand" href="dashboard"> Application - Computer
 				Database </a>
 		</div>
-			<a href="<c:url value="j_spring_security_logout" />" > Logout</a>
 			<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
