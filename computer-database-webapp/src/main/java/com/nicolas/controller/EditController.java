@@ -11,9 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nicolas.dto.ComputerDto;
 import com.nicolas.dto.ComputerDtoMapper;
@@ -38,10 +38,11 @@ public class EditController {
 	@Autowired
 	private CompanyService companyService;
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public String doGet(@RequestParam(value = "id", required = true) int index, ModelMap model) {
+		
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public String doGet(@PathVariable int id, ModelMap model) {
 
-			Computer computer = this.computerService.getByID(index);
+			Computer computer = this.computerService.getByID(id);
 			
 			if (computer != null) {
 				List<Company> companies = this.companyService.getAll();
@@ -55,7 +56,7 @@ public class EditController {
 			}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value="/{id}", method = RequestMethod.POST)
 	public String doPost(@Valid @ModelAttribute ComputerDto computer, BindingResult result, ModelMap model) {
 
 			if(result.hasErrors()) {
@@ -66,7 +67,7 @@ public class EditController {
 			} else {
 				this.computerService.update(computerDtoMapper.ComputerFromDto(computer));
 				LOGGER.info("Computer edit with success, redirecting to the Dashboard");
-				return "redirect:dashboard";
+				return "redirect:/dashboard";
 			}
 	}
 }

@@ -107,7 +107,7 @@
 							<input type="submit" value="${ edit_button }"
 								class="btn btn-primary validation">
 							<spring:message code="computer_form.or" />
-							<a href="dashboard" class="btn btn-default"><spring:message
+							<a href="../dashboard" class="btn btn-default"><spring:message
 									code="computer_form.cancel_button" /></a>
 						</div>
 					</form:form>
