@@ -8,6 +8,10 @@ import com.nicolas.webservices.impl.CompanyWebserviceImpl;
 import com.nicolas.webservices.impl.ComputerWebserviceImpl;
 
 
+/**
+ * @author nicolas
+ *	define which 
+ */
 public class JerseyApplication extends ResourceConfig {
 	/**
 	 * Register JAX-RS application components.
