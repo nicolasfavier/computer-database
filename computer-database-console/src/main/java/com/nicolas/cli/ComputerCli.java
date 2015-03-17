@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -84,17 +85,20 @@ public class ComputerCli {
 		PageDto pDto = new PageDto();
 		
 		do {
-			pDto = computerTarget.path("/page")
+			
+			 pDto = computerTarget
+					.path("/page")
+					.queryParam("index", p.getIndex())
 					.request(MediaType.APPLICATION_JSON)
 					.get(PageDto.class);
-			
-			System.out.println(p.toString());
+						
+			System.out.println(pDto.toString());
 			String input = InputCliUtils.getStringFromUser("enter for next page q for quit", false);
 			
 			if (input.equals("q"))
 				exit = true;
 			
-			if (p.getComputerList().size() < p.nbComputerPerPage)
+			if (pDto.getComputerList().size() < pDto.nbComputerPerPage)
 				exit = true;
 			
 			p.setIndex(p.getIndex() + 1);
@@ -116,17 +120,23 @@ public class ComputerCli {
 		if (companyId != -1)
 			tmpCompany = new Company(companyId, "");
 
-		ComputerDto computerDto = new ComputerDto(0, name, introducedDate,
-				discontinuedDate, tmpCompany);
+		ComputerDto computerDto = new ComputerDto(0, name, introducedDate, discontinuedDate, tmpCompany);
 
 		List<String> validationErrors = new ArrayList<>();
 		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
-			computerService.add(computerDtoMapper.ComputerFromDto(computerDto));
+			Computer computer = computerDtoMapper.ComputerFromDto(computerDto);
+			
+			computerTarget
+			.request(MediaType.APPLICATION_JSON)
+			.post(Entity.entity(computer,MediaType.APPLICATION_JSON));
+			
 			System.out.println("create with success");
+			
 		} else {
 			System.out.println("error");
+			
 			for (String validationError : validationErrors) {
 				System.out.println(" - " + validationError);
 			}
@@ -136,6 +146,7 @@ public class ComputerCli {
 
 	public void updateComputer() {
 		System.out.println(MENU_COMPUTER_UPDATE_HEADER);
+		
 		ComputerDto computerDto = computerDtoMapper
 				.ComputerToDto(selectValidComputerIndex());
 
@@ -165,8 +176,13 @@ public class ComputerCli {
 		validationErrors = DtoValidator.validate(computerDto);
 
 		if (validationErrors.size() == 0) {
-			computerService.update(computerDtoMapper
-					.ComputerFromDto(computerDto));
+			Computer computer = computerDtoMapper.ComputerFromDto(computerDto);
+
+			computerTarget
+			.path("/"+computer.getId())
+			.request(MediaType.APPLICATION_JSON)
+			.post(Entity.entity(computer,MediaType.APPLICATION_JSON));
+			
 			System.out.println("update with success");
 		} else {
 			System.out.println("error");

@@ -3,6 +3,13 @@ package com.nicolas.cli;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +28,14 @@ public class CompanyCli {
 	private static final String MENU_COMPANY_DELETE_HEADER = "############ Company Delete ############";
 	
 	@Autowired
-	private  CompanyService companyService; // = ServiceManagerImpl.INSTANCE.getCompanyServiceImpl();
-
+	private  CompanyService companyService;
+	private Client client;
+	private WebTarget companyTarget;
 	
-	private CompanyCli(){
+	public CompanyCli() {
+		client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
+		companyTarget = client.target("http://localhost:8080/computer-database-webservice/api/companies");
+	
 	}
 	
 	/**
@@ -32,7 +43,11 @@ public class CompanyCli {
 	 */
 	public  void showCompanies(){
 		List<Company> companies = new ArrayList<Company>();
-		companies = companyService.getAll();
+		
+		companies = companyTarget
+				.request(MediaType.APPLICATION_JSON)
+				.get(new GenericType<List<Company>>() {});
+
 		for(Company c : companies){
 			System.out.println(c.toString());
 		}
@@ -41,7 +56,12 @@ public class CompanyCli {
 	public  void deleteCompany() {
 		System.out.println(MENU_COMPANY_DELETE_HEADER);
 		int index = selectValidCompanyIndex();
-		companyService.DeleteCompany(index);
+		
+		companyTarget
+		.path("/"+index)
+		.request(MediaType.APPLICATION_JSON)
+		.delete();
+		
 		System.out.println("deleted with success");
 
 	}

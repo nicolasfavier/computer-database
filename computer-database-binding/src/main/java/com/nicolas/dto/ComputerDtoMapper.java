@@ -58,7 +58,7 @@ public final class ComputerDtoMapper {
 		if (computerDto == null)
 			return computer;
 
-		if(computerDto.getCompany().getId() != 0)
+		if(computerDto.getCompany() != null && computerDto.getCompany().getId() != 0)
 			company = computerDto.getCompany();
 		
 		computer = new Computer.Builder()

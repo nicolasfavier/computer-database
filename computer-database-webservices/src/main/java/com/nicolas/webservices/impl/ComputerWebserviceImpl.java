@@ -68,16 +68,23 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 		
 	}
     	
-
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void editComputer(Computer computer) {
+	public void addComputer(Computer computer) {
+		computerService.add(computer);
+	}
+
+	@POST
+	@Path("/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void updateComputer(Computer computer) {
 		computerService.update(computer);
 	}
 
 	@DELETE
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void deleteComputer(Computer computer) {
-		computerService.delete(computer.getId());
+	@Path("/{id}")
+	public void deleteComputer(@PathParam("id") int id) {
+		computerService.delete(id);
 	}
+
 }

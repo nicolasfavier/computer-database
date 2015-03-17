@@ -8,7 +8,7 @@ import com.nicolas.models.Page.ComputerSortCriteria;
 public class PageDto {
 	private final static int MAX_PAGE = 10;
 
-	public int nbComputerPerPage = 10;
+	public int nbComputerPerPage = 100;
 	private long totalComputers = 0;
 	private List<ComputerDto> computerList;
 	private int index = 0;
@@ -98,5 +98,16 @@ public class PageDto {
 		} else {
 			return new int[] { index - ofset, index + ofset };
 		}
+	}
+	
+	@Override
+	public String toString() {
+		String res = "*************** page " + index + " / " + totalPages
+				+ " ***************\n";
+
+		for (ComputerDto c : computerList) {
+			res += c.toString() + "\n";
+		}
+		return res;
 	}
 }
