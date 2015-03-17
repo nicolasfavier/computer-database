@@ -11,6 +11,9 @@
 	<packaging>war</packaging>
 
 	<dependencies>
+	
+		<!-- import other modules -->
+		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>computer-database-core</artifactId>
@@ -31,23 +34,21 @@
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 
+		<!-- web view dependencies -->
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>${jsp-api-version}</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>${jstl-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
-			<version>${taglibs-version}</version>
 		</dependency>
 
 	</dependencies>

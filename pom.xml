@@ -42,6 +42,7 @@
 		<xml-apis-version>1.4.01</xml-apis-version>
 		<javax.el-version>2.2.4</javax.el-version>
 		<spring-security-version>3.2.6.RELEASE</spring-security-version>
+		<jersey-version>2.16</jersey-version>
 
 	</properties>
 	<dependencyManagement>
@@ -93,6 +94,81 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- web view dependencies -->
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jsp-api</artifactId>
+				<version>${jsp-api-version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>jstl</groupId>
+				<artifactId>jstl</artifactId>
+				<version>${jstl-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>taglibs</groupId>
+				<artifactId>standard</artifactId>
+				<version>${taglibs-version}</version>
+			</dependency>
+
+			<!-- database Utils -->
+
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector-version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.web</groupId>
+				<artifactId>javax.el</artifactId>
+				<version>${javax.el-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate-core-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-validator-version}</version>
+			</dependency>
+
+
+			<!-- jersey dependencies -->
+
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${jersey-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-server</artifactId>
+				<version>${jersey-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.glassfish.jersey.ext</groupId>
+				<artifactId>jersey-spring3</artifactId>
+				<version>${jersey-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${jersey-version}</version>
+			</dependency>
+
+
+			<!-- Spring -->
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
@@ -100,6 +176,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
 
 			<dependency>
 				<groupId>commons-logging</groupId><!-- Empty jar for create a bridge -->
