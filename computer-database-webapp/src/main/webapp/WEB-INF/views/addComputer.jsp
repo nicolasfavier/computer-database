@@ -13,16 +13,7 @@
 					<h1>
 						<spring:message code="computer_form.add_computer_title" />
 					</h1>
-					<c:if test="${validationErrors != null}">
-						<div class="alert alert-danger">
-							<h2>Error:</h2>
-							<ul>
-								<c:forEach items="${validationErrors}" var="error">
-									<li><c:out value="${error}" /></li>
-								</c:forEach>
-							</ul>
-						</div>
-					</c:if>
+					
 					<form:form modelAttribute="computerDto" action="add-computer"
 						method="POST">
 						<fieldset>

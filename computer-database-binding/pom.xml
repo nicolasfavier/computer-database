@@ -9,7 +9,6 @@
 
 	<artifactId>computer-database-binding</artifactId>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

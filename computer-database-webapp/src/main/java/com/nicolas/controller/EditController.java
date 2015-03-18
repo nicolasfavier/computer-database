@@ -62,13 +62,15 @@ public class EditController {
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.POST)
-	public String doPost(@Valid @ModelAttribute ComputerDto computer, BindingResult result, ModelMap model) {
+	public String doPost(@Valid @ModelAttribute("computer") ComputerDto computer, BindingResult result, ModelMap model) {
 
 			if(result.hasErrors()) {
+
 				LOGGER.info("Wrong input, redirecting to the view");
 				List<Company> companies = this.companyService.getAll();
 				model.addAttribute("companies", companies);
 				return "editComputer";
+								
 			} else {
 				this.computerService.update(computerDtoMapper.ComputerFromDto(computer));
 				LOGGER.info("Computer edit with success, redirecting to the Dashboard");
