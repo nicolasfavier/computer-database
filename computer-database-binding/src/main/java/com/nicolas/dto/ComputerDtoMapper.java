@@ -29,7 +29,10 @@ public final class ComputerDtoMapper {
 
 	public ComputerDto ComputerToDto(Computer computer) {
 		ComputerDto computerDto = new ComputerDto();
-
+		
+		if (computer == null)
+			return null;
+		
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());
 		computerDto.setCompany(computer.getCompany());

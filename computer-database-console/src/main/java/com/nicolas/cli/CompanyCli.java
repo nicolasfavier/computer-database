@@ -53,6 +53,9 @@ public class CompanyCli {
 		}
 	}
 		
+	/**
+	 *  let the user select an id to delete and delte it
+	 */
 	public  void deleteCompany() {
 		System.out.println(MENU_COMPANY_DELETE_HEADER);
 		int index = selectValidCompanyIndex();

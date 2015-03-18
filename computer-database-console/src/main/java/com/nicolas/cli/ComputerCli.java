@@ -6,10 +6,13 @@ import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.client.ClientResponse;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,8 +46,6 @@ public class ComputerCli {
 	private static final String INVALID_INDEX = "This Index is not Valide";
 
 	@Autowired
-	private ComputerService computerService;
-	@Autowired
 	private CompanyCli companyCli;
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;
@@ -52,24 +53,44 @@ public class ComputerCli {
 	private WebTarget computerTarget;
 	private Client client;
 
+	/**
+	 * initialize client to access the webserive
+	 */
 	private ComputerCli() {
-		client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
-		computerTarget = client.target("http://localhost:8080/computer-database-webservice/api/computers");
+		client = ClientBuilder.newBuilder().register(JacksonFeature.class)
+				.build();
+		computerTarget = client
+				.target("http://localhost:8080/computer-database-webservice/api/computers");
 	}
 
 	/**
-	 * show all computers return by the database
+	 * show all computers returned by the database
 	 */
 	public void showComputers() {
-		List<ComputerDto> computerList = computerTarget
-				.path("/all")
-				.request(MediaType.APPLICATION_JSON)
-				.get(new GenericType<List<ComputerDto>>() {});
+
+		List<ComputerDto> computerList = new ArrayList<ComputerDto>();
+
+		Response response = computerTarget.path("/all")
+				.request(MediaType.APPLICATION_JSON).get();
+
+		if (response.getStatus() == 200) {
+			computerList = response
+					.readEntity(new GenericType<List<ComputerDto>>() {
+					});
+		} else {
+			throw new RuntimeException("Failed : HTTP error code : "
+					+ response.getStatus());
+		}
 
 		showComputers(computerList);
-
 	}
 
+	/**
+	 * @param computerDtos
+	 * 
+	 *            Write in the console the description of computersDtos passed
+	 *            in params
+	 */
 	private void showComputers(List<ComputerDto> computerDtos) {
 		for (ComputerDto c : computerDtos) {
 			System.out.println(c.toString());
@@ -83,28 +104,40 @@ public class ComputerCli {
 		boolean exit = false;
 		Page p = new Page();
 		PageDto pDto = new PageDto();
-		
+
 		do {
-			
-			 pDto = computerTarget
-					.path("/page")
+			// get the page
+			Response response = computerTarget.path("/page")
 					.queryParam("index", p.getIndex())
-					.request(MediaType.APPLICATION_JSON)
-					.get(PageDto.class);
-						
+					.request(MediaType.APPLICATION_JSON).get();
+
+			if (response.getStatus() == 200) {
+				pDto = response.readEntity(PageDto.class);
+			} else {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ response.getStatus());
+			}
+
+			// show it
 			System.out.println(pDto.toString());
-			String input = InputCliUtils.getStringFromUser("enter for next page q for quit", false);
-			
+
+			// ask for the next move
+			String input = InputCliUtils.getStringFromUser(
+					"enter for next page q for quit", false);
+
 			if (input.equals("q"))
 				exit = true;
-			
+
 			if (pDto.getComputerList().size() < pDto.nbComputerPerPage)
 				exit = true;
-			
+
 			p.setIndex(p.getIndex() + 1);
 		} while (!exit);
 	}
 
+	/**
+	 * create a new computer
+	 */
 	public void createComputer() {
 		System.out.println(MENU_COMPUTER_CREATION_HEADER);
 
@@ -120,23 +153,30 @@ public class ComputerCli {
 		if (companyId != -1)
 			tmpCompany = new Company(companyId, "");
 
-		ComputerDto computerDto = new ComputerDto(0, name, introducedDate, discontinuedDate, tmpCompany);
+		ComputerDto computerDto = new ComputerDto(0, name, introducedDate,
+				discontinuedDate, tmpCompany);
 
 		List<String> validationErrors = new ArrayList<>();
 		validationErrors = DtoValidator.validate(computerDto);
 
+		// check if the computer created is valid
 		if (validationErrors.size() == 0) {
 			Computer computer = computerDtoMapper.ComputerFromDto(computerDto);
-			
-			computerTarget
-			.request(MediaType.APPLICATION_JSON)
-			.post(Entity.entity(computer,MediaType.APPLICATION_JSON));
-			
+
+			Response response = computerTarget.request(
+					MediaType.APPLICATION_JSON).post(
+					Entity.entity(computer, MediaType.APPLICATION_JSON));
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ response.getStatus());
+			}
+
 			System.out.println("create with success");
-			
+
 		} else {
 			System.out.println("error");
-			
+
 			for (String validationError : validationErrors) {
 				System.out.println(" - " + validationError);
 			}
@@ -144,24 +184,23 @@ public class ComputerCli {
 
 	}
 
+	/**
+	 * update a computer
+	 */
 	public void updateComputer() {
 		System.out.println(MENU_COMPUTER_UPDATE_HEADER);
-		
-		ComputerDto computerDto = computerDtoMapper
-				.ComputerToDto(selectValidComputerIndex());
 
-		String name = InputCliUtils.getStringFromUser(
-				MENU_COMPUTER_CREATION_NAME, false);
+		ComputerDto computerDto = selectValidComputerIndex();
+
+		String name = InputCliUtils.getStringFromUser(MENU_COMPUTER_CREATION_NAME, false);
 		if (!name.isEmpty())
 			computerDto.setName(name);
 
-		String introducedDate = InputCliUtils.getDateFromUser(
-				MENU_COMPUTER_CREATION_INTRODUCED, false);
+		String introducedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_INTRODUCED, false);
 		if (introducedDate != null)
 			computerDto.setIntroduced(introducedDate);
 
-		String discontinuedDate = InputCliUtils.getDateFromUser(
-				MENU_COMPUTER_CREATION_DISCONTINUED, false);
+		String discontinuedDate = InputCliUtils.getDateFromUser(MENU_COMPUTER_CREATION_DISCONTINUED, false);
 		if (discontinuedDate != null)
 			computerDto.setDiscontinued(discontinuedDate);
 
@@ -175,14 +214,19 @@ public class ComputerCli {
 		List<String> validationErrors = new ArrayList<>();
 		validationErrors = DtoValidator.validate(computerDto);
 
+		// check if the computer is valid
 		if (validationErrors.size() == 0) {
 			Computer computer = computerDtoMapper.ComputerFromDto(computerDto);
 
-			computerTarget
-			.path("/"+computer.getId())
-			.request(MediaType.APPLICATION_JSON)
-			.post(Entity.entity(computer,MediaType.APPLICATION_JSON));
-			
+			Response response = computerTarget.path("/" + computer.getId())
+					.request(MediaType.APPLICATION_JSON)
+					.post(Entity.entity(computer, MediaType.APPLICATION_JSON));
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ response.getStatus());
+			}
+
 			System.out.println("update with success");
 		} else {
 			System.out.println("error");
@@ -195,7 +239,18 @@ public class ComputerCli {
 	public void getComputerDetails() {
 		int index = InputCliUtils.getUserInput(-1, MENU_COMPUTER_DETAILS_INDEX,
 				false);
-		Computer detail = computerService.getByID(index);
+		ComputerDto detail;
+		
+		Response response = computerTarget.path("/" + index)
+				.request(MediaType.APPLICATION_JSON).get();
+
+		if (response.getStatus() == 200) {
+			detail = response.readEntity(ComputerDto.class);
+		} else {
+			throw new RuntimeException("Failed : HTTP error code : "
+					+ response.getStatus());
+		}
+		
 		if (detail == null) {
 			System.out.println(INVALID_INDEX);
 		} else {
@@ -206,13 +261,21 @@ public class ComputerCli {
 	public void deleteComputer() {
 		System.out.println(MENU_COMPUTER_DELETE_HEADER);
 		int index = selectValidComputerIndex().getId();
-		computerService.delete(index);
+		
+		Response response = computerTarget.path("/" + index)
+				.request(MediaType.APPLICATION_JSON).delete();
+
+		if (response.getStatus() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : "
+					+ response.getStatus());
+		}
+		
 		System.out.println("deleted with success");
 
 	}
 
-	private Computer selectValidComputerIndex() {
-		Computer tmpComputer = null;
+	private ComputerDto selectValidComputerIndex() {
+		ComputerDto tmpComputer = null;
 		boolean error = false;
 		do {
 			if (error)
@@ -220,7 +283,19 @@ public class ComputerCli {
 			error = false;
 			int index = InputCliUtils.getUserInput(-1,
 					MENU_COMPUTER_UPDATE_INDEX, false);
-			tmpComputer = computerService.getByID(index);
+			
+			Response response = computerTarget.path("/" + index)
+					.request(MediaType.APPLICATION_JSON).get();
+			
+			if (response.getStatus() == 200) {
+				tmpComputer = response.readEntity(ComputerDto.class);
+			} else if (response.getStatus() == 204) {
+				tmpComputer = response.readEntity(ComputerDto.class);
+			} else {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ response.getStatus());
+			}
+			
 			if (tmpComputer == null)
 				error = true;
 		} while (error);

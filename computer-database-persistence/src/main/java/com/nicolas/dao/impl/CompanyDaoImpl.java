@@ -84,7 +84,5 @@ public class CompanyDaoImpl implements CompanyDao {
 		Query query = session.createQuery("delete Company where id= :id");
 		query.setLong("id", companyId);
 		query.executeUpdate();
-		throw new RuntimeException();
-
 	}
 }
