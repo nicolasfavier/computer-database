@@ -161,11 +161,9 @@ public class ComputerCli {
 
 		// check if the computer created is valid
 		if (validationErrors.size() == 0) {
-			Computer computer = computerDtoMapper.ComputerFromDto(computerDto);
-
 			Response response = computerTarget.request(
 					MediaType.APPLICATION_JSON).post(
-					Entity.entity(computer, MediaType.APPLICATION_JSON));
+					Entity.entity(computerDto, MediaType.APPLICATION_JSON));
 
 			if (response.getStatus() != 200 && response.getStatus() != 204 ) {
 				throw new RuntimeException("Failed : HTTP error code : "
@@ -216,11 +214,9 @@ public class ComputerCli {
 
 		// check if the computer is valid
 		if (validationErrors.size() == 0) {
-			Computer computer = computerDtoMapper.ComputerFromDto(computerDto);
-
-			Response response = computerTarget.path("/" + computer.getId())
+			Response response = computerTarget.path("/" + computerDto.getId())
 					.request(MediaType.APPLICATION_JSON)
-					.post(Entity.entity(computer, MediaType.APPLICATION_JSON));
+					.post(Entity.entity(computerDto, MediaType.APPLICATION_JSON));
 
 			if (response.getStatus() != 200 && response.getStatus() != 204 ) {
 				throw new RuntimeException("Failed : HTTP error code : "

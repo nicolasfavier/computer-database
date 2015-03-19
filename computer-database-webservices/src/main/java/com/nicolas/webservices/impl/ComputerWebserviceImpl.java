@@ -95,7 +95,8 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void addComputer(Computer computer) {
+	public void addComputer(ComputerDto computerDto) {
+		Computer computer = computerDtoMapper.ComputerFromDto(computerDto);
 		computerService.add(computer);
 	}
 
@@ -109,7 +110,8 @@ public class ComputerWebserviceImpl implements ComputerWebservice {
 	@POST
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void updateComputer(Computer computer) {
+	public void updateComputer(ComputerDto computerDto) {
+		Computer computer = computerDtoMapper.ComputerFromDto(computerDto);
 		computerService.update(computer);
 	}
 

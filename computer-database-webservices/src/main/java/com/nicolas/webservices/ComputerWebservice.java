@@ -36,14 +36,14 @@ public interface ComputerWebservice {
 	 * 
 	 * add a computer on the database from the given param
 	 */
-	public void addComputer(Computer computer);
+	public void addComputer(ComputerDto computerDto);
 
 	/**
 	 * @param computer, computer to update
 	 * 
 	 * update the computer on the bd
 	 */
-	public void updateComputer(Computer computer);
+	public void updateComputer(ComputerDto computerDto);
 
 	/**
 	 * @param id
