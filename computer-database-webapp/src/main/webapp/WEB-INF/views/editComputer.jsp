@@ -28,7 +28,7 @@
 					<form:form modelAttribute="computer" action="edit-computer"
 						method="POST">
 						<fieldset>
-							<input type="hidden" id="computerId" name="id"
+							<input type="hidden" id="computerId"  name="id"
 								value="${computer.id}">
 							<div class="form-group">
 								<label for="name"> <spring:message
@@ -36,7 +36,7 @@
 								</label>
 								<spring:message code="computer_form.name_placeholder"
 									var="computer_name_placeholder" />
-								<input type="text" class="form-control" id="computerName"
+								<input type="text"  required class="form-control" id="computerName"
 									name="name" placeholder="${ computer_name_placeholder }"
 									value="${fn:escapeXml(computer.name)}">
 								<form:errors path="name" cssClass="error"></form:errors>

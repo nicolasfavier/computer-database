@@ -167,7 +167,7 @@ public class ComputerCli {
 					MediaType.APPLICATION_JSON).post(
 					Entity.entity(computer, MediaType.APPLICATION_JSON));
 
-			if (response.getStatus() != 200) {
+			if (response.getStatus() != 200 && response.getStatus() != 204 ) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ response.getStatus());
 			}
@@ -222,7 +222,7 @@ public class ComputerCli {
 					.request(MediaType.APPLICATION_JSON)
 					.post(Entity.entity(computer, MediaType.APPLICATION_JSON));
 
-			if (response.getStatus() != 200) {
+			if (response.getStatus() != 200 && response.getStatus() != 204 ) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ response.getStatus());
 			}
@@ -246,6 +246,9 @@ public class ComputerCli {
 
 		if (response.getStatus() == 200) {
 			detail = response.readEntity(ComputerDto.class);
+		}
+		else if (response.getStatus() == 204){
+			detail = null;
 		} else {
 			throw new RuntimeException("Failed : HTTP error code : "
 					+ response.getStatus());
@@ -265,7 +268,7 @@ public class ComputerCli {
 		Response response = computerTarget.path("/" + index)
 				.request(MediaType.APPLICATION_JSON).delete();
 
-		if (response.getStatus() != 200) {
+		if (response.getStatus() != 200 && response.getStatus() != 204 ) {
 			throw new RuntimeException("Failed : HTTP error code : "
 					+ response.getStatus());
 		}

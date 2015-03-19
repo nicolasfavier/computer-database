@@ -23,7 +23,7 @@
 								</label>
 								<spring:message code="computer_form.name_placeholder"
 									var="computer_name_placeholder" />
-								<input required type="text" class="form-control"
+								<input required type="text" required class="form-control"
 									id="computerName" name="name"
 									placeholder="${ computer_name_placeholder }"
 									value="${fn:escapeXml(computer.name)}">
@@ -89,6 +89,10 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+			var strings = new Array();
+			strings['DateRegex'] = "<spring:message code='binding.date.regex' javaScriptEscape='true' />";
+		</script>
 	</section>
 	<jsp:include page="templates/footer.jsp" />
 </body>
