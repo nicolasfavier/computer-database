@@ -1,7 +1,5 @@
 package com.nicolas.dto;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.nicolas.models.Company;
@@ -17,19 +15,21 @@ public class ComputerDto {
 	private int id;
 
 	@NotBlank(message = "{computer_dto.name_not_blank}")
-	@Size(min = 1, max = 255, message = "{computer_dto.name_length}")
 	private String name;
-	
+
 	@Date(message = "{computer_dto.date_introduced_format}")
 	private String introduced;
+
 	@Date(message = "{computer_dto.date_discontinued_format}")
 	private String discontinued;
+
 	private Company company;
 
 	public ComputerDto() {
 	}
 
-	public ComputerDto(int id, String name, String introduced, String discontinued, Company company) {
+	public ComputerDto(int id, String name, String introduced,
+			String discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -38,7 +38,8 @@ public class ComputerDto {
 		this.company = company;
 	}
 
-	public ComputerDto(int id, String name, String introduced, String discontinued, int companyId) {
+	public ComputerDto(int id, String name, String introduced,
+			String discontinued, int companyId) {
 		super();
 		this.id = id;
 		this.name = name;

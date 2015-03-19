@@ -13,28 +13,22 @@ public class PageDto {
 	private List<ComputerDto> computerList;
 	private int index = 0;
 	private int totalPages;
-	@SuppressWarnings("unused")
 	private int[] range;
 	private ComputerSortCriteria sortCriterion = ComputerSortCriteria.ID;
 	private String search = "";
 
-
-	
 	public PageDto() {
 		super();
 		this.computerList = new ArrayList<ComputerDto>();
 	}
 
-
 	public String getSearch() {
 		return search;
 	}
 
-
 	public void setSearch(String search) {
 		this.search = search;
 	}
-
 
 	public ComputerSortCriteria getSortCriterion() {
 		return sortCriterion;
@@ -83,7 +77,7 @@ public class PageDto {
 	public void setTotalComputers(long totalComputers) {
 		this.totalComputers = totalComputers;
 	}
-	
+
 	public int[] getRange() {
 		int ofset = (int) MAX_PAGE / 2;
 
@@ -99,7 +93,7 @@ public class PageDto {
 			return new int[] { index - ofset, index + ofset };
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		String res = "*************** page " + index + " / " + totalPages

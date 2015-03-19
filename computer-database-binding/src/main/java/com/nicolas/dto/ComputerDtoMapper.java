@@ -29,10 +29,10 @@ public final class ComputerDtoMapper {
 
 	public ComputerDto ComputerToDto(Computer computer) {
 		ComputerDto computerDto = new ComputerDto();
-		
+
 		if (computer == null)
 			return null;
-		
+
 		computerDto.setId(computer.getId());
 		computerDto.setName(computer.getName());
 		computerDto.setCompany(computer.getCompany());
@@ -61,19 +61,21 @@ public final class ComputerDtoMapper {
 		if (computerDto == null)
 			return computer;
 
-		if(computerDto.getCompany() != null && computerDto.getCompany().getId() != 0)
+		if (computerDto.getCompany() != null
+				&& computerDto.getCompany().getId() != 0)
 			company = computerDto.getCompany();
-		
+
 		computer = new Computer.Builder()
-		.id(computerDto.getId())
-		.name(computerDto.getName())
-		.company(company)
-		.introduced(Utils.getDateFromString(computerDto
-				.getIntroduced(),getDatePattern()))
-		.discontinued(Utils.getDateFromString(computerDto
-				.getDiscontinued(),getDatePattern()))
-		.build();
-		
+				.id(computerDto.getId())
+				.name(computerDto.getName())
+				.company(company)
+				.introduced(
+						Utils.getDateFromString(computerDto.getIntroduced(),
+								getDatePattern()))
+				.discontinued(
+						Utils.getDateFromString(computerDto.getDiscontinued(),
+								getDatePattern())).build();
+
 		return computer;
 	}
 

@@ -16,13 +16,14 @@ import java.util.regex.Pattern;
 public final class Utils {
 	private Utils() {
 	}
-	
+
 	private static final String INT_REGEX = "^[0-9]*$";
 
 	public static Timestamp getTimestamp(LocalDate ld) {
 		if (ld == null)
 			return null;
-		Instant instantIntroduced = ld.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+		Instant instantIntroduced = ld.atStartOfDay()
+				.atZone(ZoneId.systemDefault()).toInstant();
 		return Timestamp.from(instantIntroduced);
 	}
 
@@ -102,8 +103,9 @@ public final class Utils {
 		}
 		return false;
 	}
-	
+
 	public static boolean isDate(String inputString) {
-		return isDate(inputString, "^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$");
+		return isDate(inputString,
+				"^(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$");
 	}
 }

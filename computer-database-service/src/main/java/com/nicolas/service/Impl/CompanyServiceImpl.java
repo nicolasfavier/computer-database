@@ -40,7 +40,8 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	/*
-	 * (non-Javadoc)	 * 
+	 * (non-Javadoc) *
+	 * 
 	 * @see com.nicolas.service.Interfaces.CompanyService#getByID(int)
 	 */
 	@Override
@@ -68,30 +69,29 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public void DeleteCompany(int companyId) {
 		Session session = null;
-    	Transaction tx = null;
- 
-    	try{
-    		session = sessionFactory.openSession();
-    		tx = session.beginTransaction();
-    		tx.setTimeout(20);
-    		
-    		computerDao.deleteByCompanyId(companyId, session);
-    		companyDao.deleteId(companyId, session);
- 
-    		tx.commit();
- 
- 
-    	}catch(RuntimeException e){
-    		try{
-    			tx.rollback();
-    		}catch(RuntimeException rbe){
-    			LOGGER.error("Couldn’t roll back transaction", rbe);
-    		}
-    		throw e;
-    	}finally{
-    		if(session!=null){
-    			session.close();
-    		}
-    	}
+		Transaction tx = null;
+
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			tx.setTimeout(20);
+
+			computerDao.deleteByCompanyId(companyId, session);
+			companyDao.deleteId(companyId, session);
+
+			tx.commit();
+
+		} catch (RuntimeException e) {
+			try {
+				tx.rollback();
+			} catch (RuntimeException rbe) {
+				LOGGER.error("Couldn’t roll back transaction", rbe);
+			}
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 }

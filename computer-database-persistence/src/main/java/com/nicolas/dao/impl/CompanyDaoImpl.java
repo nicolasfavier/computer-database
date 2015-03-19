@@ -44,7 +44,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		// Get All Employees
 		Query query = session.createQuery("from Company where id= :id");
 		query.setLong("id", companyId);
-		@SuppressWarnings("unchecked")
+
 		List<Company> Company = (List<Company>) query.list();
 		if (Company.size() > 0) {
 			c = Company.get(0);
@@ -58,7 +58,6 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * 
 	 * @see com.nicolas.dao.interfaces.CompanyDao#getAll()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public List<Company> getAll() {

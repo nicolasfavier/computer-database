@@ -13,26 +13,26 @@ import com.nicolas.service.Interfaces.CompanyService;
 import com.nicolas.service.Interfaces.ComputerService;
 import com.nicolas.utils.Utils;
 
-
-
 /**
  * @author nicolas
  *
- * controller to delete computer
+ *         controller to delete computer
  */
 @Controller
 @RequestMapping("/delete")
 public class DeleteController {
-	private static Logger LOGGER = LoggerFactory.getLogger(DeleteController.class);
+	private static Logger LOGGER = LoggerFactory
+			.getLogger(DeleteController.class);
 
 	@Autowired
 	private ComputerService computerService;
-	
+
 	@Autowired
 	private CompanyService companyService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String doPost(@RequestParam(value = "selection") String idsToDelete, ModelMap model) {
+	public String doPost(@RequestParam(value = "selection") String idsToDelete,
+			ModelMap model) {
 
 		String[] array = idsToDelete.split(",");
 		// TODO send an unique command for delete

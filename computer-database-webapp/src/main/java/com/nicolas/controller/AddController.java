@@ -20,11 +20,8 @@ import com.nicolas.models.Company;
 import com.nicolas.service.Interfaces.CompanyService;
 import com.nicolas.service.Interfaces.ComputerService;
 
-
-
 /**
- * @author nicolas
- * controller to add or get ComputerDtos
+ * @author nicolas controller to add or get ComputerDtos
  */
 @Controller
 @RequestMapping("/add-computer")
@@ -36,7 +33,7 @@ public class AddController {
 
 	@Autowired
 	private ComputerDtoMapper computerDtoMapper;
-	
+
 	@Autowired
 	private CompanyService companyService;
 
@@ -46,21 +43,23 @@ public class AddController {
 		List<Company> companies = this.companyService.getAll();
 
 		model.addAttribute("companies", companies);
-        model.addAttribute("computerDto", new ComputerDto());
+		model.addAttribute("computerDto", new ComputerDto());
 		LOGGER.info("get the view for add Computer");
 		return "addComputer";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String doPost(@Valid @ModelAttribute ComputerDto computerDto, BindingResult result, ModelMap model) {
+	public String doPost(@Valid @ModelAttribute ComputerDto computerDto,
+			BindingResult result, ModelMap model) {
 
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			LOGGER.info("Wrong input, redirecting to the view");
 			List<Company> companies = this.companyService.getAll();
 			model.addAttribute("companies", companies);
 			return "addComputer";
 		} else {
-			this.computerService.add(computerDtoMapper.ComputerFromDto(computerDto));
+			this.computerService.add(computerDtoMapper
+					.ComputerFromDto(computerDto));
 			LOGGER.info("Computer added with success, redirecting to the Dashboard");
 			model.addAttribute("message", "Successfully add");
 			return "redirect:dashboard";

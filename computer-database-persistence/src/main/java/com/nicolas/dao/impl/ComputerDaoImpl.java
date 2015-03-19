@@ -60,7 +60,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		// Get All Employees
 		Query query = session.createQuery("from Computer where id= :id");
 		query.setLong("id", index);
-		@SuppressWarnings("unchecked")
+
 		List<Computer> ComputerList = (List<Computer>) query.list();
 		if (ComputerList.size() > 0) {
 			c = ComputerList.get(0);
@@ -74,7 +74,6 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * 
 	 * @see com.nicolas.dao.interfaces.ComputerDao#getAll()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public List<Computer> getAll() {
@@ -90,14 +89,13 @@ public class ComputerDaoImpl implements ComputerDao {
 	}
 
 	/*
-	 * (non-Javadoc)		Session session = sessionFactory.getCurrentSession();
-
+	 * (non-Javadoc) Session session = sessionFactory.getCurrentSession();
+	 * 
 	 * 
 	 * @see
 	 * com.nicolas.dao.interfaces.ComputerDao#getPage(com.nicolas.models.Page,
 	 * java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public Page getPage(Page page) {
@@ -215,8 +213,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	@Transactional
-	public void deleteByCompanyId(int companyId , Session session) {
-		Query query = session.createQuery("delete Computer where company.id = :id");
+	public void deleteByCompanyId(int companyId, Session session) {
+		Query query = session
+				.createQuery("delete Computer where company.id = :id");
 		query.setLong("id", companyId);
 		query.executeUpdate();
 	}

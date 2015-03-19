@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import com.nicolas.models.Page;
 
-
 @Component
 public class PageDtoMapper {
 	@Autowired
@@ -20,7 +19,8 @@ public class PageDtoMapper {
 		p.setSortCriterion(pageDto.getSortCriterion());
 		p.setTotalComputers(pageDto.getTotalComputers());
 		p.setTotalPages(pageDto.getTotalPages());
-		p.setComputerList(computerDtoMapper.ComputerFromDto(pageDto.getComputerList()));
+		p.setComputerList(computerDtoMapper.ComputerFromDto(pageDto
+				.getComputerList()));
 
 		return p;
 	}
@@ -29,7 +29,8 @@ public class PageDtoMapper {
 		PageDto pageDTO = new PageDto();
 
 		pageDTO.setIndex(page.getIndex());
-		pageDTO.setComputerList(computerDtoMapper.ComputerToDto(page.getComputerList()));
+		pageDTO.setComputerList(computerDtoMapper.ComputerToDto(page
+				.getComputerList()));
 		pageDTO.setSearch(page.getSearch());
 		pageDTO.setSortCriterion(page.getSortCriterion());
 		pageDTO.setTotalComputers(page.getTotalComputers());

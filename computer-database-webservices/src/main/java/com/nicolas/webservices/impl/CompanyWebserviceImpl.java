@@ -17,11 +17,13 @@ import com.nicolas.webservices.CompanyWebservice;
 
 @Path("/companies")
 public class CompanyWebserviceImpl implements CompanyWebservice {
-	
+
 	@Autowired
 	private CompanyService companyService;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.webservices.CompanyWebservice#findAll()
 	 */
 	@GET
@@ -31,7 +33,9 @@ public class CompanyWebserviceImpl implements CompanyWebservice {
 		return companies;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.nicolas.webservices.CompanyWebservice#deleteCompany(int)
 	 */
 	@DELETE

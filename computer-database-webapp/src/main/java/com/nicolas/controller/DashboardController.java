@@ -11,12 +11,10 @@ import com.nicolas.dto.PageDtoMapper;
 import com.nicolas.models.Page;
 import com.nicolas.service.Interfaces.ComputerService;
 
-
-
 /**
  * @author nicolas
  *
- *	controller to handle pagesDto
+ *         controller to handle pagesDto
  */
 @Controller
 @RequestMapping("/dashboard")
@@ -26,7 +24,7 @@ public class DashboardController {
 	private ComputerService computerService;
 	@Autowired
 	private PageDtoMapper pageDtoMapper;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public String doGet(PageDto p, ModelMap model) {
 
