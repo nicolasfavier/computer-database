@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <jsp:include page="templates/headers.jsp" />
 <body>
@@ -7,7 +8,8 @@
 	<section id="main">
 		<div class="container">
 			<div class="alert alert-danger">
-				Error 404: Page not found.<br />
+				<spring:message code="error.404.message" />
+				<br />
 				<!-- stacktrace -->
 			</div>
 		</div>

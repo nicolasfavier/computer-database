@@ -6,7 +6,7 @@
 
 <ul class="pagination">
 	<li <c:if test="${page.index == 0}">style="display:none;"</c:if>><a
-		href="dashboard?page=${page.index -1}&nbComputerPerPage=${page.nbComputerPerPage}"
+		href="<myTags:link target="dashboard" page="${page}" index="${page.index - 1}"/>"
 		aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 	</a></li>
 	<c:forEach begin="${page.range[0]}" end="${page.range[1]}" var="index">
@@ -16,7 +16,7 @@
 	<li
 		<c:if test="${page.index == page.totalPages}">style="display:none;"</c:if>>
 		<a
-		href="dashboard?page=${page.index +1}&nbComputerPerPage=${page.nbComputerPerPage}"
+		href="<myTags:link target="dashboard" page="${page}" index="${page.index + 1}"/>"
 		aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
 	</li>
 </ul>

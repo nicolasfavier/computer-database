@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <jsp:include page="templates/headers.jsp" />
 <body>
@@ -7,8 +8,8 @@
 	<section id="main">
 		<div class="container">
 			<div class="alert alert-danger">
-				Error 403: Access denied! <br />
-				<!-- stacktrace -->
+				<spring:message code="error.403.message" />
+<br />
 			</div>
 		</div>
 	</section>
